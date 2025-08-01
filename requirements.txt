@@ -1,0 +1,5 @@
+requests
+pandas
+numpy
+git+https://github.com/HuobiRDCenter/huobi_Python.git#egg=huobi-client
+rich

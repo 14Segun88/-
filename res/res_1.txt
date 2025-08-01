@@ -1,0 +1,10 @@
+начало теста    01.08.2025 13:48:40
+1-я сделка | SELL_BTC_IN_MIDDLE | +0.01$ прибыли | SUCCESS (DEMO)
+2-я сделка | SELL_BTC_IN_MIDDLE | +0.01$ прибыли | SUCCESS (DEMO)
+3-я сделка | SELL_BTC_IN_MIDDLE | +0.01$ прибыли | SUCCESS (DEMO)
+4-я сделка | SELL_BTC_IN_MIDDLE | +0.01$ прибыли | SUCCESS (DEMO)
+5-я сделка | SELL_BTC_IN_MIDDLE | +0.01$ прибыли | SUCCESS (DEMO)
+6-я сделка | SELL_BTC_IN_MIDDLE | +0.01$ прибыли | SUCCESS (DEMO)
+7-я сделка | SELL_BTC_IN_MIDDLE | +0.01$ прибыли | SUCCESS (DEMO)
+8-я сделка | SELL_BTC_IN_MIDDLE | +0.01$ прибыли | SUCCESS (DEMO)
+9-я сделка | SELL_BTC_IN_MIDDLE | +0.01$ прибыли | SUCCESS (DEMO)

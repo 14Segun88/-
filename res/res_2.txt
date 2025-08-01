@@ -1,0 +1,5 @@
+начало теста    01.08.2025 13:52:41
+1-я сделка | BUY_BTC_IN_MIDDLE | +0.00$ прибыли | SUCCESS (DEMO)
+2-я сделка | BUY_BTC_IN_MIDDLE | +0.00$ прибыли | SUCCESS (DEMO)
+3-я сделка | BUY_BTC_IN_MIDDLE | +0.00$ прибыли | SUCCESS (DEMO)
+тест закончен    01.08.2025 13:52:57
