@@ -6,79 +6,80 @@ import sys
 import signal
 import logging
 import threading
+import time
 
 import config
 from htx_api import HtxApi
 from arbitrage_strategy import TriangularArbitrageStrategy
+from htx_api import HtxApi
 from trade_logger import TradeLogger
 
-# Настройка логирования
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(name)s - %(message)s',
-    handlers=[logging.StreamHandler(sys.stdout)]
-)
-
-# Событие для координации graceful shutdown
-stop_event = threading.Event()
 
 class ArbitrageBot:
-    """Основной класс бота, который инициализирует все компоненты."""
-    def __init__(self, trade_logger):
+    """Основной класс, управляющий ботом."""
+
+    def __init__(self):
         self.logger = logging.getLogger(self.__class__.__name__)
-        self.trade_logger = trade_logger
-        self.api = HtxApi(
-            api_key=config.API_KEY,
-            secret_key=config.SECRET_KEY,
-            base_url=config.API_BASE_URL
-        )
+        self.api = HtxApi(api_key=config.API_KEY, secret_key=config.SECRET_KEY, base_url=config.BASE_URL)
+        self.trade_logger = TradeLogger()
         self.strategy = TriangularArbitrageStrategy(
             api=self.api,
             logger=self.trade_logger,
             min_profit_threshold=config.MIN_PROFIT_THRESHOLD,
-            position_size=config.POSITION_SIZE
+            position_size=config.POSITION_SIZE,
+            fee_rate=config.FEE_RATE
         )
+        self.strategy_thread = None
 
     def start(self):
         """Запускает основной цикл стратегии в отдельном потоке."""
-        self.logger.info("🚀 Запуск треугольного арбитражного бота для HTX")
-        self.logger.info(f"📊 Режим: {'ДЕМО' if config.DEMO_MODE else 'РЕАЛЬНЫЙ'}")
-        self.trade_logger.log_start()
+        self.logger.info("🚀 Запуск бота...")
+        self.strategy.start() # Устанавливаем running = True
         
-        # Запускаем стратегию в своем потоке, чтобы основной поток мог ждать stop_event
-        strategy_thread = threading.Thread(target=self.strategy.run, daemon=True)
-        strategy_thread.start()
+        self.strategy_thread = threading.Thread(target=self.strategy.run, daemon=True)
+        self.strategy_thread.start()
 
     def stop(self):
         """Останавливает стратегию и записывает лог окончания."""
         self.logger.info("🔌 Остановка бота...")
         if self.strategy:
-            self.strategy.stop() # Говорим стратегии остановиться
-        self.trade_logger.log_end()
+            self.strategy.stop()
+        if self.strategy_thread and self.strategy_thread.is_alive():
+            self.strategy_thread.join()
+        
+        # Передаем итоговый баланс в логгер
+        if self.strategy:
+            self.trade_logger.log_end(self.strategy.balance)
+
 
 def signal_handler(sig, frame):
-    """Обработчик сигналов, который устанавливает событие для остановки."""
-    logging.info("Получен сигнал на остановку, инициирую завершение...")
-    stop_event.set()
+    """Обработчик сигналов, который инициирует остановку."""
+    global bot
+    if bot:
+        bot.stop()
+    # Даем время на завершение и выходим
+    time.sleep(5) 
+    exit(0)
 
-def main():
-    """Главная функция: настраивает и запускает бота, ожидает сигнала завершения."""
-    trade_logger = TradeLogger()
-    bot = ArbitrageBot(trade_logger)
 
-    # Настройка обработчиков сигналов
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    
+    bot = ArbitrageBot()
+
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
 
     bot.start()
 
-    # Основной поток ждет сигнала к завершению
-    logging.info("Бот запущен. Нажмите Ctrl+C для остановки.")
-    stop_event.wait() # Блокирует выполнение до вызова stop_event.set()
-
-    # После получения сигнала, корректно останавливаем бота
-    bot.stop()
-    logging.info("Работа бота завершена.")
-
-if __name__ == "__main__":
-    main()
+    try:
+        # Основной поток просто ждет завершения, так как strategy_thread - демон
+        # и завершится вместе с основным потоком.
+        # signal_handler обеспечит корректную остановку.
+        while bot.strategy_thread.is_alive():
+            time.sleep(1)
+    except (KeyboardInterrupt, SystemExit):
+        logging.info("Получен сигнал на выход из основного потока.")
+    finally:
+        if bot.strategy.running:
+            bot.stop()

@@ -1,130 +1,194 @@
 import logging
 import time
-import datetime
-from typing import Dict, NamedTuple
+from typing import Dict, Optional, Tuple
 
+import pandas as pd
 import config
+from htx_api import HtxApi
+from trade_logger import TradeLogger
 
-# Структура для хранения результата расчета
-class ArbitrageOpportunity(NamedTuple):
-    percentage_diff: float
-    signal: str
 
 class TriangularArbitrageStrategy:
-    """Класс стратегии треугольного арбитража, адаптированный для HTX."""
+    """Реализует стратегию треугольного арбитража."""
 
-    def __init__(self, api, logger, min_profit_threshold: float = 0.1, position_size: float = 15):
+    def __init__(self, logger: TradeLogger, min_profit_threshold: float, position_size: float, fee_rate: float, api: HtxApi = None, data: Dict[str, pd.DataFrame] = None):
         self.api = api
+        self.data = data
+        self.symbols = ['btcusdt', 'ethusdt', 'ethbtc']
         self.trade_logger = logger
         self.min_profit_threshold = min_profit_threshold
-        self.symbols = config.SYMBOLS
         self.position_size = position_size
         self.running = False
         self.logger = logging.getLogger(self.__class__.__name__)
-        
-        # Статистика
-        self.checks_done = 0
-        self.opportunities_found = 0
+
+        # Инициализируем комиссии для всех торговых пар
+        self.fees = self._initialize_fees(fallback_fee_rate=fee_rate)
+
+        self.balance = self.position_size
         self.trades_executed = 0
-        self.estimated_profit_usdt = 0.0
 
-    def calculate_arbitrage(self, market_data: Dict) -> ArbitrageOpportunity:
-        """Расчет арбитражной возможности по двум схемам."""
-        self.checks_done += 1
-        try:
-            price_btcusdt = market_data['BTCUSDT']['price']
-            price_ltcusdt = market_data['LTCUSDT']['price']
-            price_ltcbtc = market_data['LTCBTC']['price']
+    def _initialize_fees(self, fallback_fee_rate: float) -> Dict[str, float]:
+        """Инициализирует комиссии для всех торговых пар при старте."""
+        self.logger.info("Получение актуальных комиссий с биржи...")
+        fees = {}
+        # Если нет API (например, в бэктесте), используем значение по умолчанию
+        if not self.api:
+            self.logger.warning("API клиент не предоставлен. Используются комиссии по умолчанию.")
+            for symbol in self.symbols:
+                fees[symbol] = fallback_fee_rate
+            return fees
 
-            # Схема 1: USDT -> BTC -> LTC -> USDT (Продаем BTC в середине)
-            rate1 = (1 / price_btcusdt) * (1 / price_ltcbtc) * price_ltcusdt
-            percentage_diff1 = (rate1 - 1) * 100
+        for symbol in self.symbols:
+            fee_info = self.api.get_fee_rate(symbol)
+            # Используем комиссию тейкера, так как арбитраж требует скорости (рыночные ордера)
+            if fee_info and 'taker_fee' in fee_info:
+                fees[symbol] = fee_info['taker_fee']
+                self.logger.info(f"  - Комиссия для {symbol.upper()}: {fees[symbol] * 100:.4f}%")
+            else:
+                fees[symbol] = fallback_fee_rate
+                self.logger.warning(f"  - Не удалось получить комиссию для {symbol.upper()}. Используется значение по умолчанию: {fallback_fee_rate * 100:.4f}%")
+        return fees
 
-            # Схема 2: USDT -> LTC -> BTC -> USDT (Покупаем BTC в середине)
-            rate2 = (1 / price_ltcusdt) * price_ltcbtc * price_btcusdt
-            percentage_diff2 = (rate2 - 1) * 100
+    def start(self):
+        """Запускает основной цикл стратегии."""
+        self.running = True
+        self.logger.info("Стратегия запущена.")
+        self.trade_logger.log_start()
 
-            if percentage_diff1 > self.min_profit_threshold and percentage_diff1 > percentage_diff2:
-                self.opportunities_found += 1
-                return ArbitrageOpportunity(percentage_diff=percentage_diff1, signal='SELL_BTC_IN_MIDDLE')
-            elif percentage_diff2 > self.min_profit_threshold:
-                self.opportunities_found += 1
-                return ArbitrageOpportunity(percentage_diff=percentage_diff2, signal='BUY_BTC_IN_MIDDLE')
-
-            return ArbitrageOpportunity(percentage_diff=0, signal='HOLD')
-        except (KeyError, ZeroDivisionError) as e:
-            self.logger.error(f"Ошибка при расчете арбитража: {e}")
-            return ArbitrageOpportunity(percentage_diff=0, signal='HOLD')
-
-    def execute_trade(self, opportunity: ArbitrageOpportunity, market_data: Dict):
-        """Выполнение цепочки из трех сделок для извлечения прибыли."""
-        self.logger.info(f"[!] Найдена возможность: {opportunity.signal}, профит: {opportunity.percentage_diff:.4f}%. Начинаю выполнение... ")
-        
-        # В ДЕМО-РЕЖИМЕ ПРОСТО ЛОГИРУЕМ СДЕЛКУ
-        if config.DEMO_MODE:
-            profit = self.position_size * (opportunity.percentage_diff / 100)
-            self.trades_executed += 1
-            self.estimated_profit_usdt += profit
-            self.logger.info(f"[DEMO SUCCESS] Симуляция успешной сделки. Расчетная прибыль: {profit:.4f} USDT")
-            self.trade_logger.log_trade(self.trades_executed, opportunity.signal, profit, "SUCCESS (DEMO)")
-            return
-
-        # --- ЛОГИКА ДЛЯ РЕАЛЬНОЙ ТОРГОВЛИ ---
-        price_btcusdt = market_data['BTCUSDT']['price']
-        price_ltcusdt = market_data['LTCUSDT']['price']
-        price_ltcbtc = market_data['LTCBTC']['price']
-        order1, order2, order3 = None, None, None
-
-        try:
-            if opportunity.signal == 'SELL_BTC_IN_MIDDLE':
-                btc_amount = self.position_size / price_btcusdt
-                ltc_amount = btc_amount / price_ltcbtc
-                order1 = self.api.place_order('btcusdt', 'BUY', self.position_size)
-                order2 = self.api.place_order('ltcbtc', 'BUY', btc_amount)
-                order3 = self.api.place_order('ltcusdt', 'SELL', ltc_amount)
-            elif opportunity.signal == 'BUY_BTC_IN_MIDDLE':
-                ltc_amount = self.position_size / price_ltcusdt
-                btc_amount = ltc_amount * price_ltcbtc
-                order1 = self.api.place_order('ltcusdt', 'BUY', self.position_size)
-                order2 = self.api.place_order('ltcbtc', 'SELL', ltc_amount)
-                order3 = self.api.place_order('btcusdt', 'SELL', btc_amount)
-        except Exception as e:
-            self.logger.error(f"Ошибка во время выполнения цепочки '{opportunity.signal}': {e}")
-
-        order_results = [order1, order2, order3]
-        if all(order_results):
-            profit = self.position_size * (opportunity.percentage_diff / 100)
-            self.trades_executed += 1
-            self.estimated_profit_usdt += profit
-            self.logger.info(f"[SUCCESS] Арбитражная цепочка успешно выполнена. Расчетная прибыль: {profit:.4f} USDT")
-            self.trade_logger.log_trade(self.trades_executed, opportunity.signal, profit, "SUCCESS")
-        else:
-            self.logger.error("[FAIL] Ошибка при выполнении арбитражной цепочки. Не все ордера прошли.")
-            # Логируем неудачную сделку с нулевой прибылью
-            self.trade_logger.log_trade(self.trades_executed + 1, opportunity.signal, 0, "FAIL")
+    def stop(self):
+        """Останавливает основной цикл стратегии."""
+        self.running = False
+        self.logger.info("Получен сигнал на остановку. Завершаю работу...")
+        self.trade_logger.log_end(self.balance)
 
     def run(self):
         """Основной цикл работы стратегии."""
-        self.running = True
-        self.logger.info("Стратегия запущена. Нажмите Ctrl+C для остановки.")
+        if self.data:
+            # Режим бэктестинга
+            self._run_backtest()
+        else:
+            # Режим живой торговли
+            self._run_live()
+
+    def _run_live(self):
+        """Основной цикл для живой торговли."""
         while self.running:
             try:
-                market_data = self.api.get_market_data(self.symbols)
-                if market_data:
-                    opportunity = self.calculate_arbitrage(market_data)
-                    if opportunity.signal != 'HOLD':
-                        self.execute_trade(opportunity, market_data)
-                time.sleep(config.CHECK_INTERVAL)
-            except KeyboardInterrupt:
-                self.stop()
+                market_data = self.get_market_data()
+                if not market_data:
+                    time.sleep(2)
+                    continue
+
+                result = self.calculate_arbitrage(market_data)
+                if result:
+                    profit_percent, path = result
+                    self.execute_trade(path, profit_percent)
+
+                time.sleep(2)
+
             except Exception as e:
-                self.logger.critical(f"Критическая ошибка в главном цикле: {e}", exc_info=True)
+                self.logger.error(f"Произошла ошибка в основном цикле: {e}", exc_info=True)
                 time.sleep(10)
     
-    def stop(self):
-        """Остановка стратегии."""
-        if self.running:
-            self.running = False
-            self.logger.info("Получен сигнал на остановку. Завершаю работу...")
+    def _run_backtest(self):
+        """Основной цикл работы стратегии для бэктестинга."""
+        self.logger.info("Подготовка данных для бэктеста...")
+        
+        # Данные уже имеют 'timestamp' в качестве индекса. Используем столбец 'close'.
+        df_btcusdt = self.data['btcusdt'][['close']].rename(columns={'close': 'btcusdt'})
+        df_ethusdt = self.data['ethusdt'][['close']].rename(columns={'close': 'ethusdt'})
+        df_ethbtc = self.data['ethbtc'][['close']].rename(columns={'close': 'ethbtc'})
+
+        # Объединяем все данные в один DataFrame, выравнивая по временной метке
+        combined_df = df_btcusdt.join(df_ethusdt, how='inner').join(df_ethbtc, how='inner')
+        combined_df.dropna(inplace=True)  # Удаляем строки с отсутствующими данными
+
+        self.logger.info(f"Начинается бэктест на {len(combined_df)} свечах.")
+
+        # Итерируемся по каждой временной метке (каждой свече)
+        for timestamp, row in combined_df.iterrows():
+            if not self.running:
+                break
+            
+            market_data = {
+                'btcusdt': {'price': row['btcusdt']},
+                'ethusdt': {'price': row['ethusdt']},
+                'ethbtc': {'price': row['ethbtc']}
+            }
+
+            result = self.calculate_arbitrage(market_data)
+            if result:
+                profit_percent, path = result
+                self.execute_trade(path, profit_percent)
+        
+        self.logger.info("Бэктест завершен.")
+        self.stop()
+
+    def calculate_arbitrage(self, market_data: Dict) -> Optional[Tuple[float, str]]:
+        """Рассчитывает потенциальную прибыль для двух возможных путей арбитража."""
+        paths = {
+            "USDT->ETH->BTC->USDT": (['ethusdt', 'ethbtc', 'btcusdt'], 'buy-sell-sell'),
+            "USDT->BTC->ETH->USDT": (['btcusdt', 'ethbtc', 'ethusdt'], 'buy-buy-sell')
+        }
+        best_profit = -100
+        best_path_name = None
+
+        for path_name, (path_symbols, path_ops) in paths.items():
+            try:
+                rate1 = market_data[path_symbols[0]]['price']
+                rate2 = market_data[path_symbols[1]]['price']
+                rate3 = market_data[path_symbols[2]]['price']
+
+                fee1 = self.fees[path_symbols[0]]
+                fee2 = self.fees[path_symbols[1]]
+                fee3 = self.fees[path_symbols[2]]
+
+                ops = path_ops.split('-')
+                
+                # Рассчитываем, сколько мы получим после 3 сделок
+                final_amount = self.position_size
+                # Сделка 1
+                final_amount = (final_amount / rate1 if ops[0] == 'buy' else final_amount * rate1) * (1 - fee1)
+                # Сделка 2
+                final_amount = (final_amount * rate2 if ops[1] == 'sell' else final_amount / rate2) * (1 - fee2)
+                # Сделка 3
+                final_amount = (final_amount * rate3 if ops[2] == 'sell' else final_amount / rate3) * (1 - fee3)
+
+                profit_percent = (final_amount - self.position_size) / self.position_size * 100
+
+                if profit_percent > best_profit:
+                    best_profit = profit_percent
+                    best_path_name = path_name
+
+            except (TypeError, ZeroDivisionError):
+                continue # Если нет цены, пропускаем этот путь
+
+        if best_profit > self.min_profit_threshold:
+            return best_profit, best_path_name
+        
+        return None
+
+    def get_market_data(self) -> Optional[Dict[str, Dict]]:
+        """Получает рыночные данные для всех отслеживаемых символов."""
+        return self.api.get_market_data(self.symbols)
+
+    def execute_trade(self, path: str, profit_percent: float):
+        """Логирует найденную возможность для арбитража."""
+        self.trades_executed += 1
+        new_balance = self.balance * (1 + profit_percent / 100)
+        profit_amount = new_balance - self.balance
+        self.balance = new_balance
+
+        # В бэктесте мы не можем рассчитать реальную комиссию, поэтому передаем 0
+        # Статус всегда 'COMPLETED', так как мы симулируем исполненные сделки
+        self.trade_logger.log_trade(
+            trade_number=self.trades_executed,
+            path=path,
+            net_profit_usd=profit_amount,
+            status='COMPLETED',
+            total_fee=0, # Заглушка для комиссии
+            new_balance=self.balance
+        )
+        self.logger.info(f"[DEMO] Расчетная чистая прибыль: {profit_amount:.4f} USDT")
 
 
