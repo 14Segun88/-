@@ -1,85 +1,102 @@
-"""
-Главный файл для запуска треугольного арбитража бота
-"""
-
-import sys
-import signal
-import logging
-import threading
+import ccxt
 import time
-
-import config
-from htx_api import HtxApi
+import json
+import pandas as pd
+import matplotlib.pyplot as plt
+import logging
 from arbitrage_strategy import TriangularArbitrageStrategy
-from htx_api import HtxApi
-from trade_logger import TradeLogger
+import config
 
+# Настройка логирования
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-class ArbitrageBot:
-    """Основной класс, управляющий ботом."""
+def plot_histogram(data):
+    if not data:
+        print("Не удалось собрать данные для анализа.")
+        return
 
-    def __init__(self):
-        self.logger = logging.getLogger(self.__class__.__name__)
-        self.api = HtxApi(api_key=config.API_KEY, secret_key=config.SECRET_KEY, base_url=config.BASE_URL)
-        self.trade_logger = TradeLogger()
-        self.strategy = TriangularArbitrageStrategy(
-            api=self.api,
-            logger=self.trade_logger,
-            min_profit_threshold=config.MIN_PROFIT_THRESHOLD,
-            position_size=config.POSITION_SIZE,
-            fee_rate=config.FEE_RATE
-        )
-        self.strategy_thread = None
+    df = pd.DataFrame(data)
+    plt.figure(figsize=(10, 6))
+    plt.hist(df['profit_percent'], bins=100, alpha=0.75)
+    plt.title('Распределение арбитражных расхождений')
+    plt.xlabel('Процент расхождения (%)')
+    plt.ylabel('Частота')
+    plt.grid(True)
+    plt.show()
 
-    def start(self):
-        """Запускает основной цикл стратегии в отдельном потоке."""
-        self.logger.info("🚀 Запуск бота...")
-        self.strategy.start() # Устанавливаем running = True
-        
-        self.strategy_thread = threading.Thread(target=self.strategy.run, daemon=True)
-        self.strategy_thread.start()
+def main():
+    # Инициализация биржи
+    # Для спотового рынка Huobi (HTX) используйте 'htx'
+    exchange = ccxt.htx({
+        'options': {
+            'defaultType': 'spot', # Указываем спотовый рынок
+        },
+        'enableRateLimit': True,
+    })
 
-    def stop(self):
-        """Останавливает стратегию и записывает лог окончания."""
-        self.logger.info("🔌 Остановка бота...")
-        if self.strategy:
-            self.strategy.stop()
-        if self.strategy_thread and self.strategy_thread.is_alive():
-            self.strategy_thread.join()
-        
-        # Передаем итоговый баланс в логгер
-        if self.strategy:
-            self.trade_logger.log_end(self.strategy.balance)
+    strategy = TriangularArbitrageStrategy(
+        symbols=config.SYMBOLS,
+        min_profit_threshold=config.MIN_PROFIT_THRESHOLD,
+        position_size=config.POSITION_SIZE,
+        fee_rate=config.FEE_RATE
+    )
+    collected_divergence = []
 
-
-def signal_handler(sig, frame):
-    """Обработчик сигналов, который инициирует остановку."""
-    global bot
-    if bot:
-        bot.stop()
-    # Даем время на завершение и выходим
-    time.sleep(5) 
-    exit(0)
-
-
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    
-    bot = ArbitrageBot()
-
-    signal.signal(signal.SIGINT, signal_handler)
-    signal.signal(signal.SIGTERM, signal_handler)
-
-    bot.start()
+    print("Робот запущен. Начинаем сбор данных...")
+    print(f"Торговые пары: {config.SYMBOLS}")
+    print("Нажмите Ctrl+C для завершения.")
 
     try:
-        # Основной поток просто ждет завершения, так как strategy_thread - демон
-        # и завершится вместе с основным потоком.
-        # signal_handler обеспечит корректную остановку.
-        while bot.strategy_thread.is_alive():
-            time.sleep(1)
-    except (KeyboardInterrupt, SystemExit):
-        logging.info("Получен сигнал на выход из основного потока.")
+        while True:
+            try:
+                # Получаем последние цены для всех символов одним запросом
+                tickers = exchange.fetch_tickers(config.SYMBOLS)
+                
+                # Обновляем данные в стратегии
+                for symbol, ticker_data in tickers.items():
+                    # Проверяем, что данные по тикеру не пустые
+                    if ticker_data and ticker_data['bid'] is not None and ticker_data['ask'] is not None:
+                        market_data = {
+                            'bid': ticker_data['bid'],
+                            'ask': ticker_data['ask']
+                        }
+                        strategy.update_market_data(symbol, market_data)
+
+                # Рассчитываем расхождение
+                divergence_result = strategy.calculate_divergence()
+                if divergence_result:
+                    collected_divergence.append(divergence_result)
+                    print(f"[Collector] Расхождение: {divergence_result['profit_percent']:.4f}% для пути {divergence_result['path_name']}")
+
+                # Проверяем на арбитраж
+                arbitrage_opportunity = strategy.calculate_arbitrage()
+                if arbitrage_opportunity:
+                    print(f"\033[92m[ARBITRAGE DETECTED] {arbitrage_opportunity}\033[0m")
+
+            except ccxt.NetworkError as e:
+                logging.error(f"Ошибка сети: {e}. Повторная попытка через 5 секунд...")
+                time.sleep(5)
+            except ccxt.ExchangeError as e:
+                logging.error(f"Ошибка биржи: {e}. Повторная попытка через 20 секунд...")
+                time.sleep(20)
+            except Exception as e:
+                logging.error(f"Непредвиденная ошибка: {e}")
+                time.sleep(10)
+
+            # Пауза между запросами, чтобы не превышать лимиты API
+            time.sleep(config.COLLECTOR_INTERVAL)
+
+    except KeyboardInterrupt:
+        print("\nЗавершение работы по команде пользователя...")
     finally:
-        if bot.strategy.running:
-            bot.stop()
+        if collected_divergence:
+            with open('live_divergence_data.json', 'w') as f:
+                json.dump(collected_divergence, f, indent=4)
+            print(f"Собранные данные сохранены в live_divergence_data.json ({len(collected_divergence)} записей)")
+            plot_histogram(collected_divergence)
+        else:
+            print("Не удалось собрать данные для анализа.")
+        print("Программа завершена.")
+
+if __name__ == "__main__":
+    main()

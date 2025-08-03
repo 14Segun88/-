@@ -9,12 +9,13 @@ DEMO_MODE = True  # True для демо-счета, False для реально
 # Настройки стратегии
 MIN_PROFIT_THRESHOLD = 0.1  # Минимальный процент прибыли для входа в сделку
 # Комиссия за одну сделку (0.2% = 0.002)
-FEE_RATE = 0.002
+FEE_RATE = 0.00075
 POSITION_SIZE = 15  # Размер позиции в USDT
-CHECK_INTERVAL = 5  # Интервал проверки в секундах
+COLLECTOR_INTERVAL = 1  # Интервал между запросами к API в секундах
 
 # Торговые пары
-SYMBOLS = ['btcusdt', 'ltcusdt', 'ltcbtc']
+# Формат CCXT: 'BASE/QUOTE'
+SYMBOLS = ['BTC/USDT', 'LTC/USDT', 'LTC/BTC']
 
 # Настройки логирования
 LOG_LEVEL = 'INFO'
