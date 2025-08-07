@@ -1,102 +1,118 @@
 import ccxt
 import time
+import logging
 import json
 import pandas as pd
 import matplotlib.pyplot as plt
-import logging
+from datetime import datetime
+import os
+
 from arbitrage_strategy import TriangularArbitrageStrategy
-import config
+from config import SYMBOLS, MIN_PROFIT_THRESHOLD, POSITION_SIZE, FEE_RATE, COLLECTOR_INTERVAL, BOT_MODE, API_KEY, SECRET_KEY
 
-# Настройка логирования
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+def setup_loggers():
+    """Настраивает основной логгер для консоли и отдельный логгер для записи сделок в файл."""
+    # Основной логгер для вывода в консоль
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def plot_histogram(data):
-    if not data:
-        print("Не удалось собрать данные для анализа.")
-        return
+    # Отдельный логгер для результатов торговли
+    trade_logger = logging.getLogger('trader')
+    trade_logger.setLevel(logging.INFO)
+    trade_logger.propagate = False  # Не выводить сообщения этого логгера в консоль
 
-    df = pd.DataFrame(data)
-    plt.figure(figsize=(10, 6))
-    plt.hist(df['profit_percent'], bins=100, alpha=0.75)
-    plt.title('Распределение арбитражных расхождений')
-    plt.xlabel('Процент расхождения (%)')
-    plt.ylabel('Частота')
-    plt.grid(True)
-    plt.show()
+    log_dir = 'res'
+    os.makedirs(log_dir, exist_ok=True)
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = os.path.join(log_dir, f'res_{timestamp}.log')
+    
+    file_handler = logging.FileHandler(filename)
+    file_handler.setFormatter(logging.Formatter('%(asctime)s - %(message)s'))
+    trade_logger.addHandler(file_handler)
+    
+    logging.info(f"Trade results will be saved to {filename}")
+    return trade_logger
 
 def main():
-    # Инициализация биржи
-    # Для спотового рынка Huobi (HTX) используйте 'htx'
-    exchange = ccxt.htx({
+    trade_logger = setup_loggers()
+
+    # Инициализация CCXT
+    exchange = ccxt.huobi({
+        'apiKey': API_KEY,
+        'secret': SECRET_KEY,
         'options': {
-            'defaultType': 'spot', # Указываем спотовый рынок
+            'defaultType': 'spot',
         },
+        'rateLimit': 200, # Уменьшаем задержку для более частых запросов
         'enableRateLimit': True,
     })
 
-    strategy = TriangularArbitrageStrategy(
-        symbols=config.SYMBOLS,
-        min_profit_threshold=config.MIN_PROFIT_THRESHOLD,
-        position_size=config.POSITION_SIZE,
-        fee_rate=config.FEE_RATE
-    )
-    collected_divergence = []
+    # Проверка доступности API
+    try:
+        exchange.load_markets()
+        logging.info("Successfully connected to Huobi API.")
+    except ccxt.BaseError as e:
+        logging.error(f"Error connecting to Huobi API: {e}")
+        return
 
-    print("Робот запущен. Начинаем сбор данных...")
-    print(f"Торговые пары: {config.SYMBOLS}")
-    print("Нажмите Ctrl+C для завершения.")
+    # Инициализация стратегии
+    strategy = TriangularArbitrageStrategy(
+        symbols=SYMBOLS,
+        min_profit_threshold=MIN_PROFIT_THRESHOLD,
+        position_size=POSITION_SIZE,
+        fee_rate=FEE_RATE,
+        trade_logger=trade_logger,
+        exchange=exchange, # <-- Передаем созданный объект биржи
+        exchange_name='Huobi' # <-- Указываем имя для логов
+    )
+
+    logging.info(f"Starting bot in '{BOT_MODE}' mode.")
+    logging.info(f"Symbols: {SYMBOLS}")
+    logging.info(f"Position size: ${POSITION_SIZE} USDT")
+    logging.info(f"Minimum profit threshold: {MIN_PROFIT_THRESHOLD}%")
 
     try:
         while True:
             try:
-                # Получаем последние цены для всех символов одним запросом
-                tickers = exchange.fetch_tickers(config.SYMBOLS)
+                # Получаем стаканы для всех символов
+                for symbol in SYMBOLS:
+                    order_book = exchange.fetch_order_book(symbol, limit=20) # limit=20 - глубина стакана
+                    strategy.update_market_data(symbol, order_book)
                 
-                # Обновляем данные в стратегии
-                for symbol, ticker_data in tickers.items():
-                    # Проверяем, что данные по тикеру не пустые
-                    if ticker_data and ticker_data['bid'] is not None and ticker_data['ask'] is not None:
-                        market_data = {
-                            'bid': ticker_data['bid'],
-                            'ask': ticker_data['ask']
-                        }
-                        strategy.update_market_data(symbol, market_data)
+                # Рассчитываем арбитраж на основе полных стаканов
+                profit_percentage = strategy.calculate_arbitrage()
 
-                # Рассчитываем расхождение
-                divergence_result = strategy.calculate_divergence()
-                if divergence_result:
-                    collected_divergence.append(divergence_result)
-                    print(f"[Collector] Расхождение: {divergence_result['profit_percent']:.4f}% для пути {divergence_result['path_name']}")
+                # Выводим текущее состояние рынка для "ощущения"
+                # Используем print с \r, чтобы строка постоянно обновлялась
+                print(f"Current market divergence: {profit_percentage:+.4f}%   ", end="\r")
 
-                # Проверяем на арбитраж
-                arbitrage_opportunity = strategy.calculate_arbitrage()
-                if arbitrage_opportunity:
-                    print(f"\033[92m[ARBITRAGE DETECTED] {arbitrage_opportunity}\033[0m")
+                # Логируем и симулируем только те возможности, которые превышают наш порог
+                if profit_percentage > MIN_PROFIT_THRESHOLD:
+                    logging.info(f"Found potential arbitrage opportunity (before fees): {profit_percentage:.4f}%")
+                    
+                    # Если режим paper_trader, логируем сделку через стратегию
+                    if BOT_MODE == 'paper_trader':
+                        strategy.log_paper_trade(profit_percentage)
+
+                # Собираем статистику по всем расхождениям с временными метками
+                strategy.divergence_data.append((datetime.now(), profit_percentage))
 
             except ccxt.NetworkError as e:
-                logging.error(f"Ошибка сети: {e}. Повторная попытка через 5 секунд...")
+                logging.warning(f"Network error: {e}. Retrying...")
                 time.sleep(5)
             except ccxt.ExchangeError as e:
-                logging.error(f"Ошибка биржи: {e}. Повторная попытка через 20 секунд...")
+                logging.error(f"Exchange error: {e}. Check API keys or symbol names.")
                 time.sleep(20)
             except Exception as e:
-                logging.error(f"Непредвиденная ошибка: {e}")
+                logging.error(f"An unexpected error occurred: {e}", exc_info=True)
                 time.sleep(10)
 
-            # Пауза между запросами, чтобы не превышать лимиты API
-            time.sleep(config.COLLECTOR_INTERVAL)
+            time.sleep(COLLECTOR_INTERVAL)
 
     except KeyboardInterrupt:
-        print("\nЗавершение работы по команде пользователя...")
-    finally:
-        if collected_divergence:
-            with open('live_divergence_data.json', 'w') as f:
-                json.dump(collected_divergence, f, indent=4)
-            print(f"Собранные данные сохранены в live_divergence_data.json ({len(collected_divergence)} записей)")
-            plot_histogram(collected_divergence)
-        else:
-            print("Не удалось собрать данные для анализа.")
-        print("Программа завершена.")
+        logging.info("Shutdown signal received. Saving data...")
+        strategy.save_divergence_data()
+        logging.info("Data saved. Exiting.")
 
 if __name__ == "__main__":
     main()
