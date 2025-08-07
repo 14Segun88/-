@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import ccxt
 import logging
 import time
@@ -7,127 +6,129 @@ import threading
 from datetime import datetime
 import os
 
-# Импортируем конфигурацию и стратегию
 import config_binance as config
 from arbitrage_strategy import TriangularArbitrageStrategy
 
-# Флаг для корректного завершения работы (используем threading.Event)
-shutdown_flag = threading.Event()
+def setup_logging():
+    """Настраивает основной логгер для вывода в консоль."""
+    log_format = '%(asctime)s - %(levelname)s - %(message)s'
+    logging.basicConfig(level=logging.INFO, format=log_format, force=True)
 
-def setup_loggers():
-    """Настраивает основной логгер для консоли и отдельный логгер для записи сделок в файл."""
-    # Убедимся, что папки для логов существуют
+def setup_trade_logger():
+    """Настраивает логгер для записи сделок в файл для Binance."""
     os.makedirs('res_binance', exist_ok=True)
-    os.makedirs('statistics', exist_ok=True)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_filename = os.path.join('res_binance', f'res_{timestamp}.log')
 
-    # Основной логгер
-    logging.basicConfig(level=logging.INFO,
-                        format='%(asctime)s - %(levelname)s - %(message)s',
-                        datefmt='%Y-%m-%d %H:%M:%S')
-
-    # Логгер для сделок (с уникальным именем для Binance)
     trade_logger = logging.getLogger('trade_logger_binance')
     trade_logger.propagate = False
-    if not trade_logger.handlers:
-        log_filename = f"res_binance/trades_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
-        file_handler = logging.FileHandler(log_filename)
-        file_handler.setFormatter(logging.Formatter('%(asctime)s - %(message)s'))
-        trade_logger.addHandler(file_handler)
-        trade_logger.setLevel(logging.INFO)
-        logging.info(f"Trade results will be saved to {log_filename}")
-
-def signal_handler(signum, frame):
-    """Обработчик сигналов для корректного завершения работы."""
-    logging.info("\nShutdown signal received. Finishing current cycle and saving data...")
-    shutdown_flag.set()
+    
+    if trade_logger.hasHandlers():
+        trade_logger.handlers.clear()
+        
+    trade_logger.setLevel(logging.INFO)
+    handler = logging.FileHandler(log_filename)
+    formatter = logging.Formatter('%(asctime)s - %(message)s')
+    handler.setFormatter(formatter)
+    trade_logger.addHandler(handler)
+    logging.info(f"Trade results for Binance will be saved to {log_filename}")
+    return trade_logger
 
 def main():
-    """Основная функция для запуска бота."""
-    setup_loggers()
-    signal.signal(signal.SIGINT, signal_handler)
-    signal.signal(signal.SIGTERM, signal_handler)
+    setup_logging()
+    trade_logger = setup_trade_logger()
 
-    logging.info("--- Starting Binance Triangular Arbitrage Bot ---")
-    logging.info(f"Bot Mode: {config.BOT_MODE}")
-
+    exchange = ccxt.binance(config.API_CONFIG)
     try:
-        exchange = ccxt.binance(config.API_CONFIG)
-        exchange.load_markets()
-        logging.info("Successfully connected to Binance.")
-    except Exception as e:
-        logging.error(f"Failed to connect to Binance: {e}")
+        exchange.load_markets(True)
+        logging.info(f"Successfully connected to {exchange.name} API.")
+    except (ccxt.ExchangeError, ccxt.NetworkError) as e:
+        logging.error(f"Failed to connect to {exchange.name}: {e}")
         return
 
+    # --- ДИНАМИЧЕСКАЯ ЗАГРУЗКА ТИКЕРОВ ---
+    TARGET_CURRENCIES = ['USDT', 'BTC', 'ETH', 'LTC', 'TRX', 'DOGE', 'SOL', 'ADA']
+    all_exchange_tickers = exchange.symbols
+    tickers = [t for t in all_exchange_tickers if t.split('/')[0] in TARGET_CURRENCIES and t.split('/')[1] in TARGET_CURRENCIES]
+    logging.info(f"Loaded {len(tickers)} relevant tickers from the exchange.")
+    # --------------------------------------
+
     strategy = TriangularArbitrageStrategy(
-        exchange=exchange,
-        symbols=config.SYMBOLS,
+        tickers=tickers,
         min_profit_threshold=config.MIN_PROFIT_THRESHOLD,
         position_size=config.POSITION_SIZE,
         fee_rate=config.FEE_RATE,
-        trade_logger=logging.getLogger('trade_logger_binance'),
-        exchange_name='Binance'
+        trade_logger=trade_logger,
+        exchange_name=exchange.name
     )
 
-    # The arbitrage paths are defined within the strategy's __init__ method.
-    if not strategy.paths:
-        logging.error("No triangular arbitrage paths were defined in the strategy. Exiting.")
-        return
-    logging.info(f"Using {len(strategy.paths)} potential arbitrage paths defined in the strategy.")
+    mode = getattr(config, 'BOT_MODE', 'paper_trader')
+    loop_delay = getattr(config, 'LOOP_DELAY', 1)
 
-    logging.info("Starting market scan...")
+    logging.info(f"Starting bot in '{mode}' mode.")
+    logging.info(f"Position size: ${config.POSITION_SIZE} USDT")
+    logging.info(f"Minimum profit threshold: {config.MIN_PROFIT_THRESHOLD}%")
+    logging.info("Starting bot... Press Ctrl+C to stop.")
 
+    stop_event = threading.Event()
+    signal.signal(signal.SIGINT, lambda s, f: stop_event.set())
+    signal.signal(signal.SIGTERM, lambda s, f: stop_event.set())
+    inactive_tickers = set()
 
-
-    # --- Main Bot Loop ---
-    while not shutdown_flag.is_set():
+    # Основной цикл бота
+    while not stop_event.is_set():
         try:
-            # 1. Fetch order books for all required symbols
-            all_books_fetched = True
-            for symbol in strategy.symbols:
+            # Получаем стаканы для всех активных тикеров
+            active_tickers = [t for t in tickers if t not in inactive_tickers]
+            for ticker in active_tickers:
                 try:
-                    order_book = exchange.fetch_order_book(symbol, limit=5)
-                    strategy.update_market_data(symbol, order_book)
-                except Exception as e:
-                    logging.warning(f"Could not fetch order book for {symbol}: {e}")
-                    all_books_fetched = False
-                    break # Don't calculate if one symbol fails
+                    order_book = exchange.fetch_order_book(ticker, limit=5)
+                    strategy.update_market_data(ticker, order_book)
+                except (ccxt.ExchangeError, ccxt.NetworkError) as e:
+                    if 'does not have market symbol' in str(e).lower() or 'invalid symbol' in str(e).lower():
+                        logging.warning(f"Ticker {ticker} is invalid, adding to ignore list. Reason: {e}")
+                        inactive_tickers.add(ticker)
+                    else:
+                        logging.warning(f"Could not fetch order book for {ticker}: {e}")
+                        time.sleep(1)
             
-            if not all_books_fetched:
-                time.sleep(config.COLLECTOR_INTERVAL)
-                continue
+            # Расчет и логирование дивергенции
+            all_profits = strategy.calculate_all_paths_profit()
+            if all_profits:
+                os.system('cls' if os.name == 'nt' else 'clear')
+                current_time_str = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                best_path = max(all_profits, key=all_profits.get)
+                best_profit = all_profits[best_path]
 
-            # 2. Calculate arbitrage based on the new data
-            profit_percentage = strategy.calculate_arbitrage()
+                print(f"--- Arbitrage Bot Status (Binance) | {current_time_str} ---")
+                print(f"Paper Balance: ${strategy.paper_balance:.2f} | Min Profit: {config.MIN_PROFIT_THRESHOLD}% | Best: {best_path} ({best_profit:+.4f}%)")
+                print("-" * 70)
+                print("Divergence Indicator:")
 
-            # 3. Process the result
-            if profit_percentage is not None:
-                print(f"\rCurrent Binance market divergence: {profit_percentage:+.4f}%", end="", flush=True)
-                strategy.divergence_data.append((datetime.now(), profit_percentage))
+                sorted_paths = sorted(all_profits.items(), key=lambda item: item[1], reverse=True)
 
-                if profit_percentage > config.MIN_PROFIT_THRESHOLD:
-                    logging.info(f"\n---> Found profitable opportunity on Binance: {profit_percentage:+.4f}% <---")
-                    
+                for path, profit in sorted_paths:
+                    display_color = "\033[92m" if profit > config.MIN_PROFIT_THRESHOLD else ("\033[93m" if profit > 0 else "\033[91m")
+                    reset_code = "\033[0m"
+                    print(f"  {path:<25} -> {display_color}{profit:+.4f}%{reset_code}")
+                    # Собираем данные для отчета по всем путям
+                    strategy.divergence_data.append((datetime.now(), profit, path))
+                print("-" * 70, flush=True)
+
+                if best_profit > config.MIN_PROFIT_THRESHOLD:
+                    logging.info(f"\n---> Найдена выгодная возможность на Binance: {best_path} с прибылью {best_profit:+.4f}% <---")
                     if config.BOT_MODE == 'paper_trader':
-                        # Вся логика симуляции и логирования теперь внутри стратегии
-                        strategy.log_paper_trade(profit_percentage)
+                        strategy.log_paper_trade(best_profit, best_path)
 
-        except ccxt.NetworkError as e:
-            logging.warning(f"\nNetwork error: {e}. Retrying...")
-            time.sleep(5)
-        except ccxt.ExchangeError as e:
-            logging.error(f"\nExchange error: {e}. Check API keys or symbol names.")
-            time.sleep(20)
+            time.sleep(loop_delay)
+
         except Exception as e:
-            logging.error(f"\nUnexpected error: {e}")
+            logging.error(f"An unexpected error occurred in the main loop: {e}", exc_info=True)
             time.sleep(10)
-        
-        time.sleep(config.COLLECTOR_INTERVAL)
 
-    # Сохранение данных после завершения
-    logging.info("\nBot is shutting down. Saving collected data...")
-    strategy.save_divergence_data()
-    logging.info("Data saved successfully. Goodbye!")
+    logging.info("Shutdown signal received. Saving data...")
+    strategy.save_session()
+    logging.info("Data saved. Exiting.")
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
-

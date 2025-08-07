@@ -5,3 +5,7 @@ __pycache__/
 # IDE / Editor specific
 .vscode/
 .idea/
+
+# Application specific
+statistics/
+logs/

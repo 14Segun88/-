@@ -18,7 +18,7 @@ FEE_RATE = 0.00075  # 0.075%
 BOT_MODE = 'paper_trader'
 
 # Минимальная прибыль для фиксации (в процентах)
-MIN_PROFIT_THRESHOLD = 0.01  # 0.01%
+MIN_PROFIT_THRESHOLD = 0.3  # 0.3%
 
 # Размер одной сделки в базовой валюте (например, в USDT)
 POSITION_SIZE = 11  # Рекомендуется > 10 USDT
@@ -27,18 +27,24 @@ POSITION_SIZE = 11  # Рекомендуется > 10 USDT
 COLLECTOR_INTERVAL = 2
 
 # 4. Торговые пары (Символы)
-# Пример для Binance
+# 4 арбитражные связки:
+# 1. USDT -> BTC -> ETH -> USDT
+# 2. USDT -> BTC -> LTC -> USDT
+# 3. USDT -> BTC -> XRP -> USDT
+# 4. USDT -> BTC -> ADA -> USDT
 SYMBOLS = [
-    'BTC/USDT', 'ETH/USDT', 'ETH/BTC',
-    'LTC/USDT', 'LTC/BTC', 'LTC/ETH',
-    'XRP/USDT', 'XRP/BTC', 'XRP/ETH',
-    'ADA/USDT', 'ADA/BTC', 'ADA/ETH',
-    'BNB/USDT', 'BNB/BTC', 'BNB/ETH'
+    # Основные пары к USDT
+    'BTC/USDT', 'ETH/USDT', 'LTC/USDT', 'ADA/USDT', 'SOL/USDT',
+    'DOGE/USDT', 'TRX/USDT',
+
+    # Пары к BTC для создания связок
+    'ETH/BTC', 'LTC/BTC', 'ADA/BTC', 'SOL/BTC',
+    'DOGE/BTC', 'TRX/BTC',
+
+    # Дополнительная пара для связок через ETH
+    'ETH/BTC',
 ]
 BNB_FEE_DISCOUNT = True  # Использовать BNB для оплаты комиссий (25% скидка)
-
-# Торговые пары для Binance (те же самые)
-SYMBOLS = ['BTC/USDT', 'LTC/USDT', 'LTC/BTC']
 
 # Дополнительные настройки безопасности
 MAX_POSITION_SIZE = 100  # Максимальный размер позиции в USDT
