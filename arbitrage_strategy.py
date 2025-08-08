@@ -41,6 +41,12 @@ class TriangularArbitrageStrategy:
         self.paper_balance = self.position_size
         self.trade_count = 0
         self.trade_log = []
+
+        # Настройка для промежуточного сохранения
+        self.timestamp = self.start_time.strftime("%Y%m%d_%H%M%S")
+        self.stats_dir = os.path.join('statistics', self.exchange_name.lower())
+        os.makedirs(self.stats_dir, exist_ok=True)
+        self.session_data_filename = os.path.join(self.stats_dir, f'session_data_{self.timestamp}.csv')
         
         logging.info("Arbitrage strategy instance created and ready.")
 
@@ -253,41 +259,69 @@ class TriangularArbitrageStrategy:
             f"PAPER TRADE: Path: {path_name}, Profit: {gross_profit_pct:.4f}%, Net Gain: ${profit_usd:.4f}, New Balance: ${self.paper_balance:.2f}"
         )
 
+    def save_divergence_chunk(self):
+        """
+        Сохраняет накопленные в памяти данные о дивергенциях в промежуточный CSV-файл
+        и очищает память.
+        """
+        if not self.divergence_data:
+            return # Нечего сохранять
+
+        df_chunk = pd.DataFrame(self.divergence_data, columns=['timestamp', 'profit_percentage', 'path'])
+        
+        # Проверяем, существует ли файл, чтобы решить, нужно ли записывать заголовок
+        file_exists = os.path.exists(self.session_data_filename)
+        
+        # Дописываем данные в конец файла
+        df_chunk.to_csv(self.session_data_filename, mode='a', header=not file_exists, index=False)
+        
+        logging.info(f"Saved {len(self.divergence_data)} data points to {self.session_data_filename}. Memory cleared.")
+        
+        # Очищаем список в памяти
+        self.divergence_data.clear()
+
     def save_session(self):
-        # --- СОХРАНЕНИЕ СЕССИИ И ГЕНЕРАЦИЯ ОТЧЕТА ---
-        # Вызывается при завершении работы бота (Ctrl+C).
-        # 1. Сохраняет лог совершенных "бумажных" сделок в JSON-файл.
-        # 2. Собирает все данные о расхождениях (даже с убытком) и передает их
-        #    в модуль generate_detailed_report для создания итогового PNG-отчета.
-        if not self.trade_log and not self.divergence_data:
-            logging.info("No data to save. Exiting.")
-            return
+        """
+        Сохраняет итоговую сессию. Сначала сохраняет остатки данных из памяти,
+        затем читает весь промежуточный файл и генерирует на его основе отчет.
+        """
+        # Сначала сохраняем все, что могло остаться в памяти
+        self.save_divergence_chunk()
 
-        timestamp = self.start_time.strftime("%Y%m%d_%H%M%S")
-        stats_dir = os.path.join('statistics', self.exchange_name.lower())
-        os.makedirs(stats_dir, exist_ok=True)
-
+        # Сохраняем лог сделок (эта логика не меняется)
         if self.trade_log:
-            log_filename = os.path.join(stats_dir, f'{self.exchange_name.lower()}_trades_{timestamp}.json')
+            log_filename = os.path.join(self.stats_dir, f'{self.exchange_name.lower()}_trades_{self.timestamp}.json')
             with open(log_filename, 'w') as f:
                 json.dump(self.trade_log, f, indent=4)
             logging.info(f"Trade log saved to {log_filename}")
         else:
             logging.warning("No paper trades were executed in this session.")
 
-        if not self.divergence_data or len(self.divergence_data[0]) != 3:
-            logging.error("Divergence data is empty or has incorrect format. Cannot generate PNG report.")
+        # Генерируем отчет из промежуточного файла
+        if not os.path.exists(self.session_data_filename):
+            logging.info("No session data file found. Cannot generate report.")
             return
 
-        df = pd.DataFrame(self.divergence_data, columns=['timestamp', 'profit_percentage', 'path'])
-        df.set_index('timestamp', inplace=True)
-        
-        report_filename = os.path.join(stats_dir, f'{self.exchange_name.lower()}_report_{timestamp}.png')
         try:
+            df = pd.read_csv(self.session_data_filename)
+            if df.empty:
+                logging.warning("Session data is empty. Cannot generate PNG report.")
+                return
+
+            df['timestamp'] = pd.to_datetime(df['timestamp'])
+            df.set_index('timestamp', inplace=True)
+            
+            report_filename = os.path.join(self.stats_dir, f'{self.exchange_name.lower()}_report_{self.timestamp}.png')
             generate_report(df, report_filename, self.exchange_name)
             logging.info(f"Successfully generated detailed report: {report_filename}")
+        
         except Exception as e:
             logging.error(f"Failed to generate detailed PNG report: {e}", exc_info=True)
+        
+        finally:
+            # В любом случае удаляем промежуточный файл после попытки генерации отчета
+            os.remove(self.session_data_filename)
+            logging.info(f"Cleaned up intermediate session file: {self.session_data_filename}")
 
     def execute_trade(self, path: str, profit_percent: float):
         print(f"ИСПОЛНЕНИЕ СДЕЛКИ: Путь={path}, Прибыль={profit_percent:.4f}%")

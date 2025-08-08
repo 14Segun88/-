@@ -79,7 +79,10 @@ def main():
     signal.signal(signal.SIGTERM, lambda s, f: stop_event.set())
     inactive_tickers = set()
 
-    # Основной цикл бота
+    # Настройка для периодического сохранения
+    last_save_time = datetime.now()
+    SAVE_INTERVAL_MINUTES = 10 # Сохранять каждые 10 минут
+
     while not stop_event.is_set():
         try:
             # Получаем стаканы для всех активных тикеров
@@ -133,6 +136,12 @@ def main():
             if best_path['profit_percent'] > config.MIN_PROFIT_THRESHOLD:
                 strategy.log_paper_trade(best_path['profit_percent'], best_path['path_name'])
 
+            # --- ПЕРИОДИЧЕСКОЕ СОХРАНЕНИЕ ДАННЫХ ---
+            current_time = datetime.now()
+            if (current_time - last_save_time).total_seconds() > SAVE_INTERVAL_MINUTES * 60:
+                strategy.save_divergence_chunk() # Новый метод для сохранения части данных
+                last_save_time = current_time
+
             time.sleep(loop_delay)
 
         except Exception as e:
@@ -140,7 +149,7 @@ def main():
             time.sleep(10)
 
     logging.info("Shutdown signal received. Saving data...")
-    strategy.save_session()
+    strategy.save_session() # Эта функция теперь будет читать из файла
     logging.info("Data saved. Exiting.")
 
 if __name__ == '__main__':
