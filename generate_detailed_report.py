@@ -6,6 +6,7 @@ import logging
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import numpy as np
+import pandas as pd
 from datetime import datetime
 from matplotlib.patches import Patch
 
@@ -134,9 +135,9 @@ def generate_report(df: pd.DataFrame, filename: str, exchange_name: str):
         ax_hist.grid(True, linestyle='--', alpha=0.5)
         fig.add_subplot(ax_hist)
 
-    plt.savefig(output_filename, dpi=150, bbox_inches='tight')
+    plt.savefig(filename, dpi=150, bbox_inches='tight')
     plt.close()
-    logging.info(f"Detailed report saved to: {output_filename}")
+    logging.info(f"Detailed report saved to: {filename}")
 
 if __name__ == '__main__':
     # Этот блок теперь предназначен для ручного тестирования генератора отчетов

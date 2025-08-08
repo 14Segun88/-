@@ -40,21 +40,25 @@ def main():
 
     exchange = ccxt.binance(config.API_CONFIG)
     try:
-        exchange.load_markets(True)
-        logging.info(f"Successfully connected to {exchange.name} API.")
+        exchange.load_markets()
+        logging.info("Successfully connected to Binance API.")
     except (ccxt.ExchangeError, ccxt.NetworkError) as e:
-        logging.error(f"Failed to connect to {exchange.name}: {e}")
+        logging.error(f"Failed to connect to Binance: {e}")
         return
 
-    # --- ДИНАМИЧЕСКАЯ ЗАГРУЗКА ТИКЕРОВ ---
+    # --- ФИЛЬТРАЦИЯ ТОРГОВЫХ ПАР ---
+    # Используем заранее определенный список валют, чтобы получить ~84 релевантные пары
     TARGET_CURRENCIES = ['USDT', 'BTC', 'ETH', 'LTC', 'TRX', 'DOGE', 'SOL', 'ADA']
     all_exchange_tickers = exchange.symbols
-    tickers = [t for t in all_exchange_tickers if t.split('/')[0] in TARGET_CURRENCIES and t.split('/')[1] in TARGET_CURRENCIES]
-    logging.info(f"Loaded {len(tickers)} relevant tickers from the exchange.")
-    # --------------------------------------
+    relevant_tickers = [t for t in all_exchange_tickers if t.split('/')[0] in TARGET_CURRENCIES and t.split('/')[1] in TARGET_CURRENCIES]
+    
+    logging.info(f"Loaded {len(relevant_tickers)} relevant tickers from the exchange.")
 
+    # --- ИНИЦИАЛИЗАЦИЯ СТРАТЕГИИ ---
+    # Создаем экземпляр нашей арбитражной стратегии
     strategy = TriangularArbitrageStrategy(
-        tickers=tickers,
+        exchange=exchange,
+        tickers=relevant_tickers,
         min_profit_threshold=config.MIN_PROFIT_THRESHOLD,
         position_size=config.POSITION_SIZE,
         fee_rate=config.FEE_RATE,
@@ -79,7 +83,7 @@ def main():
     while not stop_event.is_set():
         try:
             # Получаем стаканы для всех активных тикеров
-            active_tickers = [t for t in tickers if t not in inactive_tickers]
+            active_tickers = [t for t in relevant_tickers if t not in inactive_tickers]
             for ticker in active_tickers:
                 try:
                     order_book = exchange.fetch_order_book(ticker, limit=5)
@@ -94,31 +98,40 @@ def main():
             
             # Расчет и логирование дивергенции
             all_profits = strategy.calculate_all_paths_profit()
-            if all_profits:
-                os.system('cls' if os.name == 'nt' else 'clear')
-                current_time_str = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                best_path = max(all_profits, key=all_profits.get)
-                best_profit = all_profits[best_path]
+            if not all_profits:
+                continue
 
-                print(f"--- Arbitrage Bot Status (Binance) | {current_time_str} ---")
-                print(f"Paper Balance: ${strategy.paper_balance:.2f} | Min Profit: {config.MIN_PROFIT_THRESHOLD}% | Best: {best_path} ({best_profit:+.4f}%)")
-                print("-" * 70)
-                print("Divergence Indicator:")
+            # Найти лучший путь, используя правильный ключ для словаря
+            best_path = max(all_profits, key=lambda x: x['profit_percent'])
 
-                sorted_paths = sorted(all_profits.items(), key=lambda item: item[1], reverse=True)
+            # Отсортировать все пути для отображения дивергенций
+            sorted_paths = sorted(all_profits, key=lambda x: x['profit_percent'], reverse=True)
 
-                for path, profit in sorted_paths:
-                    display_color = "\033[92m" if profit > config.MIN_PROFIT_THRESHOLD else ("\033[93m" if profit > 0 else "\033[91m")
-                    reset_code = "\033[0m"
-                    print(f"  {path:<25} -> {display_color}{profit:+.4f}%{reset_code}")
-                    # Собираем данные для отчета по всем путям
-                    strategy.divergence_data.append((datetime.now(), profit, path))
-                print("-" * 70, flush=True)
+            # --- ВЫВОД ИНДИКАТОРА В КОНСОЛЬ ---
+            # Формируем заголовок с балансом, минимальной прибылью и лучшим путем
+            header = f"-- Arbitrage Bot Status ({config.EXCHANGE_NAME}) | {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} --\n"
+            status_line = f"Paper Balance: ${strategy.paper_balance:.2f} | Min Profit: {config.MIN_PROFIT_THRESHOLD}% | Best: {best_path['path_name']} ({best_path['profit_percent']:.4f}%)\n"
+            separator = '-' * (len(status_line) -1)
 
-                if best_profit > config.MIN_PROFIT_THRESHOLD:
-                    logging.info(f"\n---> Найдена выгодная возможность на Binance: {best_path} с прибылью {best_profit:+.4f}% <---")
-                    if config.BOT_MODE == 'paper_trader':
-                        strategy.log_paper_trade(best_profit, best_path)
+            # Формируем блок с дивергенциями
+            divergence_lines = ["Divergence Indicator:"]
+            for path_info in sorted_paths: 
+                divergence_lines.append(f"  {path_info['path_name']:<25} -> {path_info['profit_percent']:+.4f}%")
+
+            # Очищаем консоль и выводим всю информацию
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print(header + status_line + separator)
+            print('\n'.join(divergence_lines))
+            print(separator)
+
+            # Собираем данные для отчета по всем путям, включая отбракованные
+            for path_info in all_profits:
+                strategy.divergence_data.append((datetime.now(), path_info['profit_percent'], path_info['path_name']))
+
+            # --- ЛОГИРОВАНИЕ И СИМУЛЯЦИЯ СДЕЛКИ ---
+            # Если найденный лучший путь превышает порог, логируем его как сделку
+            if best_path['profit_percent'] > config.MIN_PROFIT_THRESHOLD:
+                strategy.log_paper_trade(best_path['profit_percent'], best_path['path_name'])
 
             time.sleep(loop_delay)
 
