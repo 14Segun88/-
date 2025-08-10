@@ -1,31 +1,31 @@
-import ccxt
+import asyncio
 import logging
-import time
-import signal
-import threading
-from datetime import datetime
 import os
+import signal
+from datetime import datetime
+import ccxt.pro as ccxt_pro
 
 import config_binance as config
 from arbitrage_strategy import TriangularArbitrageStrategy
+from websocket_manager import WebsocketManager
+
+# --- Глобальные переменные ---
+strategy = None
+last_save_time = None
+SAVE_INTERVAL_MINUTES = 10
 
 def setup_logging():
-    """Настраивает основной логгер для вывода в консоль."""
     log_format = '%(asctime)s - %(levelname)s - %(message)s'
     logging.basicConfig(level=logging.INFO, format=log_format, force=True)
 
 def setup_trade_logger():
-    """Настраивает логгер для записи сделок в файл для Binance."""
     os.makedirs('res_binance', exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     log_filename = os.path.join('res_binance', f'res_{timestamp}.log')
-
     trade_logger = logging.getLogger('trade_logger_binance')
     trade_logger.propagate = False
-    
     if trade_logger.hasHandlers():
         trade_logger.handlers.clear()
-        
     trade_logger.setLevel(logging.INFO)
     handler = logging.FileHandler(log_filename)
     formatter = logging.Formatter('%(asctime)s - %(message)s')
@@ -34,123 +34,98 @@ def setup_trade_logger():
     logging.info(f"Trade results for Binance will be saved to {log_filename}")
     return trade_logger
 
-def main():
+async def handle_orderbook_update(orderbook: dict):
+    """
+    Callback-функция, которая вызывается при каждом обновлении стакана через WebSocket.
+    """
+    global strategy, last_save_time
+
+    # 1. Обновление данных в стратегии
+    symbol = orderbook['symbol']
+    strategy.update_market_data(symbol, orderbook)
+
+    # 2. Измерение и обновление задержки
+    receive_time_ms = datetime.now().timestamp() * 1000
+    server_time_ms = orderbook['timestamp']
+    latency = receive_time_ms - server_time_ms
+    strategy.update_latency(latency)
+
+    # 3. Расчет всех арбитражных путей
+    all_profits = strategy.calculate_all_paths_profit()
+    if not all_profits:
+        return
+
+    # 4. Поиск лучшего пути и отображение в консоли
+    best_path = max(all_profits, key=lambda x: x['profit_percent'])
+    header = f"-- Arbitrage Bot Status (Binance) | {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} --\n"
+    status_line = f"Balance: ${strategy.paper_balance:.2f} | Latency: {latency:.1f}ms | Best: {best_path['path_name']} ({best_path['profit_percent']:.4f}%)\n"
+    separator = '-' * (len(status_line) - 1)
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print(header + status_line + separator)
+
+    # 5. Логирование сделки, если найден профит
+    if best_path['profit_percent'] > config.MIN_PROFIT_THRESHOLD:
+        strategy.log_paper_trade(best_path['profit_percent'], best_path['path_name'])
+
+    # 6. Периодическое сохранение данных
+    current_time = datetime.now()
+    if (current_time - last_save_time).total_seconds() > SAVE_INTERVAL_MINUTES * 60:
+        strategy.save_divergence_chunk()
+        last_save_time = current_time
+
+async def main_async():
+    """Основная асинхронная функция для запуска бота."""
+    global strategy, last_save_time
     setup_logging()
     trade_logger = setup_trade_logger()
 
-    exchange = ccxt.binance(config.API_CONFIG)
-    try:
-        exchange.load_markets()
-        logging.info("Successfully connected to Binance API.")
-    except (ccxt.ExchangeError, ccxt.NetworkError) as e:
-        logging.error(f"Failed to connect to Binance: {e}")
-        return
-
-    # --- ФИЛЬТРАЦИЯ ТОРГОВЫХ ПАР ---
-    # Используем заранее определенный список валют, чтобы получить ~84 релевантные пары
+    # Используем временный синхронный клиент для получения списка тикеров
+    temp_exchange = ccxt_pro.binance()
+    await temp_exchange.load_markets()
     TARGET_CURRENCIES = ['USDT', 'BTC', 'ETH', 'LTC', 'TRX', 'DOGE', 'SOL', 'ADA']
-    all_exchange_tickers = exchange.symbols
-    relevant_tickers = [t for t in all_exchange_tickers if t.split('/')[0] in TARGET_CURRENCIES and t.split('/')[1] in TARGET_CURRENCIES]
-    
-    logging.info(f"Loaded {len(relevant_tickers)} relevant tickers from the exchange.")
+    relevant_tickers = [t for t in temp_exchange.symbols if t.split('/')[0] in TARGET_CURRENCIES and t.split('/')[1] in TARGET_CURRENCIES]
+    await temp_exchange.close()
 
-    # --- ИНИЦИАЛИЗАЦИЯ СТРАТЕГИИ ---
-    # Создаем экземпляр нашей арбитражной стратегии
+    logging.info(f"Loaded {len(relevant_tickers)} relevant tickers.")
+
+    existing_tickers = ['LTC/BTC', 'ETH/BTC', 'LTC/ETH', 'LTC/USDT', 'ETH/USDT', 'BTC/USDT']
+    new_tickers = ['SOL/USDT', 'SOL/BTC', 'ADA/USDT', 'ADA/BTC']
+    all_tickers = existing_tickers + new_tickers
+
     strategy = TriangularArbitrageStrategy(
-        exchange=exchange,
-        tickers=relevant_tickers,
+        exchange=None, # Exchange больше не нужен здесь, т.к. данные идут через WS
+        tickers=all_tickers,
+        new_tickers=new_tickers,  # Pass new tickers for special handling
         min_profit_threshold=config.MIN_PROFIT_THRESHOLD,
         position_size=config.POSITION_SIZE,
         fee_rate=config.FEE_RATE,
         trade_logger=trade_logger,
-        exchange_name=exchange.name
+        exchange_name='binance'
     )
-
-    mode = getattr(config, 'BOT_MODE', 'paper_trader')
-    loop_delay = getattr(config, 'LOOP_DELAY', 1)
-
-    logging.info(f"Starting bot in '{mode}' mode.")
-    logging.info(f"Position size: ${config.POSITION_SIZE} USDT")
-    logging.info(f"Minimum profit threshold: {config.MIN_PROFIT_THRESHOLD}%")
-    logging.info("Starting bot... Press Ctrl+C to stop.")
-
-    stop_event = threading.Event()
-    signal.signal(signal.SIGINT, lambda s, f: stop_event.set())
-    signal.signal(signal.SIGTERM, lambda s, f: stop_event.set())
-    inactive_tickers = set()
-
-    # Настройка для периодического сохранения
     last_save_time = datetime.now()
-    SAVE_INTERVAL_MINUTES = 10 # Сохранять каждые 10 минут
 
-    while not stop_event.is_set():
-        try:
-            # Получаем стаканы для всех активных тикеров
-            active_tickers = [t for t in relevant_tickers if t not in inactive_tickers]
-            for ticker in active_tickers:
-                try:
-                    order_book = exchange.fetch_order_book(ticker, limit=5)
-                    strategy.update_market_data(ticker, order_book)
-                except (ccxt.ExchangeError, ccxt.NetworkError) as e:
-                    if 'does not have market symbol' in str(e).lower() or 'invalid symbol' in str(e).lower():
-                        logging.warning(f"Ticker {ticker} is invalid, adding to ignore list. Reason: {e}")
-                        inactive_tickers.add(ticker)
-                    else:
-                        logging.warning(f"Could not fetch order book for {ticker}: {e}")
-                        time.sleep(1)
-            
-            # Расчет и логирование дивергенции
-            all_profits = strategy.calculate_all_paths_profit()
-            if not all_profits:
-                continue
+    # Инициализация и запуск WebSocket менеджера
+    ws_manager = WebsocketManager(on_message_callback=handle_orderbook_update)
+    ws_task = await ws_manager.start(all_tickers, config.API_CONFIG)
 
-            # Найти лучший путь, используя правильный ключ для словаря
-            best_path = max(all_profits, key=lambda x: x['profit_percent'])
+    # Настройка graceful shutdown
+    loop = asyncio.get_running_loop()
+    stop_event = asyncio.Event()
+    loop.add_signal_handler(signal.SIGINT, stop_event.set)
+    loop.add_signal_handler(signal.SIGTERM, stop_event.set)
 
-            # Отсортировать все пути для отображения дивергенций
-            sorted_paths = sorted(all_profits, key=lambda x: x['profit_percent'], reverse=True)
+    logging.info("Bot is running with WebSocket. Press Ctrl+C to stop.")
+    await stop_event.wait()
 
-            # --- ВЫВОД ИНДИКАТОРА В КОНСОЛЬ ---
-            # Формируем заголовок с балансом, минимальной прибылью и лучшим путем
-            header = f"-- Arbitrage Bot Status ({config.EXCHANGE_NAME}) | {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} --\n"
-            status_line = f"Paper Balance: ${strategy.paper_balance:.2f} | Min Profit: {config.MIN_PROFIT_THRESHOLD}% | Best: {best_path['path_name']} ({best_path['profit_percent']:.4f}%)\n"
-            separator = '-' * (len(status_line) -1)
-
-            # Формируем блок с дивергенциями
-            divergence_lines = ["Divergence Indicator:"]
-            for path_info in sorted_paths: 
-                divergence_lines.append(f"  {path_info['path_name']:<25} -> {path_info['profit_percent']:+.4f}%")
-
-            # Очищаем консоль и выводим всю информацию
-            os.system('cls' if os.name == 'nt' else 'clear')
-            print(header + status_line + separator)
-            print('\n'.join(divergence_lines))
-            print(separator)
-
-            # Собираем данные для отчета по всем путям, включая отбракованные
-            for path_info in all_profits:
-                strategy.divergence_data.append((datetime.now(), path_info['profit_percent'], path_info['path_name']))
-
-            # --- ЛОГИРОВАНИЕ И СИМУЛЯЦИЯ СДЕЛКИ ---
-            # Если найденный лучший путь превышает порог, логируем его как сделку
-            if best_path['profit_percent'] > config.MIN_PROFIT_THRESHOLD:
-                strategy.log_paper_trade(best_path['profit_percent'], best_path['path_name'])
-
-            # --- ПЕРИОДИЧЕСКОЕ СОХРАНЕНИЕ ДАННЫХ ---
-            current_time = datetime.now()
-            if (current_time - last_save_time).total_seconds() > SAVE_INTERVAL_MINUTES * 60:
-                strategy.save_divergence_chunk() # Новый метод для сохранения части данных
-                last_save_time = current_time
-
-            time.sleep(loop_delay)
-
-        except Exception as e:
-            logging.error(f"An unexpected error occurred in the main loop: {e}", exc_info=True)
-            time.sleep(10)
-
-    logging.info("Shutdown signal received. Saving data...")
-    strategy.save_session() # Эта функция теперь будет читать из файла
-    logging.info("Data saved. Exiting.")
+    # Остановка и очистка
+    logging.info("Stopping bot...")
+    await ws_manager.stop()
+    await ws_task
+    strategy.save_session()
+    logging.info("Bot has been stopped.")
 
 if __name__ == '__main__':
-    main()
+    try:
+        asyncio.run(main_async())
+    except KeyboardInterrupt:
+        logging.info("Main process interrupted.")

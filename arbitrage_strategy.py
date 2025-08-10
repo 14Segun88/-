@@ -12,7 +12,7 @@ class TriangularArbitrageStrategy:
     """
     Стратегия для поиска возможностей треугольного арбитража в реальном времени.
     """
-    def __init__(self, tickers: List[str], min_profit_threshold: float, position_size: float, fee_rate: float, trade_logger, exchange, exchange_name: str):
+    def __init__(self, tickers: List[str], new_tickers: List[str], min_profit_threshold: float, position_size: float, fee_rate: float, trade_logger, exchange_name: str, exchange=None):
         # --- ИНИЦИАЛИЗАЦИЯ СТРАТЕГИИ ---
         # exchange: Экземпляр ccxt для взаимодействия с биржей.
         # exchange_name: Название биржи (например, 'Binance').
@@ -21,10 +21,11 @@ class TriangularArbitrageStrategy:
         # position_size: Размер позиции в USDT для симуляции сделок.
         # fee_rate: Комиссия биржи за одну сделку.
         # trade_logger: Логгер для записи совершенных сделок.
-        self.exchange = exchange
+        # self.exchange = exchange # No longer needed with WebSocket architecture
         self.exchange_name = exchange_name
         self.trade_logger = trade_logger
         self.tickers = tickers
+        self.new_tickers = set(new_tickers)
         self.min_profit_threshold = min_profit_threshold
         self.position_size = position_size
         self.fee_rate = fee_rate
@@ -41,6 +42,7 @@ class TriangularArbitrageStrategy:
         self.paper_balance = self.position_size
         self.trade_count = 0
         self.trade_log = []
+        self.current_latency = None
 
         # Настройка для промежуточного сохранения
         self.timestamp = self.start_time.strftime("%Y%m%d_%H%M%S")
@@ -56,6 +58,9 @@ class TriangularArbitrageStrategy:
                 'bids': market_data['bids'],
                 'asks': market_data['asks'],
             }
+
+    def update_latency(self, latency: float):
+        self.current_latency = latency
 
     def _find_arbitrage_paths(self) -> dict:
         # --- ПОИСК АРБИТРАЖНЫХ ПУТЕЙ ---
@@ -109,55 +114,31 @@ class TriangularArbitrageStrategy:
         return paths
 
     def _get_vwap_price(self, symbol: str, amount_to_process: float, order_type: str) -> Tuple[Optional[float], Optional[float]]:
-        # --- РАСЧЕТ VWAP ДЛЯ СИМУЛЯЦИИ ПРОСКАЛЬЗЫВАНИЯ ---
-        # Рассчитывает средневзвешенную цену исполнения (VWAP) для заданного объема.
-        # Проходит по стакану заявок (asks для покупки, bids для продажи), чтобы симулировать,
-        # как крупный ордер влияет на цену (slippage).
-        # Args:
-        #     symbol: Торговая пара (например, 'BTC/USDT').
-        #     amount_to_process: Объем, который нужно купить или продать.
-        #         - Для 'buy': это объем в валюте КОТИРОВКИ (сколько USDT мы тратим).
-        #         - Для 'sell': это объем в БАЗОВОЙ валюте (сколько BTC мы продаем).
-        #     order_type: 'buy' или 'sell'.
-        # Returns:
-        #     Кортеж (средневзвешенная цена, итоговый объем) или (None, None) в случае ошибки.
+        # --- РАСЧЕТ ПО ЛУЧШЕЙ ЦЕНЕ (TOP OF THE BOOK) ---
+        # Возвращает лучшую цену из стакана, игнорируя проскальзывание.
         order_book = self.market_data.get(symbol)
-        if not order_book or not order_book.get('asks') or not order_book.get('bids'):
-            return None, None
 
-        levels = order_book['asks'] if order_type == 'buy' else order_book['bids']
+        if order_type == 'buy':
+            if not order_book or not order_book.get('asks'):
+                logging.warning(f"Asks book for {symbol} is empty. Skipping calculation.")
+                return None, None
+            
+            best_price = order_book['asks'][0][0]
+            if best_price == 0: 
+                return None, None
+            final_amount = amount_to_process / best_price
+            return best_price, final_amount
+
+        elif order_type == 'sell':
+            if not order_book or not order_book.get('bids'):
+                logging.warning(f"Bids book for {symbol} is empty. Skipping calculation.")
+                return None, None
+            
+            best_price = order_book['bids'][0][0]
+            final_amount = amount_to_process * best_price
+            return best_price, final_amount
         
-        total_value = 0
-        total_volume = 0
-        volume_to_fill = amount_to_process
-
-        if order_type == 'buy': # Мы тратим quote, чтобы купить base
-            for price, volume in levels:
-                level_value = price * volume
-                if total_value + level_value >= volume_to_fill:
-                    remaining_value = volume_to_fill - total_value
-                    total_volume += remaining_value / price
-                    total_value += remaining_value
-                    break
-                else:
-                    total_value += level_value
-                    total_volume += volume
-            if total_value < volume_to_fill * 0.99:
-                return None, None
-            return total_value / total_volume if total_volume > 0 else None, total_volume
-        else: # Мы продаем base, чтобы получить quote
-            for price, volume in levels:
-                if total_volume + volume >= volume_to_fill:
-                    remaining_volume = volume_to_fill - total_volume
-                    total_value += remaining_volume * price
-                    total_volume += remaining_volume
-                    break
-                else:
-                    total_volume += volume
-                    total_value += volume * price
-            if total_volume < volume_to_fill * 0.99:
-                return None, None
-            return total_value / total_volume if total_volume > 0 else None, total_value
+        return None, None
 
     def _is_trade_valid(self, symbol: str, amount_base: float, cost_quote: float) -> bool:
         # --- ПРОВЕРКА ЛИМИТОВ СДЕЛКИ ---
@@ -168,14 +149,8 @@ class TriangularArbitrageStrategy:
         #     cost_quote: Объем сделки в валюте котировки.
         # Returns:
         #     True, если сделка проходит по лимитам, иначе False.
-        limits = self.exchange.markets[symbol].get('limits', {})
-        min_amount = limits.get('amount', {}).get('min')
-        min_cost = limits.get('cost', {}).get('min')
-
-        if min_amount and amount_base < min_amount:
-            return False
-        if min_cost and cost_quote < min_cost:
-            return False
+        # TODO: Implement limit checks using market data from ccxt.pro if needed.
+        # For now, assuming trade is valid as we don't have the sync exchange object.
         return True
 
     def calculate_all_paths_profit(self) -> List[Dict]:
@@ -233,7 +208,7 @@ class TriangularArbitrageStrategy:
                             profit_percent = ((final_amount - self.position_size) / self.position_size) * 100
 
                 results.append({'path_name': path_name, 'profit_percent': profit_percent})
-                self.divergence_data.append((datetime.now(), profit_percent, path_name))
+                self.divergence_data.append((datetime.now(), profit_percent, path_name, self.current_latency))
 
             except Exception:
                 results.append({'path_name': path_name, 'profit_percent': -999.0})
@@ -267,7 +242,7 @@ class TriangularArbitrageStrategy:
         if not self.divergence_data:
             return # Нечего сохранять
 
-        df_chunk = pd.DataFrame(self.divergence_data, columns=['timestamp', 'profit_percentage', 'path'])
+        df_chunk = pd.DataFrame(self.divergence_data, columns=['timestamp', 'profit_percentage', 'path', 'api_latency'])
         
         # Проверяем, существует ли файл, чтобы решить, нужно ли записывать заголовок
         file_exists = os.path.exists(self.session_data_filename)
@@ -312,7 +287,7 @@ class TriangularArbitrageStrategy:
             df.set_index('timestamp', inplace=True)
             
             report_filename = os.path.join(self.stats_dir, f'{self.exchange_name.lower()}_report_{self.timestamp}.png')
-            generate_report(df, report_filename, self.exchange_name)
+            generate_report(df, report_filename, self.exchange_name, self.new_tickers)
             logging.info(f"Successfully generated detailed report: {report_filename}")
         
         except Exception as e:

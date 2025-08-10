@@ -19,7 +19,7 @@ EXCHANGE_NAME = 'Binance' # Название биржи для отчетов и
 BOT_MODE = 'paper_trader'
 
 # Минимальная прибыль для фиксации (в процентах)
-MIN_PROFIT_THRESHOLD = 0.3  # 0.3%
+MIN_PROFIT_THRESHOLD = 0.1  # 0.1%
 
 # Размер одной сделки в базовой валюте (например, в USDT)
 POSITION_SIZE = 11  # Рекомендуется > 10 USDT
