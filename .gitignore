@@ -9,3 +9,6 @@ __pycache__/
 # Application specific
 statistics/
 logs/
+
+# local secrets
+.env
