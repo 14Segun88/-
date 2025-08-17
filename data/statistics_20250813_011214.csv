@@ -1,2 +1,0 @@
-timestamp,runtime_minutes,total_scans,inter_found,tri_found,breakeven,profit,loss,best_inter_profit,best_tri_profit,mexc_success,mexc_errors,binance_success,binance_errors,okx_success,okx_errors
-20250813_011214,10.053500516666666,231,7,0,1,3,12927,1.1376,0,231,0,231,0,231,0
