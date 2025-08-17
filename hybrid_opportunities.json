@@ -1,0 +1,32 @@
+[
+  {
+    "timestamp": "2025-08-15T02:10:19.403549",
+    "symbol": "DOGE/USDT",
+    "route": "mexc \u2192 kucoin",
+    "spread_pct": 0.1528295950015764,
+    "net_profit_pct": 0.052829595001576385,
+    "profit_usd": 0.052829595001576385,
+    "type": "real",
+    "total_profit": 0.052829595001576385
+  },
+  {
+    "timestamp": "2025-08-15T02:14:02.073642",
+    "symbol": "ADA/USDT",
+    "route": "mexc \u2192 okx",
+    "spread_pct": 0.1624431448992914,
+    "net_profit_pct": 0.0824431448992914,
+    "profit_usd": 0.0824431448992914,
+    "type": "real",
+    "total_profit": 0.1352727399008678
+  },
+  {
+    "timestamp": "2025-08-15T02:21:19.066421",
+    "symbol": "DOGE/USDT",
+    "route": "mexc \u2192 kucoin",
+    "spread_pct": 0.1524458593014424,
+    "net_profit_pct": 0.05244585930144238,
+    "profit_usd": 0.05244585930144238,
+    "type": "real",
+    "total_profit": 0.18771859920231018
+  }
+]

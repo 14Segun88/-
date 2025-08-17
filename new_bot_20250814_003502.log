@@ -1,0 +1,1791 @@
+nohup: ignoring input
+
+📔 Статус API ключей:
+  - mexc: ❌ Отсутствует
+  - binance: ❌ Отсутствует
+  - okx: ❌ Отсутствует
+  - bybit: ❌ Отсутствует
+  - kucoin: ❌ Отсутствует
+
+🤖 Бот запускается в режиме 'inter'...
+Загрузка метаданных по символам...
+  - mexc: загружено 2281 символов
+  - binance: загружено 3205 символов
+  - okx: загружено 753 символов
+  - bybit: загружено 659 символов
+  - kucoin: загружено 1294 символов
+Загрузка метаданных завершена.
+Запущены WS для: ['bybit', 'okx', 'kucoin']
+Основная логика запущена. Для остановки нажмите Ctrl+C
+🔌 Подключение к Bybit WebSocket...
+⚡ Событие: LUNAIUSDT mexc→bybit 0.27%
+⚡ Событие: HNTUSDT bybit→mexc 0.45%
+⚡ Событие: ALTUSDT mexc→bybit 1078.82%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: bybit ALTUSDT → https://api.bybit.com/v5/market/depth?category=spot&symbol=ALTUSDT&limit=10
+📈 Сессия: прибыль +1078.82 USD (+10.788%), сделок: 1
+⚡ Событие: GAMEUSDT bybit→mexc 88700.13%
+🔍 Запрос стакана: bybit GAMEUSDT → https://api.bybit.com/v5/market/depth?category=spot&symbol=GAMEUSDT&limit=10
+🔍 Запрос стакана: mexc GAMEUSDT → https://api.mexc.com/api/v3/depth?symbol=GAMEUSDT&limit=10
+📥 Получен стакан mexc GAMEUSDT: 0 bids, 0 asks
+📈 Сессия: прибыль +89778.95 USD (+897.790%), сделок: 2
+⚡ Событие: NEIROUSDT binance→mexc 128.82%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1078.82%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1078.82%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 128.82%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1078.82%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 128.81%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1078.82%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 128.81%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1078.82%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 128.83%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1078.82%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 128.84%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1078.82%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 128.84%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1078.46%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 128.84%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1078.46%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 128.84%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1078.82%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 128.99%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1077.85%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.02%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1077.85%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.04%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1077.54%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.07%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1077.90%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.09%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.93%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.13%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1077.29%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1077.29%
+⚡ Событие: NEIROUSDT binance→mexc 129.18%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1077.29%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.23%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.93%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.93%
+⚡ Событие: NEIROUSDT binance→mexc 129.24%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.93%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.26%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.93%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.26%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.93%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.26%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1077.60%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.28%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1077.60%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.28%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1077.29%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.26%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1077.29%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.31%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1077.29%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.31%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.93%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.31%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.93%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.34%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1077.29%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.36%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.68%
+⚡ Событие: NEIROUSDT binance→mexc 129.36%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.68%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+⚡ Событие: NEIROUSDT binance→mexc 129.44%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.68%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.50%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.68%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.53%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: HIFIUSDT binance→mexc 0.11%
+⚡ Событие: NEIROUSDT binance→mexc 129.58%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.68%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+⚡ Событие: NEIROUSDT binance→mexc 129.58%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.60%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.68%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.68%
+⚡ Событие: NEIROUSDT binance→mexc 129.59%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.59%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.59%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.59%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.59%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.59%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.68%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.56%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.50%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.50%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.50%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.50%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+⚡ Событие: NEIROUSDT binance→mexc 129.50%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+⚡ Событие: NEIROUSDT binance→mexc 129.50%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.52%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.68%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.48%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.50%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.68%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.52%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.52%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+⚡ Событие: NEIROUSDT binance→mexc 129.52%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.68%
+⚡ Событие: NEIROUSDT binance→mexc 129.52%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.52%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.52%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.68%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.68%
+⚡ Событие: NEIROUSDT binance→mexc 129.52%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.52%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.52%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.52%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+🔌 Подключение к Bybit WebSocket...
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+⚡ Событие: NEIROUSDT binance→mexc 129.60%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.53%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.53%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.53%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.53%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.52%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.53%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.53%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.53%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.49%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.49%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+⚡ Событие: NEIROUSDT binance→mexc 129.45%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.45%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.45%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.45%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.50%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.52%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+⚡ Событие: NEIROUSDT binance→mexc 129.52%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.52%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.52%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.53%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.53%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+⚡ Событие: NEIROUSDT binance→mexc 129.53%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.53%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.53%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.53%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.53%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.53%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.53%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.53%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+⚡ Событие: NEIROUSDT binance→mexc 129.53%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+⚡ Событие: NEIROUSDT binance→mexc 129.58%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.59%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.61%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.64%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.69%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.72%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.07%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.73%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1075.71%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.07%
+⚡ Событие: NEIROUSDT binance→mexc 129.73%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1075.71%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.73%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1075.71%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.73%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.07%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.67%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+📈 Сессия: прибыль +89908.62 USD (+899.086%), сделок: 3
+⚡ Событие: ALTUSDT mexc→binance 1075.71%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1075.71%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.67%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1075.71%
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+📈 Сессия: прибыль +90984.33 USD (+909.843%), сделок: 4
+⚡ Событие: NEIROUSDT binance→mexc 129.67%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1075.71%
+⚡ Событие: NEIROUSDT binance→mexc 129.67%
+⚡ Событие: ALTUSDT mexc→binance 1075.71%
+⚡ Событие: NEIROUSDT binance→mexc 129.68%
+🔌 Подключение к Bybit WebSocket...
+⚡ Событие: ALTUSDT mexc→binance 1076.07%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.64%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1075.71%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.64%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1075.71%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.66%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1075.71%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1075.71%
+⚡ Событие: ALTUSDT mexc→binance 1076.02%
+⚡ Событие: NEIROUSDT binance→mexc 129.60%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.38%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.57%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+🔌 Подключение к Bybit WebSocket...
+⚡ Событие: ALTUSDT mexc→binance 1076.02%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.57%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+⚡ Событие: NEIROUSDT binance→mexc 129.53%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.51%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.47%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.47%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.32%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.47%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.68%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.45%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.68%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.39%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.39%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.39%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: TRUUSDT binance→mexc 0.30%
+⚡ Событие: NEIROUSDT binance→mexc 129.40%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+⚡ Событие: NEIROUSDT binance→mexc 129.41%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.41%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+📈 Сессия: прибыль +92060.96 USD (+920.610%), сделок: 5
+⚡ Событие: NEIROUSDT binance→mexc 129.45%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.45%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.45%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+⚡ Событие: NEIROUSDT binance→mexc 129.45%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+⚡ Событие: NEIROUSDT binance→mexc 129.44%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.44%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.44%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+⚡ Событие: NEIROUSDT binance→mexc 129.44%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.44%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.44%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.44%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.51%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.63%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.51%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.99%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.38%
+⚡ Событие: NEIROUSDT binance→mexc 129.18%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.02%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.19%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.02%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.08%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.38%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.08%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.02%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.11%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.02%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.12%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.02%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.38%
+⚡ Событие: NEIROUSDT binance→mexc 129.09%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.07%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.09%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1075.71%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.26%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.07%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.29%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1075.71%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.31%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.07%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.31%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1075.71%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.34%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1075.71%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.37%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.07%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.37%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1075.71%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.38%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.07%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.38%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1075.71%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.38%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1075.71%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.37%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.07%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.35%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1075.71%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.35%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.07%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1075.71%
+⚡ Событие: NEIROUSDT binance→mexc 129.35%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1075.71%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: ALTUSDT mexc→binance 1075.71%
+⚡ Событие: NEIROUSDT binance→mexc 129.37%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1076.07%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.36%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1075.71%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.37%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1075.71%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.37%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+🔌 Подключение к Bybit WebSocket...
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1088.05%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.37%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1088.05%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан mexc ALTUSDT: 0 bids, 0 asks
+🔍 Запрос стакана: binance ALTUSDT → https://api.binance.com/api/v3/depth?symbol=ALTUSDT&limit=10
+📥 Получен стакан binance ALTUSDT: 10 bids, 10 asks
+⚡ Событие: NEIROUSDT binance→mexc 129.37%
+🔍 Запрос стакана: binance NEIROUSDT → https://api.binance.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан binance NEIROUSDT: 10 bids, 10 asks
+🔍 Запрос стакана: mexc NEIROUSDT → https://api.mexc.com/api/v3/depth?symbol=NEIROUSDT&limit=10
+📥 Получен стакан mexc NEIROUSDT: 0 bids, 0 asks
+⚡ Событие: ALTUSDT mexc→binance 1088.05%
+🔍 Запрос стакана: mexc ALTUSDT → https://api.mexc.com/api/v3/depth?symbol=ALTUSDT&limit=10
+
+Получен сигнал отмены, начинаю штатную остановку...
+Traceback (most recent call last):
+  File "/mnt/c/Users/123/Desktop/индикатор/mega_arbitrage_bot.py", line 1585, in <module>
+    except Exception:
+  File "/usr/lib/python3.10/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 636, in run_until_complete
+    self.run_forever()
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 603, in run_forever
+    self._run_once()
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 1871, in _run_once
+    event_list = self._selector.select(timeout)
+  File "/usr/lib/python3.10/selectors.py", line 469, in select
+    fd_event_list = self._selector.poll(timeout, max_ev)
+KeyboardInterrupt

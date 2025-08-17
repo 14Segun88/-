@@ -1,0 +1,2 @@
+timestamp,type,exchange,chain,gross_profit,net_profit,pairs,category,unique
+2025-08-13T10:19:53.496958,triangular,okx,USDT→BTC→OKB→USDT,0.4951,0.1051,"BTCUSDT,OKBBTC,OKBUSDT",profit,False

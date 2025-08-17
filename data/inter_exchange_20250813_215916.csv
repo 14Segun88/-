@@ -1,0 +1,15 @@
+timestamp,type,symbol,buy_exchange,sell_exchange,buy_price,sell_price,gross_profit,net_profit,route,category,ask_age_ms,bid_age_ms,unique
+2025-08-13T21:54:59.331172,inter_exchange,YFIUSDT,binance,kucoin,5955.0,5963.78,0.1474,-0.0076,binance→kucoin,breakeven,33,49,False
+2025-08-13T21:55:45.729294,inter_exchange,YFIUSDT,binance,kucoin,5953.0,5964.05,0.1856,0.0306,binance→kucoin,loss,88,27,False
+2025-08-13T21:56:26.712468,inter_exchange,BABYDOGEUSDT,okx,kucoin,1.402e-09,1.405e-09,0.214,0.034,okx→kucoin,loss,114,27,False
+2025-08-13T21:57:06.775159,inter_exchange,BABYDOGEUSDT,okx,kucoin,1.402e-09,1.405e-09,0.214,0.034,okx→kucoin,loss,25,147,False
+2025-08-13T21:57:17.430476,inter_exchange,BABYDOGEUSDT,okx,kucoin,1.403e-09,1.406e-09,0.2138,0.0338,okx→kucoin,loss,143,50,False
+2025-08-13T21:57:19.478300,inter_exchange,YFIUSDT,binance,kucoin,5957.0,5966.6,0.1612,0.0062,binance→kucoin,breakeven,47,221,False
+2025-08-13T21:57:25.211788,inter_exchange,BABYDOGEUSDT,okx,mexc,1.404e-09,1.407e-09,0.2137,0.0137,okx→mexc,loss,135,593,False
+2025-08-13T21:57:27.068375,inter_exchange,BABYDOGEUSDT,okx,mexc,1.403e-09,1.4071e-09,0.2922,0.0922,okx→mexc,profit,272,584,False
+2025-08-13T21:57:29.309035,inter_exchange,BABYDOGEUSDT,okx,mexc,1.403e-09,1.4072e-09,0.2994,0.0994,okx→mexc,profit,26,604,False
+2025-08-13T21:57:31.126987,inter_exchange,BABYDOGEUSDT,okx,mexc,1.403e-09,1.4066e-09,0.2566,0.0566,okx→mexc,profit,128,436,False
+2025-08-13T21:57:54.424299,inter_exchange,BABYDOGEUSDT,okx,mexc,1.404e-09,1.4069e-09,0.2066,0.0066,okx→mexc,breakeven,111,465,False
+2025-08-13T21:58:12.916010,inter_exchange,BABYDOGEUSDT,okx,mexc,1.403e-09,1.4069e-09,0.278,0.078,okx→mexc,profit,35,591,False
+2025-08-13T21:58:26.964901,inter_exchange,BABYDOGEUSDT,okx,mexc,1.403e-09,1.4069e-09,0.278,0.078,okx→mexc,profit,53,500,False
+2025-08-13T21:58:55.110614,inter_exchange,YFIUSDT,binance,kucoin,5957.0,5966.11,0.1529,-0.0021,binance→kucoin,breakeven,58,1091,False

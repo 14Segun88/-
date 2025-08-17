@@ -1,0 +1,4 @@
+timestamp,type,exchange,chain,gross_profit,net_profit,pairs,category,unique
+2025-08-13T11:12:10.383948,triangular,kucoin,USDT→SHIB→DOGE→USDT,0.3407,0.0107,"SHIBUSDT,SHIBDOGE,DOGEUSDT",loss,False
+2025-08-13T11:12:13.255012,triangular,kucoin,USDT→SHIB→DOGE→USDT,0.369,0.039,"SHIBUSDT,SHIBDOGE,DOGEUSDT",loss,False
+2025-08-13T11:12:14.672302,triangular,kucoin,USDT→SHIB→DOGE→USDT,0.369,0.039,"SHIBUSDT,SHIBDOGE,DOGEUSDT",loss,False

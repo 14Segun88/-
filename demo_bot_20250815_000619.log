@@ -1,0 +1,15 @@
+2025-08-15 00:06:39,703 - __main__ - INFO - 🟢 Бот запущен. Начинаю мониторинг...
+2025-08-15 00:16:05,861 - __main__ - INFO - ⚠️ Получен сигнал остановки. Завершение работы...
+2025-08-15 00:16:07,611 - __main__ - ERROR - ❌ Критическая ошибка: 'MegaArbitrageBot' object has no attribute 'close_sessions'
+2025-08-15 00:16:07,797 - __main__ - INFO - 🔴 Бот остановлен
+2025-08-15 00:16:07,837 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x7d537d9a60b0>
+2025-08-15 00:16:07,873 - ccxt.base.exchange - WARNING - mexc requires to release all resources with an explicit call to the .close() coroutine. If you are using the exchange instance with async coroutines, add `await exchange.close()` to your code into a place when you're done with the exchange and don't need the exchange instance anymore (at the end of your async coroutine).
+2025-08-15 00:16:07,949 - ccxt.base.exchange - WARNING - binance requires to release all resources with an explicit call to the .close() coroutine. If you are using the exchange instance with async coroutines, add `await exchange.close()` to your code into a place when you're done with the exchange and don't need the exchange instance anymore (at the end of your async coroutine).
+2025-08-15 00:16:07,979 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x7d537d9a6470>
+2025-08-15 00:16:07,989 - ccxt.base.exchange - WARNING - okx requires to release all resources with an explicit call to the .close() coroutine. If you are using the exchange instance with async coroutines, add `await exchange.close()` to your code into a place when you're done with the exchange and don't need the exchange instance anymore (at the end of your async coroutine).
+2025-08-15 00:16:08,017 - ccxt.base.exchange - WARNING - bybit requires to release all resources with an explicit call to the .close() coroutine. If you are using the exchange instance with async coroutines, add `await exchange.close()` to your code into a place when you're done with the exchange and don't need the exchange instance anymore (at the end of your async coroutine).
+2025-08-15 00:16:08,030 - ccxt.base.exchange - WARNING - kucoin requires to release all resources with an explicit call to the .close() coroutine. If you are using the exchange instance with async coroutines, add `await exchange.close()` to your code into a place when you're done with the exchange and don't need the exchange instance anymore (at the end of your async coroutine).
+2025-08-15 00:16:08,050 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x7d5397f89450>

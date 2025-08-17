@@ -1,0 +1,12 @@
+timestamp,type,symbol,buy_exchange,sell_exchange,buy_price,sell_price,gross_profit,net_profit,route,category
+2025-08-13T02:56:11.988704,inter_exchange,GHSTUSDT,okx,binance,0.5091,0.51,0.1768,0.0018,okx→binance,breakeven
+2025-08-13T02:56:15.384660,inter_exchange,GHSTUSDT,okx,binance,0.5091,0.51,0.1768,0.0018,okx→binance,breakeven
+2025-08-13T02:56:17.945063,inter_exchange,GHSTUSDT,okx,binance,0.5091,0.51,0.1768,0.0018,okx→binance,breakeven
+2025-08-13T02:56:20.433453,inter_exchange,GHSTUSDT,okx,binance,0.5091,0.51,0.1768,0.0018,okx→binance,breakeven
+2025-08-13T02:56:23.008011,inter_exchange,GHSTUSDT,okx,binance,0.5091,0.51,0.1768,0.0018,okx→binance,breakeven
+2025-08-13T02:56:25.498059,inter_exchange,GHSTUSDT,okx,binance,0.5091,0.51,0.1768,0.0018,okx→binance,breakeven
+2025-08-13T02:56:27.989303,inter_exchange,GHSTUSDT,okx,binance,0.5091,0.51,0.1768,0.0018,okx→binance,breakeven
+2025-08-13T02:57:47.734066,inter_exchange,GHSTUSDT,okx,binance,0.506,0.507,0.1976,0.0226,okx→binance,loss
+2025-08-13T03:01:41.357313,inter_exchange,BCHUSDT,binance,mexc,618.1,619.9,0.2912,0.0162,binance→mexc,loss
+2025-08-13T03:02:07.049917,inter_exchange,IMXUSDT,binance,okx,0.596,0.597,0.1678,-0.0072,binance→okx,breakeven
+2025-08-13T03:04:03.098319,inter_exchange,GHSTUSDT,okx,binance,0.5051,0.506,0.1782,0.0032,okx→binance,breakeven

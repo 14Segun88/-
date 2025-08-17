@@ -1,6 +1,0 @@
-pandas
-matplotlib
-requests
-python-binance
-ccxt
-aiohttp-socks

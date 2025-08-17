@@ -1,0 +1,8 @@
+timestamp,type,symbol,buy_exchange,sell_exchange,buy_price,sell_price,gross_profit,net_profit,route,category
+2025-08-13T01:02:15.798544,inter_exchange,BABYDOGEUSDT,okx,mexc,1.382e-09,1.3875e-09,0.398,0.098,okx→mexc,profit
+2025-08-13T01:02:19.084407,inter_exchange,BABYDOGEUSDT,okx,mexc,1.382e-09,1.3875e-09,0.398,0.098,okx→mexc,profit
+2025-08-13T01:02:21.551698,inter_exchange,BABYDOGEUSDT,okx,mexc,1.379e-09,1.3833e-09,0.3118,0.0118,okx→mexc,loss
+2025-08-13T01:03:04.472439,inter_exchange,CRVUSDT,binance,mexc,0.9705,0.9734,0.2988,0.0238,binance→mexc,loss
+2025-08-13T01:03:07.088519,inter_exchange,CRVUSDT,binance,mexc,0.9703,0.973,0.2783,0.0033,binance→mexc,breakeven
+2025-08-13T01:07:24.148345,inter_exchange,MASKUSDT,binance,mexc,1.345,1.364,1.4126,1.1376,binance→mexc,profit
+2025-08-13T01:07:26.700258,inter_exchange,MASKUSDT,mexc,binance,1.347,1.351,0.297,0.022,mexc→binance,loss

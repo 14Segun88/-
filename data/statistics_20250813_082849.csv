@@ -1,0 +1,2 @@
+timestamp,runtime_minutes,total_scans,inter_found,tri_found,breakeven,profit,loss,uniq_inter_count,uniq_inter_sum_net,uniq_tri_count,uniq_tri_sum_net,best_inter_profit,best_tri_profit,mexc_success,mexc_errors,binance_success,binance_errors,okx_success,okx_errors,bybit_success,bybit_errors,kucoin_success,kucoin_errors
+20250813_082849,125.55796636666668,4426,6036,0,844,3363,1829,102,4.1488,0,0.0,0.5883,0,4422,4,4426,0,1,0,1,0,1,0

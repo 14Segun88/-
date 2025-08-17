@@ -1,0 +1,2 @@
+timestamp,type,symbol,buy_exchange,sell_exchange,buy_price,sell_price,gross_profit,net_profit,route,category
+2025-08-13T01:07:23.272085,inter_exchange,MASKUSDT,binance,mexc,1.346,1.364,1.3373,1.0623,binance→mexc,profit

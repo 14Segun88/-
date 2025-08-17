@@ -1,0 +1,2 @@
+timestamp,type,exchange,chain,gross_profit,net_profit,pairs,category,unique
+2025-08-13T10:35:14.232960,triangular,mexc,USDT→ETH→MX→USDT,0.8465,0.4565,"ETHUSDT,MXETH,MXUSDT",profit,True

@@ -1,0 +1,2 @@
+timestamp,type,exchange,chain,gross_profit,net_profit,pairs,category,unique
+2025-08-13T04:36:48.178629,triangular,binance,USDT→ETH→UNI→USDT,0.4755,0.1605,"ETHUSDT,UNIETH,UNIUSDT",profit,True
