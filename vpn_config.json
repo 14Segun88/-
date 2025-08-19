@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "service_name": "FPTN.ONLINE",
+  "username": "user5965363034",
+  "password": "ETZgBYjA",
+  "servers": [
+    {
+      "name": "Estonia",
+      "host": "185.215.187.165",
+      "md5_fingerprint": "d009fd9ceb283526832e5ad3cd50234a",
+      "port": 443
+    },
+    {
+      "name": "Latvia-1",
+      "host": "216.173.70.73",
+      "md5_fingerprint": "a5f4ace7f3ea7b1d35aaf06b308f7982",
+      "port": 443
+    },
+    {
+      "name": "Latvia-2",
+      "host": "5.34.214.140",
+      "md5_fingerprint": "725ba2478852bf2acb4ed535c90432cb",
+      "port": 443
+    },
+    {
+      "name": "Netherlands-1",
+      "host": "147.45.135.67",
+      "md5_fingerprint": "cd48367172f870c1714fce2bf88e6e71",
+      "port": 443
+    },
+    {
+      "name": "USA-Seattle",
+      "host": "192.3.251.79",
+      "md5_fingerprint": "65901c1c409d200ac5a8d4f940e283ca",
+      "port": 443
+    },
+    {
+      "name": "Japan-1",
+      "host": "38.180.147.238",
+      "md5_fingerprint": "6aee2111b09f43646331470134cb9389",
+      "port": 443
+    }
+  ],
+  "censored_zone_servers": [
+    {
+      "name": "Russia (Saint Petersburg)",
+      "host": "94.242.51.185",
+      "md5_fingerprint": "89f68eeea1fea6f2938c3795f3ff910d",
+      "port": 443
+    }
+  ]
+}

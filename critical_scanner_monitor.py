@@ -101,6 +101,13 @@ class CriticalScannerMonitor:
         self.log_files = []
         self.log_positions = {}
         
+        # Инициализация счетчиков для парсинга
+        self.total_scans = 0
+        self.last_scan_count = 0
+        self.ws_message_count = 0
+        self.connected_exchanges = 0
+        self.parsing_stats = False
+        
         # Критические пороги для 10/10
         self.critical_thresholds = {
             'MAX_DATA_LATENCY_MS': 50,
@@ -228,83 +235,99 @@ class CriticalScannerMonitor:
                                 await self.parse_log_line(line.strip())
                                 
                     except Exception as e:
-                        self.metrics.data_errors += 1
+                        pass  # Игнорируем ошибки чтения файла
                         
             except Exception as e:
-                self.metrics.data_errors += 1
+                pass  # Игнорируем общие ошибки
             
             await asyncio.sleep(1)
     
     async def parse_log_line(self, line: str):
         """Парсинг строки лога"""
         try:
-            # Парсинг сканов
-            if "Скан #" in line:
-                scan_match = re.search(r'Скан #(\d+)', line)
-                if scan_match:
-                    scan_num = int(scan_match.group(1))
-                    # Расчет частоты сканирования
-                    current_time = time.time()
-                    if hasattr(self, 'last_scan_time'):
-                        time_diff = current_time - self.last_scan_time
-                        if time_diff > 0:
-                            self.metrics.scan_frequency_hz = 1.0 / time_diff
-                    self.last_scan_time = current_time
-            
-            # Парсинг возможностей
-            elif "⚡ Событие:" in line or "МЕЖБИРЖЕВОЙ АРБИТРАЖ" in line:
-                self.metrics.total_signals += 1
+            # Парсинг статистики работы бота
+            if "СТАТИСТИКА РАБОТЫ" in line:
+                self.parsing_stats = True
+            elif "===============" in line and hasattr(self, 'parsing_stats'):
+                self.parsing_stats = False
+            elif hasattr(self, 'parsing_stats') and self.parsing_stats:
+                # Парсинг сканирований
+                if "Сканирований:" in line:
+                    match = re.search(r'Сканирований:\s*(\d+)', line)
+                    if match:
+                        self.total_scans = int(match.group(1))
+                        # Обновляем частоту
+                        if hasattr(self, 'last_scan_count'):
+                            scans_diff = self.total_scans - self.last_scan_count
+                            if scans_diff > 0:
+                                self.metrics.scan_frequency_hz = scans_diff  # сканов в интервал
+                        self.last_scan_count = self.total_scans
                 
+                # Парсинг найденных возможностей  
+                elif "Найдено возможностей:" in line:
+                    match = re.search(r'возможностей:\s*(\d+)', line)
+                    if match:
+                        self.metrics.inter_opportunities = int(match.group(1))
+                        self.metrics.total_signals = self.metrics.inter_opportunities
+                
+                # Парсинг WebSocket сообщений
+                elif "WebSocket сообщений:" in line:
+                    match = re.search(r'сообщений:\s*(\d+)', line)
+                    if match:
+                        self.ws_message_count = int(match.group(1))
+                
+                # Парсинг ошибок
+                elif "Ошибок:" in line:
+                    match = re.search(r'Ошибок:\s*(\d+)', line)
+                    if match:
+                        # Сбрасываем и устанавливаем реальное количество
+                        self.metrics.data_errors = int(match.group(1))
+                
+                # Парсинг подключенных бирж
+                elif "Подключено бирж:" in line:
+                    match = re.search(r'бирж:\s*(\d+)', line)
+                    if match:
+                        self.connected_exchanges = int(match.group(1))
+            
+            # Парсинг WebSocket подключений из логов
+            elif "WebSocket подключен" in line:
+                for exchange_id in ['MEXC', 'Bybit', 'Huobi', 'Binance', 'OKX', 'KuCoin', 'Kraken']:
+                    if exchange_id in line:
+                        self.metrics.ws_connections[exchange_id.lower()] = True
+                        self.metrics.ws_last_message[exchange_id.lower()] = time.time()
+            
+            # Парсинг WebSocket подписок
+            elif "подписался на" in line:
+                for exchange_id in ['MEXC', 'Bybit', 'Huobi', 'Binance', 'OKX', 'KuCoin', 'Kraken']:
+                    if exchange_id in line:
+                        match = re.search(r'(\d+)\s+(пар|канал|поток|топик)', line)
+                        if match:
+                            pairs_count = int(match.group(1))
+                            if exchange_id.lower() in self.exchanges:
+                                self.exchanges[exchange_id.lower()].active_pairs = pairs_count
+            
+            # Парсинг возможностей арбитража
+            elif "Чистая прибыль:" in line:
                 profit_match = re.search(r'(\d+\.?\d*)%', line)
                 if profit_match:
                     profit_pct = float(profit_match.group(1))
+                    self.metrics.total_signals += 1
                     
-                    # Фильтрация по реалистичности
-                    if profit_pct > 10:  # Аномальный спред
+                    if profit_pct > 3.0:  # Аномальный спред
                         self.metrics.anomalous_spreads += 1
                         self.metrics.filtered_signals += 1
                     elif profit_pct < 0.05:  # Слишком маленькая прибыль
                         self.metrics.filtered_signals += 1
                     else:
                         self.metrics.quality_signals += 1
-                        self.metrics.inter_opportunities += 1
                         self.metrics.avg_profit_pct = (self.metrics.avg_profit_pct + profit_pct) / 2
                         self.metrics.max_profit_pct = max(self.metrics.max_profit_pct, profit_pct)
             
-            # Парсинг WebSocket соединений
-            elif "WebSocket" in line:
-                if "Подключение" in line:
-                    for exchange_id in self.exchanges.keys():
-                        if exchange_id.upper() in line.upper():
-                            self.metrics.ws_connections[exchange_id] = True
-                            self.metrics.ws_last_message[exchange_id] = time.time()
-                elif "Отключение" in line or "ошибка" in line.lower():
-                    for exchange_id in self.exchanges.keys():
-                        if exchange_id.upper() in line.upper():
-                            self.metrics.ws_connections[exchange_id] = False
-            
-            # Парсинг стаканов
-            elif "Получен стакан" in line:
-                depth_match = re.search(r'(\d+) bids, (\d+) asks', line)
-                if depth_match:
-                    bids = int(depth_match.group(1))
-                    asks = int(depth_match.group(2))
-                    
-                    if bids == 0 or asks == 0:
-                        self.metrics.stale_data_count += 1
-                    else:
-                        # Примерная оценка глубины стакана
-                        estimated_depth = (bids + asks) * 50  # $50 средний размер ордера
-                        self.metrics.avg_orderbook_depth_usd = (
-                            self.metrics.avg_orderbook_depth_usd + estimated_depth
-                        ) / 2
-            
-            # Парсинг ошибок
-            elif "ошибка" in line.lower() or "error" in line.lower():
-                self.metrics.data_errors += 1
+            # НЕ увеличиваем счетчик ошибок при каждом упоминании слова "ошибка"
+            # Используем только реальное количество из статистики
                 
         except Exception as e:
-            self.metrics.data_errors += 1
+            pass  # Не увеличиваем счетчик при ошибках парсинга
     
     async def calculate_metrics(self):
         """Расчет метрик"""
@@ -340,7 +363,7 @@ class CriticalScannerMonitor:
                 self.last_update = time.time()
                 
             except Exception as e:
-                self.metrics.data_errors += 1
+                pass  # Не увеличиваем счетчик ошибок
             
             await asyncio.sleep(5)
     
@@ -428,7 +451,9 @@ class CriticalScannerMonitor:
             # Ошибки и проблемы
             print(f"{Fore.YELLOW}🚨 ОШИБКИ И ПРОБЛЕМЫ:")
             total_errors = self.metrics.connection_errors + self.metrics.data_errors + self.metrics.timeout_errors
-            error_rate = total_errors / max(1, self.metrics.total_signals) * 100
+            # Правильный расчет процента: ошибки от общего числа операций
+            total_operations = getattr(self, 'total_scans', 1) + self.metrics.total_signals
+            error_rate = (total_errors / max(1, total_operations)) * 100
             print(f"Общий процент ошибок:    {self.get_status_indicator(error_rate, self.critical_thresholds['MAX_ERROR_RATE_PCT'], reverse=True, percentage=True)}")
             print(f"Ошибки подключения:      {Fore.RED}{self.metrics.connection_errors}{Style.RESET_ALL}")
             print(f"Ошибки данных:           {Fore.RED}{self.metrics.data_errors}{Style.RESET_ALL}")

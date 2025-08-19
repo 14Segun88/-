@@ -141,7 +141,15 @@ class TradingEngine:
     async def _init_exchange_clients(self):
         """Инициализация клиентов для бирж"""
         for exchange_id, config in EXCHANGES_CONFIG.items():
-            if config['enabled'] and API_KEYS[exchange_id]['apiKey']:
+            if not config['enabled']:
+                continue
+            
+            # Проверяем наличие ключей в API_KEYS
+            if exchange_id not in API_KEYS:
+                logger.warning(f"⚠️ Нет API ключей для {config['name']}")
+                continue
+                
+            if API_KEYS[exchange_id]['apiKey']:
                 logger.info(f"Инициализация клиента {config['name']}")
                 # Здесь будет инициализация специфичных клиентов
                 self.exchange_clients[exchange_id] = {
@@ -240,8 +248,8 @@ class TradingEngine:
                     
             else:  # paper или demo режим
                 # Симуляция исполнения
-                commission_buy = position_size * EXCHANGES_CONFIG[buy_exchange]['taker_fee']
-                commission_sell = position_size * EXCHANGES_CONFIG[sell_exchange]['taker_fee']
+                commission_buy = position_size * EXCHANGES_CONFIG[buy_exchange]['fees']['taker']
+                commission_sell = position_size * EXCHANGES_CONFIG[sell_exchange]['fees']['taker']
                 
                 gross_profit = (sell_price - buy_price) * amount
                 net_profit = gross_profit - commission_buy - commission_sell

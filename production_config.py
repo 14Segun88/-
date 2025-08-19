@@ -8,7 +8,7 @@ import os
 import logging
 from dotenv import load_dotenv
 
-# API Ключи
+# API Ключи (РЕАЛЬНЫЕ КЛЮЧИ)
 API_KEYS = {
     'mexc': {
         'apiKey': 'mx0vglAj5GaknRsyUQ',
@@ -19,35 +19,48 @@ API_KEYS = {
         'secret': 'yqlGJQmyC0olw5igeJvz6LlHmsVq7bf9E68C'
     },
     'huobi': {
-        'apiKey': '685d99fa-frbghq7rnm-d31ff320-13b69',
+        'apiKey': '685d99fa-frbqhq7rnm-d31ff320-13b69',
         'secret': '69c659d1-3c7b48ef-0794161a-994b3'
     },
-    'binance': {
-        'apiKey': '',  # Добавьте ключи если есть
-        'secret': ''
-    },
     'okx': {
-        'apiKey': '',  # Добавьте ключи если есть
-        'secret': '',
-        'passphrase': ''
+        'apiKey': '945fd20b-6a97-4417-904f-0eb22a41f673',
+        'secret': '820A9A462BA696B6E4F0E9080B83DFB6',
+        'password': 'Egor1998!'  # OKX API passphrase
+    },
+    'binance': {
+        'apiKey': 'MvV3eNsenTdNinmtt1hXVOjNg1VsmjtNY4iZpqddN6f03DuX1GB8DuuKPOiUSOEy',
+        'secret': 'XcDJGf39tlsl4G8qUu86wQqpEoqZgRfrl5yS8j7yiampncgrJ05PxQYUJYdUyPmG'
+    },
+    'gate': {
+        'apiKey': '60182f63c3fb1faabad3c83769a370d7',
+        'secret': '703adde41a669c7cdf424a6073c4bee44bbafb5225f494c0963fc28f123f6038'
     },
     'kucoin': {
-        'apiKey': '',  # Добавьте ключи если есть
+        'apiKey': '',
         'secret': '',
-        'passphrase': ''
-    },
-    'kraken': {
-        'apiKey': '',  # Добавьте ключи если есть
-        'secret': ''
+        'password': ''
     }
 }
 
-# Прокси для обхода геоблокировок
+# Прокси для обхода геоблокировок (FPTN VPN)
 PROXY_CONFIG = {
-    'enabled': True,
-    'http': 'http://172.31.128.1:2080',
-    'https': 'http://172.31.128.1:2080',
-    'ws': 'http://172.31.128.1:2080'
+    'enabled': False,  # Отключаем - без прокси работает лучше!
+    'japan': {
+        'http': 'http://user5965363034:ETZgBYjA@38.180.147.238:443',
+        'https': 'https://user5965363034:ETZgBYjA@38.180.147.238:443'
+    },
+    'usa': {
+        'http': 'http://user5965363034:ETZgBYjA@192.3.251.79:443',
+        'https': 'https://user5965363034:ETZgBYjA@192.3.251.79:443'
+    },
+    'netherlands': {
+        'http': 'http://user5965363034:ETZgBYjA@147.45.135.67:443',
+        'https': 'https://user5965363034:ETZgBYjA@147.45.135.67:443'
+    },
+    'estonia': {
+        'http': 'http://user5965363034:ETZgBYjA@185.215.187.165:443',
+        'https': 'https://user5965363034:ETZgBYjA@185.215.187.165:443'
+    }
 }
 
 # Конфигурация бирж
@@ -56,83 +69,80 @@ EXCHANGES_CONFIG = {
         'name': 'MEXC',
         'ws_url': 'wss://wbs.mexc.com/ws',
         'rest_url': 'https://api.mexc.com',
-        'fees': {'maker': 0.0, 'taker': 0.001},  # 0% maker после скидок
+        'fees': {'maker': 0.001, 'taker': 0.001},  # Стандарт 0.1% без VIP
         'enabled': True,
-        'use_proxy': False,
-        'rate_limit': 10,  # запросов в секунду
-        'min_order_size': {'USDT': 5}
+        'poll_rest': True,  # Использовать REST API вместо WebSocket
+        'poll_interval': 2  # Интервал опроса в секундах
+    },
+    'gate': {
+        'name': 'Gate.io',
+        'ws_url': 'wss://ws.gate.io/v3/',
+        'rest_url': 'https://api.gateio.ws',
+        'fees': {'maker': 0.0015, 'taker': 0.0025},  # Стандарт Gate.io без VIP
+        'enabled': True,  # Включена с новыми ключами
+        'poll_rest': True,  # REST API для публичных данных
+        'poll_interval': 2
     },
     'bybit': {
         'name': 'Bybit',
         'ws_url': 'wss://stream.bybit.com/v5/public/spot',
         'rest_url': 'https://api.bybit.com',
-        'fees': {'maker': 0.0001, 'taker': 0.0008},  # После VIP скидок
-        'enabled': True,
-        'use_proxy': False,
-        'rate_limit': 10,
-        'min_order_size': {'USDT': 1}
+        'fees': {'maker': 0.001, 'taker': 0.001},  # Стандарт 0.1% без VIP
+        'enabled': True,  # Работает без прокси!
+        'poll_rest': True,  # Использовать REST API вместо WebSocket
+        'poll_interval': 2  # Интервал опроса в секундах
     },
     'huobi': {
         'name': 'Huobi',
         'ws_url': 'wss://api.huobi.pro/ws',
         'rest_url': 'https://api.huobi.pro',
-        'fees': {'maker': 0.002, 'taker': 0.002},
-        'enabled': True,
-        'use_proxy': False,
-        'rate_limit': 10,
-        'min_order_size': {'USDT': 5}
+        'fees': {'maker': 0.002, 'taker': 0.002},  # Стандарт Huobi 0.2%
+        'enabled': True,  # Включена с новыми ключами
+        'poll_rest': True,  # Использовать REST API вместо WebSocket
+        'poll_interval': 2  # Интервал опроса в секундах
     },
     'binance': {
         'name': 'Binance',
         'ws_url': 'wss://stream.binance.com:9443/ws',
         'rest_url': 'https://api.binance.com',
-        'fees': {'maker': 0.00075, 'taker': 0.00075},  # С BNB скидкой
-        'enabled': False,  # Включить при наличии ключей
-        'use_proxy': True,  # Нужен прокси для России
-        'rate_limit': 20,
-        'min_order_size': {'USDT': 10}
+        'fees': {'maker': 0.001, 'taker': 0.001},
+        'enabled': True  # ✅ Работает без прокси!
     },
     'okx': {
         'name': 'OKX',
         'ws_url': 'wss://ws.okx.com:8443/ws/v5/public',
         'rest_url': 'https://www.okx.com',
-        'fees': {'maker': 0.0008, 'taker': 0.001},
-        'enabled': False,
-        'use_proxy': False,
-        'rate_limit': 10,
-        'min_order_size': {'USDT': 1}
+        'fees': {'maker': 0.001, 'taker': 0.0015},  # Стандарт OKX без VIP
+        'enabled': True  # ✅ Включена с новыми ключами
     },
     'kucoin': {
-        'name': 'KuCoin',
-        'ws_url': 'wss://ws-api-spot.kucoin.com',
+        'name': 'KUCOIN',
+        'ws_url': 'wss://ws-api-spot.kucoin.com/',
         'rest_url': 'https://api.kucoin.com',
-        'fees': {'maker': 0.0002, 'taker': 0.0008},  # С KCS скидкой
-        'enabled': False,
-        'use_proxy': False,
-        'rate_limit': 10,
-        'min_order_size': {'USDT': 1}
+        'fees': {'maker': 0.001, 'taker': 0.001},
+        'enabled': False  # Отключаем - нет API ключей
     },
     'kraken': {
-        'name': 'Kraken',
+        'name': 'KRAKEN',
         'ws_url': 'wss://ws.kraken.com',
         'rest_url': 'https://api.kraken.com',
         'fees': {'maker': 0.0016, 'taker': 0.0026},
-        'enabled': False,
-        'use_proxy': False,
-        'rate_limit': 1,  # Очень строгие лимиты
-        'min_order_size': {'USDT': 5}
+        'enabled': False  # Отключаем - нет API ключей
     }
 }
 
 # Торговые параметры
 TRADING_CONFIG = {
     'mode': 'demo',  # 'real', 'paper', 'demo'
-    'min_profit_threshold': 0.15,  # Минимальная прибыль в %
-    'slippage_tolerance': 0.05,  # Допустимый слиппедж в %
+    'min_profit_threshold': 0.05,  # Минимальная прибыль 0.05%
+    'slippage_tolerance': 0.0005,  # Слиппедж 0.05% (было 5% - ошибка!)
     'max_opportunity_age': 2,  # Максимальный возраст возможности в секундах
     'scan_interval': 1,  # Интервал сканирования в секундах
     'enable_triangular': False,  # Треугольный арбитраж (пока отключен)
     'enable_inter_exchange': True,  # Межбиржевой арбитраж
+    'position_size_usd': 100,  # Размер позиции в USD
+    'initial_capital': 10000,  # Начальный капитал в USD
+    'max_open_positions': 5,  # Максимум открытых позиций
 }
 
 # Динамический поиск пар
@@ -205,6 +215,10 @@ LOGGING_CONFIG = {
 
 # Риск-менеджмент
 RISK_MANAGEMENT = {
+    'stop_loss': 500.0,  # Стоп-лосс в USD - критично для мониторинга
+    'take_profit': 1000.0,  # Тейк-профит в USD
+    'max_daily_loss': 100.0,  # Максимальный дневной убыток в USD
+    'max_concurrent_positions': 5,  # Максимум одновременных позиций
     'max_portfolio_risk': 0.02,  # Максимальный риск портфеля 2%
     'max_position_risk': 0.01,  # Максимальный риск позиции 1%
     'correlation_threshold': 0.7,  # Порог корреляции для диверсификации
@@ -307,6 +321,7 @@ def validate_config():
     active_exchanges = 0
     for exchange_id, config in EXCHANGES_CONFIG.items():
         if config['enabled']:
+            # API_KEYS теперь хранит биржи в нижнем регистре
             keys = API_KEYS.get(exchange_id, {})
             if not keys.get('apiKey') or not keys.get('secret'):
                 warnings.append(f"⚠️ {config['name']}: API ключи отсутствуют")
@@ -325,7 +340,7 @@ def validate_config():
         warnings.append("⚠️ Размер позиции >10% от капитала")
     
     # Проверка прокси при необходимости
-    if any(c['use_proxy'] and c['enabled'] for c in EXCHANGES_CONFIG.values()):
+    if any(c.get('use_proxy', False) and c['enabled'] for c in EXCHANGES_CONFIG.values()):
         if not PROXY_CONFIG['enabled']:
             errors.append("❌ Прокси требуется но не включен")
     

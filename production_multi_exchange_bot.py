@@ -181,6 +181,11 @@ class ProductionArbitrageBot:
     
     async def _fetch_exchange_pairs(self, exchange_id: str) -> List[str]:
         """Получить список пар с биржи"""
+        if exchange_id not in EXCHANGES_CONFIG:
+            logger.error(f"Exchange {exchange_id} not found in EXCHANGES_CONFIG")
+            logger.error(f"Available exchanges: {list(EXCHANGES_CONFIG.keys())}")
+            return []
+        
         config = EXCHANGES_CONFIG[exchange_id]
         
         try:
@@ -191,9 +196,11 @@ class ProductionArbitrageBot:
                         data = await resp.json()
                         pairs = []
                         for symbol in data.get('symbols', []):
-                            if symbol['status'] == 'ENABLED' and symbol['quoteAsset'] == 'USDT':
-                                pairs.append(f"{symbol['baseAsset']}/USDT")
-                        return pairs[:100]  # Ограничиваем
+                            # MEXC использует строковый статус: "1" = активен
+                            if symbol.get('status') == '1' and symbol.get('quoteAsset') == 'USDT':
+                                base = symbol['baseAsset']
+                                pairs.append(f"{base}/USDT")
+                        return pairs[:100]
                         
                 elif exchange_id == 'bybit':
                     url = f"{config['rest_url']}/v5/market/instruments-info?category=spot"
@@ -300,13 +307,22 @@ class ProductionArbitrageBot:
             # Находим лучшие цены
             best_bid = None
             best_bid_exchange = None
+            best_bid_volume = 0
             best_ask = None
             best_ask_exchange = None
+            best_ask_volume = 0
+            
+            # Собираем все цены для логирования
+            prices_info = []
             
             for exchange, orderbook in exchanges_data.items():
                 # Проверка свежести данных
                 if orderbook.age > TRADING_CONFIG['max_opportunity_age']:
+                    logger.debug(f"  {exchange}: Данные устарели (возраст: {orderbook.age:.1f}s)")
                     continue
+                
+                if orderbook.best_bid and orderbook.best_ask:
+                    prices_info.append(f"{exchange}: bid={orderbook.best_bid:.4f}, ask={orderbook.best_ask:.4f}")
                 
                 if orderbook.best_bid and (not best_bid or orderbook.best_bid > best_bid):
                     best_bid = orderbook.best_bid
@@ -318,15 +334,52 @@ class ProductionArbitrageBot:
                     best_ask_exchange = exchange
                     best_ask_volume = orderbook.get_depth_volume(1)['ask']
             
-            if not (best_bid and best_ask and best_bid_exchange != best_ask_exchange):
+            # Логируем собранные цены каждые 100 проверок
+            if hasattr(self, '_check_counter'):
+                self._check_counter += 1
+            else:
+                self._check_counter = 1
+                
+            if self._check_counter % 100 == 0 and prices_info:
+                logger.info(f"📊 {symbol} цены: {' | '.join(prices_info[:3])}")
+            
+            if not (best_bid and best_ask):
+                if self._check_counter % 500 == 0:
+                    logger.debug(f"  {symbol}: Недостаточно данных (bid={best_bid}, ask={best_ask})")
+                return None
+                
+            if best_bid_exchange == best_ask_exchange:
                 return None
             
             # Расчет прибыли
             spread_pct = (best_bid - best_ask) / best_ask * 100
             
-            # Учет комиссий
-            buy_fee = EXCHANGES_CONFIG[best_ask_exchange]['taker_fee'] * 100
-            sell_fee = EXCHANGES_CONFIG[best_bid_exchange]['taker_fee'] * 100
+            # Учет комиссий - используем maker где возможно для снижения затрат
+            # MEXC: 0% maker, Bybit: 0.01% maker, остальные используем taker
+            
+            # Безопасное получение комиссий с дефолтными значениями
+            if best_ask_exchange in EXCHANGES_CONFIG:
+                if best_ask_exchange == 'mexc':
+                    buy_fee = EXCHANGES_CONFIG[best_ask_exchange]['fees']['maker'] * 100
+                elif best_ask_exchange == 'bybit':
+                    buy_fee = EXCHANGES_CONFIG[best_ask_exchange]['fees']['maker'] * 100
+                else:
+                    buy_fee = EXCHANGES_CONFIG[best_ask_exchange]['fees']['taker'] * 100
+            else:
+                # Дефолтная комиссия если биржа не в конфиге
+                buy_fee = 0.1  # 0.1% taker fee по умолчанию
+                
+            if best_bid_exchange in EXCHANGES_CONFIG:
+                if best_bid_exchange == 'mexc':
+                    sell_fee = EXCHANGES_CONFIG[best_bid_exchange]['fees']['maker'] * 100
+                elif best_bid_exchange == 'bybit':
+                    sell_fee = EXCHANGES_CONFIG[best_bid_exchange]['fees']['maker'] * 100
+                else:
+                    sell_fee = EXCHANGES_CONFIG[best_bid_exchange]['fees']['taker'] * 100
+            else:
+                # Дефолтная комиссия если биржа не в конфиге  
+                sell_fee = 0.1  # 0.1% taker fee по умолчанию
+                
             total_fees = buy_fee + sell_fee
             
             # Учет слиппеджа
@@ -335,8 +388,21 @@ class ProductionArbitrageBot:
             # Чистая прибыль
             net_profit_pct = spread_pct - total_fees - slippage
             
+            # Детальное логирование для близких к порогу возможностей
+            if spread_pct > 0:
+                if self._check_counter % 50 == 0 or net_profit_pct > -0.1:
+                    logger.info(f"🔍 {symbol}: {best_ask_exchange}→{best_bid_exchange}")
+                    logger.info(f"   Спред: {spread_pct:.4f}% (bid={best_bid:.4f}, ask={best_ask:.4f})")
+                    logger.info(f"   Комиссии: {total_fees:.4f}% (покупка={buy_fee:.3f}%, продажа={sell_fee:.3f}%)")
+                    logger.info(f"   Слиппедж: {slippage:.3f}%")
+                    logger.info(f"   Чистая прибыль: {net_profit_pct:.4f}% (порог: {TRADING_CONFIG['min_profit_threshold']}%)")
+                    logger.info(f"   Объемы: bid={best_bid_volume:.2f}, ask={best_ask_volume:.2f}")
+            
             if net_profit_pct < TRADING_CONFIG['min_profit_threshold']:
                 return None
+            
+            # НАЙДЕНА ВОЗМОЖНОСТЬ!
+            logger.warning(f"🎯 АРБИТРАЖ НАЙДЕН! {symbol}: {best_ask_exchange}→{best_bid_exchange}, прибыль: {net_profit_pct:.4f}%")
             
             # Минимальный объем
             min_volume = min(best_bid_volume, best_ask_volume) * best_ask
@@ -409,21 +475,24 @@ class ProductionArbitrageBot:
             try:
                 # Проверка времени последнего обновления
                 if time.time() - self.last_pair_update > DYNAMIC_PAIRS_CONFIG['update_interval']:
-                    logger.info("🔄 Обновление списка торговых пар...")
+                    logger.info("🔍 Обнаружение торговых пар...")
+                    try:
+                        await self.discover_pairs()
+                    except Exception as e:
+                        logger.error(f"Ошибка при обнаружении пар: {e}")
+                        import traceback
+                        logger.error(f"Traceback: {traceback.format_exc()}")
+                        raise
                     
-                    old_count = len(self.active_pairs)
-                    await self._discover_trading_pairs()
-                    new_count = len(self.active_pairs)
+                    if not self.active_pairs:
+                        raise Exception("Нет активных торговых пар")
                     
-                    if new_count != old_count:
-                        logger.info(f"📊 Обновлено: {old_count} → {new_count} пар")
-                        
-                        # Перезапуск WebSocket с новыми парами
-                        await self.ws_manager.stop()
-                        await asyncio.sleep(2)
-                        asyncio.create_task(
-                            self.ws_manager.start(list(self.active_pairs))
-                        )
+                    # Перезапуск WebSocket с новыми парами
+                    await self.ws_manager.stop()
+                    await asyncio.sleep(2)
+                    asyncio.create_task(
+                        self.ws_manager.start(list(self.active_pairs))
+                    )
                 
                 await asyncio.sleep(60)  # Проверка каждую минуту
                 

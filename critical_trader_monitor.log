@@ -1245,3 +1245,15 @@
 2025-08-18 19:43:48,105 | INFO     | CriticalTraderMonitor | Parsed balance: OKX $3156.45 from production_bot.log
 2025-08-18 19:43:48,107 | INFO     | CriticalTraderMonitor | Parsed balance: Huobi $2890.67 from production_bot.log
 2025-08-18 19:43:48,108 | INFO     | CriticalTraderMonitor | Parsed balance: KuCoin $1967.34 from production_bot.log
+2025-08-18 20:41:22,483 | INFO     | CriticalTraderMonitor | Parsed balance: MEXC $0.00 from production_bot.log
+2025-08-18 20:41:22,485 | INFO     | CriticalTraderMonitor | Parsed balance: MEXC $5247.83 from production_bot.log
+2025-08-18 20:41:22,486 | INFO     | CriticalTraderMonitor | Parsed balance: Bybit $4789.26 from production_bot.log
+2025-08-18 20:41:22,487 | INFO     | CriticalTraderMonitor | Parsed balance: OKX $3156.45 from production_bot.log
+2025-08-18 20:41:22,488 | INFO     | CriticalTraderMonitor | Parsed balance: Huobi $2890.67 from production_bot.log
+2025-08-18 20:41:22,488 | INFO     | CriticalTraderMonitor | Parsed balance: KuCoin $1967.34 from production_bot.log
+2025-08-18 21:57:38,176 | INFO     | CriticalTraderMonitor | Parsed balance: MEXC $0.00 from production_bot.log
+2025-08-18 21:57:38,180 | INFO     | CriticalTraderMonitor | Parsed balance: MEXC $5247.83 from production_bot.log
+2025-08-18 21:57:38,181 | INFO     | CriticalTraderMonitor | Parsed balance: Bybit $4789.26 from production_bot.log
+2025-08-18 21:57:38,184 | INFO     | CriticalTraderMonitor | Parsed balance: OKX $3156.45 from production_bot.log
+2025-08-18 21:57:38,189 | INFO     | CriticalTraderMonitor | Parsed balance: Huobi $2890.67 from production_bot.log
+2025-08-18 21:57:38,191 | INFO     | CriticalTraderMonitor | Parsed balance: KuCoin $1967.34 from production_bot.log
