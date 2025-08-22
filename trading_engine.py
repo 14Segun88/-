@@ -13,9 +13,13 @@ from enum import Enum
 import aiohttp
 import hmac
 import hashlib
+import base64
 import json
+import uuid
 from decimal import Decimal, ROUND_DOWN
 from collections import defaultdict
+import ccxt
+from datetime import datetime, timezone
 
 from production_config import (
     API_KEYS, EXCHANGES_CONFIG, TRADING_CONFIG, 
@@ -151,12 +155,95 @@ class TradingEngine:
                 
             if API_KEYS[exchange_id]['apiKey']:
                 logger.info(f"Инициализация клиента {config['name']}")
-                # Здесь будет инициализация специфичных клиентов
-                self.exchange_clients[exchange_id] = {
+                # Базовые данные клиента
+                client_data = {
                     'name': config['name'],
                     'api_key': API_KEYS[exchange_id]['apiKey'],
                     'secret': API_KEYS[exchange_id]['secret']
                 }
+                # Добавляем passphrase для бирж, которые его требуют
+                if exchange_id in ['bitget', 'okx', 'kucoin'] and 'passphrase' in API_KEYS[exchange_id]:
+                    client_data['passphrase'] = API_KEYS[exchange_id]['passphrase']
+
+                # Инициализация ccxt клиента для real/demo режимов
+                ccxt_client = None
+                try:
+                    if TRADING_CONFIG['mode'] in ['real', 'demo']:
+                        if hasattr(ccxt, exchange_id):
+                            params = {
+                                'apiKey': client_data['api_key'],
+                                'secret': client_data['secret'],
+                                'enableRateLimit': True,
+                            }
+                            # OKX/Bitget требуют passphrase/password
+                            if exchange_id in ['okx', 'bitget', 'kucoin'] and 'passphrase' in client_data:
+                                params['password'] = client_data['passphrase']
+                                params['passphrase'] = client_data['passphrase']
+                            ccxt_client = getattr(ccxt, exchange_id)(params)
+
+                            # Настройки spot по умолчанию
+                            if hasattr(ccxt_client, 'options'):
+                                ccxt_client.options = {**getattr(ccxt_client, 'options', {}), 'defaultType': 'spot'}
+
+                            # Включаем sandbox/testnet в demo-режиме
+                            if TRADING_CONFIG['mode'] == 'demo':
+                                # Внимание: у OKX/Bitget/Phemex демо-режим активируется заголовками,
+                                # а публичные REST/markets берутся с production URL. Переключение
+                                # sandbox в ccxt меняет базовый URL и ломает load_markets
+                                # (ошибки вида 40404/"NoneType" + str). Поэтому здесь sandbox отключаем.
+                                if hasattr(ccxt_client, 'set_sandbox_mode'):
+                                    try:
+                                        if exchange_id in ['okx', 'bitget', 'phemex']:
+                                            ccxt_client.set_sandbox_mode(False)
+                                        else:
+                                            ccxt_client.set_sandbox_mode(True)
+                                    except Exception:
+                                        pass
+                                # Особенности OKX demo
+                                if exchange_id == 'okx':
+                                    headers = getattr(ccxt_client, 'headers', {}) or {}
+                                    headers['x-simulated-trading'] = '1'
+                                    ccxt_client.headers = headers
+                                    logger.info("OKX demo header x-simulated-trading=1 установлен")
+                                # Особенности Bitget demo: требуется заголовок PAPTRADING: 1
+                                if exchange_id == 'bitget':
+                                    try:
+                                        headers = getattr(ccxt_client, 'headers', {}) or {}
+                                        headers['PAPTRADING'] = '1'
+                                        ccxt_client.headers = headers
+                                        logger.info("Bitget demo header PAPTRADING=1 установлен")
+                                    except Exception:
+                                        pass
+                                # Особенности Phemex demo: форсируем прямое соединение без прокси
+                                if exchange_id == 'phemex':
+                                    try:
+                                        # Отключить любые прокси на уровне клиента requests
+                                        if hasattr(ccxt_client, 'proxies'):
+                                            ccxt_client.proxies = {'http': None, 'https': None}
+                                        # На всякий случай отключить generic proxy поле
+                                        if hasattr(ccxt_client, 'proxy'):
+                                            ccxt_client.proxy = None
+                                        logger.info("Phemex demo: прокси отключены для клиента ccxt")
+                                    except Exception:
+                                        pass
+                            # Предзагрузка рынков для стабильной работы create_order
+                            try:
+                                loop = asyncio.get_running_loop()
+                                await loop.run_in_executor(None, ccxt_client.load_markets)
+                                try:
+                                    markets_count = len(getattr(ccxt_client, 'markets', {}) or {})
+                                except Exception:
+                                    markets_count = 0
+                                logger.info(f"{exchange_id.upper()} markets loaded: {markets_count}")
+                            except Exception as e:
+                                logger.warning(f"⚠️ Не удалось load_markets для {exchange_id}: {e}")
+                        else:
+                            logger.debug(f"ccxt не поддерживает {exchange_id}")
+                except Exception as e:
+                    logger.warning(f"⚠️ Не удалось инициализировать ccxt для {exchange_id}: {e}")
+
+                client_data['ccxt'] = ccxt_client
+                self.exchange_clients[exchange_id] = client_data
     
     async def execute_arbitrage(self, opportunity: ArbitrageOpportunity) -> bool:
         """Исполнить арбитражную сделку"""
@@ -198,6 +285,21 @@ class TradingEngine:
             sell_exchange = opportunity.exchanges[1]
             symbol = opportunity.symbols[0]
             
+            # Предварительно убеждаемся, что символ доступен на обеих биржах (по данным ccxt)
+            try:
+                p_buy, m_buy, s_buy = self._ccxt_presence(buy_exchange, symbol)
+                p_sell, m_sell, s_sell = self._ccxt_presence(sell_exchange, symbol)
+                if not (p_buy and p_sell):
+                    logger.info(
+                        f"⏭️ Пропуск: {symbol} отсутствует по CCXT "
+                        f"[{buy_exchange}: present={p_buy}, markets={m_buy}, symbols={s_buy}; "
+                        f"{sell_exchange}: present={p_sell}, markets={m_sell}, symbols={s_sell}]"
+                    )
+                    return False
+            except Exception:
+                # Не блокируем поток, если проверка по какой-то причине не удалась
+                pass
+            
             # Расчет объема
             buy_price = opportunity.prices[f'{buy_exchange}_ask']
             sell_price = opportunity.prices[f'{sell_exchange}_bid']
@@ -211,7 +313,13 @@ class TradingEngine:
             )
             
             # Параллельное размещение ордеров
-            if TRADING_CONFIG['mode'] == 'real':
+            if TRADING_CONFIG['mode'] in ['real', 'demo']:
+                # В demo разрешаем только поддерживаемые биржи
+                if TRADING_CONFIG['mode'] == 'demo':
+                    allowed = set(TRADING_CONFIG.get('demo_supported_exchanges', []))
+                    if not all(ex in allowed for ex in [buy_exchange, sell_exchange]):
+                        logger.info("⏭️ Пропуск: связка не поддерживается в demo/testnet")
+                        return False
                 buy_task = self._place_order(
                     buy_exchange, symbol, 'buy', amount, buy_price
                 )
@@ -233,12 +341,39 @@ class TradingEngine:
                         await self.cancel_order(sell_order)
                     return False
                 
+                # Дополнительная проверка статусов FAILED
+                if buy_order.status == OrderStatus.FAILED or sell_order.status == OrderStatus.FAILED:
+                    logger.error("❌ Один из ордеров отклонен биржей (FAILED)")
+                    if hasattr(buy_order, 'is_active') and buy_order.is_active:
+                        await self.cancel_order(buy_order)
+                    if hasattr(sell_order, 'is_active') and sell_order.is_active:
+                        await self.cancel_order(sell_order)
+                    return False
+                
                 # Ожидание исполнения
                 filled = await self._wait_for_fills([buy_order, sell_order])
                 
                 if filled:
                     # Расчет прибыли
                     profit = self._calculate_realized_profit(buy_order, sell_order)
+                    # Лог успешной реальной сделки в историю для метрик
+                    try:
+                        revenue = sell_order.filled_amount * sell_order.filled_price
+                        cost = buy_order.filled_amount * buy_order.filled_price
+                        trade = {
+                            'timestamp': time.time(),
+                            'type': opportunity.type,
+                            'exchanges': [buy_exchange, sell_exchange],
+                            'symbols': [symbol],
+                            'position_size': position_size,
+                            'gross_profit': revenue - cost,
+                            'net_profit': profit,
+                            'profit_pct': (profit / position_size * 100) if position_size > 0 else 0
+                        }
+                        self.trade_history.append(trade)
+                    except Exception:
+                        # История — вспомогательная, не должна ломать основной поток
+                        pass
                     self._update_stats(profit, position_size)
                     logger.info(f"✅ Арбитраж успешен! Прибыль: ${profit:.2f}")
                     return True
@@ -248,8 +383,8 @@ class TradingEngine:
                     
             else:  # paper или demo режим
                 # Симуляция исполнения
-                commission_buy = position_size * EXCHANGES_CONFIG[buy_exchange]['fees']['taker']
-                commission_sell = position_size * EXCHANGES_CONFIG[sell_exchange]['fees']['taker']
+                commission_buy = position_size * EXCHANGES_CONFIG[buy_exchange]['fee']
+                commission_sell = position_size * EXCHANGES_CONFIG[sell_exchange]['fee']
                 
                 gross_profit = (sell_price - buy_price) * amount
                 net_profit = gross_profit - commission_buy - commission_sell
@@ -267,6 +402,29 @@ class TradingEngine:
         except Exception as e:
             logger.error(f"❌ Ошибка межбиржевого арбитража: {e}")
             return False
+
+    def _ccxt_presence(self, exchange: str, symbol: str) -> Tuple[bool, int, int]:
+        """Проверка наличия символа по данным ccxt: возвращает (present, markets_count, symbols_count)."""
+        try:
+            info = self.exchange_clients.get(exchange, {}) if isinstance(self.exchange_clients, dict) else {}
+            ccxt_client = info.get('ccxt') if isinstance(info, dict) else None
+            if not ccxt_client:
+                return False, 0, 0
+            try:
+                markets = getattr(ccxt_client, 'markets', {}) or {}
+                mkt_count = len(markets)
+            except Exception:
+                markets = {}
+                mkt_count = 0
+            try:
+                symbols = getattr(ccxt_client, 'symbols', []) or list(markets.keys())
+            except Exception:
+                symbols = list(markets.keys())
+            sym_set = set(symbols) if isinstance(symbols, (list, set)) else set()
+            present = (symbol in sym_set) or (symbol in markets)
+            return present, mkt_count, len(sym_set)
+        except Exception:
+            return False, 0, 0
     
     async def _execute_triangular(
         self, 
@@ -313,17 +471,87 @@ class TradingEngine:
         )
         
         try:
-            # Выбор метода размещения по бирже
-            if exchange == 'mexc':
-                await self._place_mexc_order(order)
-            elif exchange == 'bybit':
-                await self._place_bybit_order(order)
-            elif exchange == 'huobi':
-                await self._place_huobi_order(order)
+            # Если есть ccxt клиент — используем его (для demo/real)
+            client_info = self.exchange_clients.get(exchange, {})
+            ccxt_client = client_info.get('ccxt') if isinstance(client_info, dict) else None
+
+            if ccxt_client:
+                # Базовые параметры ордера
+                params = {}
+                # Биржеспецифичные параметры для стабильности DEMO/REAL
+                ex = (exchange or '').lower()
+                # IOC/FOK
+                use_ioc = bool(TRADING_CONFIG.get('use_ioc', False))
+                if ex == 'bitget':
+                    # Для spot требуется указать тип принудительного исполнения
+                    params.update({'force': 'ioc' if use_ioc else 'normal'})
+                else:
+                    # Только для известных бирж, где ccxt поддерживает timeInForce
+                    if use_ioc and ex in {'binance', 'bybit', 'mexc', 'kucoin', 'gate', 'phemex', 'okx'}:
+                        params.update({'timeInForce': 'IOC'})
+                ccxt_type = 'limit' if order.type == OrderType.LIMIT else 'market'
+
+                # Округление количества/цены согласно точности/лимитам рынка
+                s_amount, s_price = self._sanitize_amount_price(exchange, ccxt_client, symbol, amount, price)
+                try:
+                    # Диагностика параметров перед отправкой
+                    logger.debug({
+                        'action': 'ccxt_create_order',
+                        'exchange': exchange,
+                        'symbol': symbol,
+                        'side': side,
+                        'type': ccxt_type,
+                        'amount': s_amount,
+                        'price': s_price,
+                        'params': params
+                    })
+                    created = await self._ccxt_create_order(ccxt_client, symbol, ccxt_type, side, s_amount, s_price, params)
+                    order.exchange_order_id = str(created.get('id') or created.get('orderId') or created.get('clientOrderId') or '')
+                    order.status = OrderStatus.PLACED
+                    logger.info(f"✅ {exchange.upper()} ордер размещен (ccxt): {order.exchange_order_id}")
+                except Exception as e:
+                    # Диагностика заголовков для DEMO режимов OKX/Bitget
+                    try:
+                        headers_dbg = getattr(ccxt_client, 'headers', {})
+                    except Exception:
+                        headers_dbg = {}
+                    err_msg = str(e)
+                    logger.error(f"❌ Ошибка размещения ордера через ccxt [{exchange}]: {err_msg}")
+                    logger.info(f"Headers[{exchange}]: {headers_dbg}")
+                    # Фолбек для Bitget v2 DEMO: прямой REST при 40404 Request URL NOT FOUND
+                    if ex == 'bitget' and ('40404' in err_msg or 'Request URL NOT FOUND' in err_msg):
+                        try:
+                            created = await self._bitget_place_order_rest(client_info, symbol, ccxt_type, side, s_amount, s_price)
+                            order.exchange_order_id = str(created.get('orderId') or created.get('id') or created.get('clientOrderId') or '')
+                            order.status = OrderStatus.PLACED
+                            logger.info(f"✅ {exchange.upper()} ордер размещен (REST v2): {order.exchange_order_id}")
+                        except Exception as re:
+                            logger.error(f"❌ Bitget REST v2 фолбек неудачен: {re}")
+                            order.status = OrderStatus.FAILED
+                    # Фолбек для OKX в DEMO при нетиповой ошибке ccxt (например, NoneType + str)
+                    elif ex == 'okx' and ('NoneType' in err_msg or 'unsupported operand type' in err_msg):
+                        try:
+                            created = await self._okx_place_order_rest(client_info, symbol, ccxt_type, side, s_amount, s_price)
+                            order.exchange_order_id = str(created.get('ordId') or created.get('orderId') or created.get('id') or '')
+                            order.status = OrderStatus.PLACED
+                            logger.info(f"✅ {exchange.upper()} ордер размещен (REST v5): {order.exchange_order_id}")
+                        except Exception as re:
+                            logger.error(f"❌ OKX REST v5 фолбек неудачен: {re}")
+                            order.status = OrderStatus.FAILED
+                    else:
+                        order.status = OrderStatus.FAILED
             else:
-                logger.warning(f"⚠️ Биржа {exchange} не поддерживается")
-                order.status = OrderStatus.FAILED
-                
+                # Fallback: нативные реализации
+                if exchange == 'mexc':
+                    await self._place_mexc_order(order)
+                elif exchange == 'bybit':
+                    await self._place_bybit_order(order)
+                elif exchange == 'huobi':
+                    await self._place_huobi_order(order)
+                else:
+                    logger.warning(f"⚠️ Биржа {exchange} не поддерживается для нативного размещения")
+                    order.status = OrderStatus.FAILED
+            
             self.orders[order.id] = order
             return order
             
@@ -332,6 +560,263 @@ class TradingEngine:
             order.status = OrderStatus.FAILED
             self.orders[order.id] = order
             raise
+
+    async def _ccxt_create_order(self, client, symbol, type_, side, amount, price=None, params=None, timeout: float = 12.0):
+        """Асинхронная обертка для ccxt createOrder (через thread executor) с таймаутом"""
+        loop = asyncio.get_running_loop()
+        params = params or {}
+        fut = loop.run_in_executor(
+            None,
+            lambda: client.create_order(symbol, type_, side, amount, price, params)
+        )
+        return await asyncio.wait_for(fut, timeout=timeout)
+
+    def _format_number(self, value) -> str:
+        """Безэкспоненциальное строковое представление числа для REST-параметров."""
+        try:
+            # Используем 16 знаков после запятой, затем обрезаем лишние нули и точку
+            s = f"{float(value):.16f}"
+            s = s.rstrip('0').rstrip('.')
+            return s if s != '' else '0'
+        except Exception:
+            return str(value)
+
+    def _sanitize_amount_price(
+        self,
+        exchange: str,
+        ccxt_client,
+        symbol: str,
+        amount: float,
+        price: Optional[float]
+    ) -> Tuple[float, Optional[float]]:
+        """Округление объема/цены по точности биржи и мягкая валидация min-лимитов.
+
+        - Использует ccxt amount_to_precision/price_to_precision, если доступны.
+        - Падает вниз (ROUND_DOWN) по количеству знаков при отсутствии хелперов.
+        - Не повышает значения до min-лимитов (чтобы не рисковать размером позиции),
+          но пишет диагностику, если значения ниже min.
+        """
+        try:
+            market = None
+            if ccxt_client:
+                try:
+                    market = ccxt_client.market(symbol)
+                except Exception:
+                    try:
+                        market = (getattr(ccxt_client, 'markets', {}) or {}).get(symbol, {})
+                    except Exception:
+                        market = None
+
+            amt = amount
+            prc = price
+
+            # Количество
+            try:
+                if ccxt_client and hasattr(ccxt_client, 'amount_to_precision'):
+                    amt = float(ccxt_client.amount_to_precision(symbol, amount))
+                else:
+                    prec = None
+                    if isinstance(market, dict):
+                        prec = (market.get('precision') or {}).get('amount')
+                    if isinstance(prec, int) and prec >= 0:
+                        q = Decimal(str(amount)).quantize(Decimal('1e-' + str(prec)), rounding=ROUND_DOWN)
+                        amt = float(q)
+            except Exception:
+                pass
+
+            # Цена
+            if price is not None:
+                try:
+                    if ccxt_client and hasattr(ccxt_client, 'price_to_precision'):
+                        prc = float(ccxt_client.price_to_precision(symbol, price))
+                    else:
+                        pprec = None
+                        if isinstance(market, dict):
+                            pprec = (market.get('precision') or {}).get('price')
+                        if isinstance(pprec, int) and pprec >= 0:
+                            q = Decimal(str(price)).quantize(Decimal('1e-' + str(pprec)), rounding=ROUND_DOWN)
+                            prc = float(q)
+                except Exception:
+                    pass
+
+            # Диагностика min-лимитов
+            try:
+                if isinstance(market, dict):
+                    limits = market.get('limits') or {}
+                    a_limits = limits.get('amount') or {}
+                    c_limits = limits.get('cost') or {}
+                    min_amt = a_limits.get('min')
+                    min_cost = c_limits.get('min')
+                    warn_msgs = []
+                    if min_amt is not None and amt < float(min_amt):
+                        warn_msgs.append(f"amount {amt} < min {min_amt}")
+                    if prc is not None and min_cost is not None and (amt * prc) < float(min_cost):
+                        warn_msgs.append(f"notional {amt * prc:.8f} < min_notional {min_cost}")
+                    if warn_msgs:
+                        logger.debug(f"[{exchange.upper()}] Limits warn for {symbol}: " + "; ".join(warn_msgs))
+            except Exception:
+                pass
+
+            logger.debug(f"Sanitized[{exchange}] {symbol}: amount {amount} -> {amt}; price {price} -> {prc}")
+            return amt, prc
+        except Exception as e:
+            logger.debug(f"Sanitize failed [{exchange} {symbol}]: {e}")
+            return amount, price
+
+    async def _bitget_place_order_rest(self, client_info, symbol, type_, side, amount, price=None):
+        """Фолбек размещения ордера на Bitget через прямой REST v2 со включённым DEMO (PAPTRADING: 1)."""
+        api_key = client_info.get('api_key', '')
+        secret = client_info.get('secret', '')
+        passphrase = client_info.get('passphrase', '')
+        if not api_key or not secret:
+            raise Exception('Нет API ключей для Bitget')
+
+        # Нормализация символа для Bitget SPOT v2: <BASE><QUOTE>_SPBL (без разделителей)
+        # Пример: "CORE/USDT" -> "COREUSDT_SPBL"
+        base_quote = symbol.replace('/', '').replace(':', '').replace('_', '')
+        symbol_id = f"{base_quote.upper()}_SPBL"
+
+        base = 'https://api.bitget.com'
+        path = '/api/v2/spot/trade/place-order'
+        url = f"{base}{path}"
+        # Санитизация количества/цены по точности рынков ccxt
+        ccxt_client = client_info.get('ccxt') if isinstance(client_info, dict) else None
+        s_amount, s_price = self._sanitize_amount_price('bitget', ccxt_client, symbol, amount, price)
+        fmt_qty = self._format_number(s_amount)
+        fmt_px = self._format_number(s_price) if (type_ == 'limit' and s_price is not None) else None
+        # IOC по флагу конфигурации
+        use_ioc = bool(TRADING_CONFIG.get('use_ioc', False))
+        payload = {
+            'symbol': symbol_id,
+            'side': side,
+            'orderType': 'limit' if type_ == 'limit' else 'market',
+            'force': 'ioc' if use_ioc else 'normal',
+            'quantity': fmt_qty,
+        }
+        if type_ == 'limit' and fmt_px is not None:
+            payload['price'] = fmt_px
+        # Рекомендуется указывать clientOid для идемпотентности
+        payload['clientOid'] = str(uuid.uuid4())
+        logger.debug({
+            'action': 'bitget_rest_place_order',
+            'symbol': symbol,
+            'symbol_id': symbol_id,
+            'side': side,
+            'type': type_,
+            'quantity_raw': amount,
+            'price_raw': price,
+            'quantity_sanitized': s_amount,
+            'price_sanitized': s_price,
+            'payload': payload,
+        })
+
+        ts = str(int(time.time() * 1000))
+        body = json.dumps(payload, separators=(',', ':'), ensure_ascii=False)
+        prehash = f"{ts}POST{path}{body}"
+        sign = base64.b64encode(hmac.new(secret.encode(), prehash.encode(), hashlib.sha256).digest()).decode()
+
+        headers = {
+            'ACCESS-KEY': api_key,
+            'ACCESS-SIGN': sign,
+            'ACCESS-TIMESTAMP': ts,
+            'ACCESS-PASSPHRASE': passphrase,
+            'PAPTRADING': '1',
+            'Content-Type': 'application/json',
+        }
+        timeout = aiohttp.ClientTimeout(total=10)
+        async with aiohttp.ClientSession(timeout=timeout) as session:
+            async with session.post(url, data=body, headers=headers) as resp:
+                txt = await resp.text()
+                if resp.status != 200:
+                    raise Exception(f"HTTP {resp.status}: {txt[:200]}")
+                try:
+                    data = json.loads(txt)
+                except Exception:
+                    raise Exception(f"Невалидный ответ Bitget: {txt[:200]}")
+                code = str(data.get('code') or '')
+                if code == '00000':
+                    # data may contain { "data": { "orderId": "..." } }
+                    d = data.get('data') or {}
+                    if isinstance(d, dict):
+                        d.setdefault('id', d.get('orderId'))
+                    return d
+                raise Exception(f"Bitget error {code}: {txt[:200]}")
+
+    async def _okx_place_order_rest(self, client_info, symbol, type_, side, amount, price=None):
+        """Фолбек размещения ордера на OKX через прямой REST v5 (демо поддерживается через x-simulated-trading)."""
+        api_key = client_info.get('api_key', '')
+        secret = client_info.get('secret', '')
+        passphrase = client_info.get('passphrase', '')
+        if not api_key or not secret or not passphrase:
+            raise Exception('Нет API ключей/пароля (passphrase) для OKX')
+
+        # instId для OKX: "BASE-QUOTE" (например, VELO-USDT)
+        inst_id = symbol.replace('/', '-').upper()
+
+        base = 'https://www.okx.com'
+        path = '/api/v5/trade/order'
+        url = f"{base}{path}"
+        # Санитизация количества/цены по данным рынков ccxt
+        ccxt_client = client_info.get('ccxt') if isinstance(client_info, dict) else None
+        s_amount, s_price = self._sanitize_amount_price('okx', ccxt_client, symbol, amount, price)
+        fmt_sz = self._format_number(s_amount)
+        fmt_px = self._format_number(s_price) if (type_ == 'limit' and s_price is not None) else None
+        # Применяем IOC для OKX через ordType = 'ioc' (для лимитных ордеров)
+        use_ioc = bool(TRADING_CONFIG.get('use_ioc', False))
+        ord_type = 'market' if type_ == 'market' else ('ioc' if use_ioc else 'limit')
+        payload = {
+            'instId': inst_id,
+            'tdMode': 'cash',
+            'side': side,
+            'ordType': ord_type,
+            'sz': fmt_sz,
+        }
+        if type_ == 'limit' and fmt_px is not None:
+            payload['px'] = fmt_px
+        logger.debug({
+            'action': 'okx_rest_place_order',
+            'symbol': symbol,
+            'instId': inst_id,
+            'side': side,
+            'type': type_,
+            'ordType': ord_type,
+            'sz_raw': amount,
+            'px_raw': price,
+            'sz_sanitized': s_amount,
+            'px_sanitized': s_price,
+            'payload': payload,
+        })
+
+        # OKX требует ISO8601 UTC с миллисекундами, тот же ts используется в подписи и заголовке
+        ts = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z')
+        body = json.dumps(payload, separators=(',', ':'), ensure_ascii=False)
+        prehash = f"{ts}POST{path}{body}"
+        sign = base64.b64encode(hmac.new(secret.encode(), prehash.encode(), hashlib.sha256).digest()).decode()
+
+        headers = {
+            'OK-ACCESS-KEY': api_key,
+            'OK-ACCESS-SIGN': sign,
+            'OK-ACCESS-TIMESTAMP': ts,
+            'OK-ACCESS-PASSPHRASE': passphrase,
+            'x-simulated-trading': '1' if TRADING_CONFIG.get('mode') == 'demo' else '0',
+            'Content-Type': 'application/json',
+        }
+
+        timeout = aiohttp.ClientTimeout(total=10)
+        async with aiohttp.ClientSession(timeout=timeout) as session:
+            async with session.post(url, data=body, headers=headers) as resp:
+                txt = await resp.text()
+                if resp.status != 200:
+                    raise Exception(f"HTTP {resp.status}: {txt[:200]}")
+                try:
+                    data = json.loads(txt)
+                except Exception:
+                    raise Exception(f"Невалидный ответ OKX: {txt[:200]}")
+                code = str(data.get('code') or '')
+                if code == '0':
+                    d = (data.get('data') or [{}])[0]
+                    return d
+                raise Exception(f"OKX error {code}: {txt[:200]}")
     
     async def _place_mexc_order(self, order: Order):
         """Разместить ордер на MEXC"""
@@ -401,8 +886,15 @@ class TradingEngine:
                 
             logger.info(f"🚫 Отмена ордера {order.id}")
             
-            # Отмена на конкретной бирже
-            # TODO: Реализовать отмену для каждой биржи
+            # Отмена через ccxt если доступен клиент
+            client_info = self.exchange_clients.get(order.exchange, {})
+            ccxt_client = client_info.get('ccxt') if isinstance(client_info, dict) else None
+            if ccxt_client and order.exchange_order_id:
+                try:
+                    loop = asyncio.get_running_loop()
+                    await loop.run_in_executor(None, lambda: ccxt_client.cancel_order(order.exchange_order_id, order.symbol))
+                except Exception as e:
+                    logger.warning(f"⚠️ Не удалось отменить ордер на {order.exchange}: {e}")
             
             order.status = OrderStatus.CANCELLED
             return True
@@ -435,8 +927,43 @@ class TradingEngine:
     
     async def _update_order_status(self, order: Order):
         """Обновить статус ордера"""
-        # TODO: Запросить статус с биржи
-        pass
+        try:
+            client_info = self.exchange_clients.get(order.exchange, {})
+            ccxt_client = client_info.get('ccxt') if isinstance(client_info, dict) else None
+            if not ccxt_client or not order.exchange_order_id:
+                return
+
+            loop = asyncio.get_running_loop()
+            data = await loop.run_in_executor(None, lambda: ccxt_client.fetch_order(order.exchange_order_id, order.symbol))
+
+            status_map = {
+                'open': OrderStatus.PLACED,
+                'closed': OrderStatus.FILLED,
+                'canceled': OrderStatus.CANCELLED,
+                'canceled_by_user': OrderStatus.CANCELLED,
+                'rejected': OrderStatus.FAILED,
+                'expired': OrderStatus.CANCELLED,
+                'partially_filled': OrderStatus.PARTIALLY_FILLED,
+            }
+            ccxt_status = (data.get('status') or '').lower()
+            order.status = status_map.get(ccxt_status, order.status)
+
+            # Обновляем заполнение
+            filled = float(data.get('filled') or 0)
+            avg = float(data.get('average') or (order.price if order.price else 0))
+            order.filled_amount = filled
+            if filled > 0 and avg > 0:
+                order.filled_price = avg
+
+            # Комиссии (если доступны)
+            fees = data.get('fees') or []
+            if fees:
+                try:
+                    order.commission = sum(float(f.get('cost') or 0) for f in fees)
+                except Exception:
+                    pass
+        except Exception as e:
+            logger.debug(f"Не удалось обновить статус ордера через ccxt: {e}")
     
     async def update_balances(self):
         """Обновить балансы на всех биржах"""
@@ -444,6 +971,13 @@ class TradingEngine:
             for exchange_id in self.exchange_clients:
                 balance = await self._get_exchange_balance(exchange_id)
                 self.balance[exchange_id] = balance
+                # Логируем баланс каждой биржи в стабильном формате для монитора
+                try:
+                    amount = float(balance.get('USDT') or 0)
+                    ex_name = EXCHANGES_CONFIG.get(exchange_id, {}).get('name', exchange_id.upper())
+                    logger.info(f"Баланс: ${amount:.2f} {ex_name}")
+                except Exception:
+                    pass
                 
             logger.info("✅ Балансы обновлены")
             
@@ -452,8 +986,23 @@ class TradingEngine:
     
     async def _get_exchange_balance(self, exchange: str) -> Dict[str, float]:
         """Получить баланс с биржи"""
-        # TODO: Реализовать для каждой биржи
-        return {'USDT': 1000.0}  # Заглушка
+        try:
+            client_info = self.exchange_clients.get(exchange, {})
+            ccxt_client = client_info.get('ccxt') if isinstance(client_info, dict) else None
+            if ccxt_client:
+                loop = asyncio.get_running_loop()
+                data = await loop.run_in_executor(None, lambda: ccxt_client.fetch_balance())
+                total = data.get('total') or {}
+                free = data.get('free') or {}
+                # Предпочитаем свободный баланс
+                usdt = float(free.get('USDT') or total.get('USDT') or 0)
+                return {'USDT': usdt}
+        except Exception as e:
+            logger.debug(f"Не удалось получить баланс через ccxt [{exchange}]: {e}")
+        # Фолбек: в demo вернуть минимум для старта, в остальных — 0
+        if TRADING_CONFIG['mode'] == 'demo':
+            return {'USDT': float(TRADING_CONFIG.get('demo_initial_usdt', 100))}
+        return {'USDT': 0.0}
     
     async def _check_risk_limits(self, opportunity: ArbitrageOpportunity) -> bool:
         """Проверить риск-лимиты"""

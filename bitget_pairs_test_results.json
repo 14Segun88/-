@@ -1,0 +1,31 @@
+{
+  "timestamp": "2025-08-22T22:49:43.262209",
+  "success": false,
+  "error": "'bitget' object has no attribute 'close'",
+  "total_pairs": 797,
+  "usdt_pairs": 690,
+  "common_pairs_found": 50,
+  "sample_pairs": [
+    "LUMIA/USDT",
+    "GOAT/USDT",
+    "DBR/USDT",
+    "ACT/USDT",
+    "GRASS/USDT",
+    "TRX/USDT",
+    "XNEW/USDT",
+    "LINK/USDT",
+    "UNI/USDT",
+    "SUSHI/USDT",
+    "COMP/USDT",
+    "AAVE/USDT",
+    "SCR/USDT",
+    "YFI/USDT",
+    "DOGE/USDT",
+    "CHZ/USDT",
+    "PNUT/USDT",
+    "SWELL/USDT",
+    "FUSE/USDT",
+    "BAN/USDT"
+  ],
+  "api_response_time": 2.767409
+}
