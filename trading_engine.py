@@ -199,24 +199,28 @@ class TradingEngine:
                                             ccxt_client.set_sandbox_mode(True)
                                     except Exception:
                                         pass
-                                # Особенности OKX demo
+                                # Настройка для реальной торговли (без demo заголовков)
                                 if exchange_id == 'okx':
                                     headers = getattr(ccxt_client, 'headers', {}) or {}
-                                    headers['x-simulated-trading'] = '1'
+                                    # Убираем x-simulated-trading для реальной торговли
+                                    headers.pop('x-simulated-trading', None)
                                     ccxt_client.headers = headers
-                                    logger.info("OKX demo header x-simulated-trading=1 установлен")
-                                # Особенности Bitget demo: требуется заголовок PAPTRADING: 1
+                                    logger.info("OKX настроен для реальной торговли")
                                 if exchange_id == 'bitget':
                                     try:
                                         headers = getattr(ccxt_client, 'headers', {}) or {}
-                                        headers['PAPTRADING'] = '1'
+                                        # Убираем PAPTRADING для реальной торговли
+                                        headers.pop('PAPTRADING', None)
                                         ccxt_client.headers = headers
-                                        logger.info("Bitget demo header PAPTRADING=1 установлен")
+                                        logger.info("Bitget настроен для реальной торговли")
                                     except Exception:
                                         pass
-                                # Особенности Phemex demo: форсируем прямое соединение без прокси
+                                # Phemex настройка для реального режима  
                                 if exchange_id == 'phemex':
                                     try:
+                                        # Отключаем sandbox для реальной торговли
+                                        ccxt_client.set_sandbox_mode(False)
+                                        logger.info("Phemex настроен для реальной торговли (sandbox отключен)")
                                         # Отключить любые прокси на уровне клиента requests
                                         if hasattr(ccxt_client, 'proxies'):
                                             ccxt_client.proxies = {'http': None, 'https': None}
@@ -382,9 +386,11 @@ class TradingEngine:
                     return False
                     
             else:  # paper или demo режим
-                # Симуляция исполнения
-                commission_buy = position_size * EXCHANGES_CONFIG[buy_exchange]['fee']
-                commission_sell = position_size * EXCHANGES_CONFIG[sell_exchange]['fee']
+                # Симуляция исполнения - используем правильные комиссии
+                buy_fee_rate = EXCHANGES_CONFIG[buy_exchange].get('fee', 0.001)
+                sell_fee_rate = EXCHANGES_CONFIG[sell_exchange].get('fee', 0.001)
+                commission_buy = position_size * buy_fee_rate
+                commission_sell = position_size * sell_fee_rate
                 
                 gross_profit = (sell_price - buy_price) * amount
                 net_profit = gross_profit - commission_buy - commission_sell
@@ -720,7 +726,7 @@ class TradingEngine:
             'ACCESS-SIGN': sign,
             'ACCESS-TIMESTAMP': ts,
             'ACCESS-PASSPHRASE': passphrase,
-            'PAPTRADING': '1',
+            # 'PAPTRADING': '1',  # Убрано для реальной торговли
             'Content-Type': 'application/json',
         }
         timeout = aiohttp.ClientTimeout(total=10)
@@ -798,7 +804,7 @@ class TradingEngine:
             'OK-ACCESS-SIGN': sign,
             'OK-ACCESS-TIMESTAMP': ts,
             'OK-ACCESS-PASSPHRASE': passphrase,
-            'x-simulated-trading': '1' if TRADING_CONFIG.get('mode') == 'demo' else '0',
+            'x-simulated-trading': '0',  # Реальная торговля
             'Content-Type': 'application/json',
         }
 

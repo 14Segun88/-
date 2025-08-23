@@ -31,7 +31,7 @@ API_KEYS = {
         'secret': 'FC63C15B1D2DB5C73632ED5BACE49290',  # OKX секретный ключ
         'passphrase': 'Egor1998!',
         'password': 'Egor1998!',
-        'env': 'demo'
+        'env': 'real'
     },
     'gate': {
         'apiKey': '',  # Нужен API ключ от Gate.io
@@ -43,12 +43,12 @@ API_KEYS = {
         'secret': '14b48fa1d080f94c5b21a4d33acd25ef18ca8f47281ef6a10a594a192822ba17',
         'passphrase': '0502794579Egor',
         'password': '0502794579Egor',
-        'env': 'demo'
+        'env': 'real'
     },
     'phemex': {
         'apiKey': '08fc7ba8-be86-4e11-9085-9e5423657c04',
         'secret': '4XGaPGeIq_kQCURYEq85o7j1gQVbP8pwwetnUSP4uN00OTExNjBkNC03Y2Q2LTRhNjktYTQwMy1kMzRlMmYzZTQ1YzQ',
-        'env': 'demo'
+        'env': 'real'
     }
 }
 
@@ -108,11 +108,11 @@ EXCHANGES_CONFIG = {
     },
     'bybit': {
         'name': 'Bybit',
-        'enabled': True,
+        'enabled': False,  # ❌ ОТКЛЮЧЕН для testnet
         'rate_limit': 100,
         'fee': 0.001,  # 0.10% taker без скидок
-        'websocket': True,
-        'poll_rest': True,
+        'websocket': False,
+        'poll_rest': False,
         'poll_interval': 1,
         'rest_url': 'https://api.bybit.com',
         'ws_url': 'wss://stream.bybit.com/v5/public/spot'  # Исправлен URL для spot торговли
@@ -130,20 +130,20 @@ EXCHANGES_CONFIG = {
     },
     'binance': {
         'name': 'Binance',
-        'enabled': True,
+        'enabled': False,  # ❌ ОТКЛЮЧЕН для testnet
         'rate_limit': 1200,
         'fee': 0.001,
-        'websocket': True,
-        'poll_rest': True,
+        'websocket': False,
+        'poll_rest': False,
         'poll_interval': 1,
         'rest_url': 'https://api.binance.com',
         'ws_url': 'wss://stream.binance.com:9443/ws'
     },
     'okx': {
         'name': 'OKX',
-        'enabled': True,
-        'websocket': True,
-        'poll_rest': True,
+        'enabled': False,  # ❌ ОТКЛЮЧЕН - API ключи не работают
+        'websocket': False,
+        'poll_rest': False,
         'poll_interval': 1,
         'use_proxy': False,
         'rest_url': 'https://www.okx.com',
@@ -152,12 +152,12 @@ EXCHANGES_CONFIG = {
     },
     'bitget': {
         'name': 'Bitget',
-        'enabled': True,  # ВКЛЮЧЕНО для межарбитража OKX-Bitget
+        'enabled': True,  # ✅ АКТИВНАЯ БИРЖА ДЛЯ TESTNET
         'rate_limit': 100,
         'fee': 0.001,  # 0.1% стандартная комиссия
-        'websocket': False,  # Отключаем WebSocket, используем REST polling
+        'websocket': False,  # ❌ ОТКЛЮЧЕН - HTTP 403 в testnet
         'poll_rest': True,
-        'poll_interval': 1,
+        'poll_interval': 0.3,  # 🔥 УСКОРЕННЫЙ polling каждые 300ms
         'use_proxy': False,
         'rest_url': 'https://api.bitget.com',
         # Demo trading WS endpoints per Bitget docs:
@@ -171,9 +171,9 @@ EXCHANGES_CONFIG = {
         'enabled': True,  # Включен для увеличения количества возможностей
         'rate_limit': 100,
         'fee': 0.001,  # 0.1% стандартная комиссия
-        'websocket': False,  # Отключаем WS (нет прокси), используем REST-поллинг
+        'websocket': False,  # ❌ ОТКЛЮЧЕН - HTTP 403 в testnet
         'poll_rest': True,
-        'poll_interval': 1,
+        'poll_interval': 0.4,  # 🔥 УСКОРЕННЫЙ polling каждые 400ms
         'use_proxy': False,
         'rest_url': 'https://api.phemex.com'
     },
@@ -201,24 +201,30 @@ EXCHANGES_CONFIG = {
 
 # Торговые параметры
 TRADING_CONFIG = {
-    'mode': 'demo',  # 'demo' для активации demo-заголовков (PAPTRADING=1, x-simulated-trading=1)
-    'min_profit_threshold': 0.01,  # Минимальный порог 0.01% для максимального поиска
-    'slippage_tolerance': 0.0,  # Не штрафуем дважды: реальный slippage учитывается в анализе ликвидности
-    'max_opportunity_age': 8,  # Увеличено TTL до 8 секунд (устраняет 1977 случаев отбрасывания)
-    'scan_interval': 0.05,  # Увеличена частота сканирования до 20/сек (50ms)
-    'enable_triangular': True,  # Треугольный арбитраж ВКЛЮЧЕН
-    'enable_inter_exchange': True,  # Межбиржевой арбитраж
-    'enable_exhaustive_pair_scanning': False,  # Полный перебор пар бирж на символ
-    'max_buy_candidates_per_symbol': 3,  # Максимум кандидатов-покупок на символ
-    'max_sell_candidates_per_symbol': 3,  # Максимум кандидатов-продаж на символ
-    'pair_cooldown_seconds': 5,  # Кулдаун расслаблен для paper
-    'position_size_usd': 100,  # Размер позиции в USD
+    'mode': 'real',  # 🚨 REAL режим - реальные сделки на реальных счетах
+    'min_profit_threshold': 0.001,  # 🔥 ЭКСТРЕМАЛЬНО СНИЖЕН до 0.001%
+    'slippage_tolerance': 0.0001,  # 🔥 МИНИМИЗИРОВАН до 0.0001%
+    'max_opportunity_age': 30,  # 🔥 УВЕЛИЧЕН до 30 сек для REST-only режима
+    'scan_interval': 0.01,  # 🔥 МАКСИМАЛЬНАЯ частота 100/сек (10ms)
+    'enable_triangular': True,  # ✅ Треугольный арбитраж ВКЛЮЧЕН
+    'enable_inter_exchange': True,  # ✅ Межбиржевой арбитраж ВКЛЮЧЕН
+    'enable_exhaustive_pair_scanning': True,  # ✅ ВКЛЮЧЕН полный перебор для максимума возможностей
+    'max_buy_candidates_per_symbol': 5,  # УВЕЛИЧЕНО до 5 кандидатов
+    'max_sell_candidates_per_symbol': 5,  # УВЕЛИЧЕНО до 5 кандидатов
+    'pair_cooldown_seconds': 3,  # УМЕНЬШЕН кулдаун до 3 сек
+    'position_size_usd': 10,  # 🚨 БЕЗОПАСНЫЙ размер $10 для РЕАЛЬНОЙ торговли
+    
+    # Настройки maker ордеров (экономия ~0.04% на сделку)
+    'use_maker_orders': False,     # ОТКЛЮЧЕНЫ maker ордера для быстрого исполнения
+    'maker_spread_adjustment': 0.0003,  # 0.03% отступ от лучшей цены
+    'maker_timeout_seconds': 15,  # УМЕНЬШЕН таймаут до 15 сек
+    'maker_priority_threshold': 0.2,  # СНИЖЕН порог до 0.2%
     # Параметры анализатора ликвидности (используются для переопределения в боте)
-    'min_liquidity_usd': 100,      # Требуемая ликвидность ~= размер позиции
-    'max_price_impact_pct': 2.0,   # Допустимое влияние на цену в %
+    'min_liquidity_usd': 20,      # 🔥 КРИТИЧЕСКИ снижена до $20
+    'max_price_impact_pct': 10.0,   # 🔥 МАКСИМАЛЬНО допустимое влияние 10%
     'min_depth_levels': 1,         # Минимум уровней стакана
-    'initial_capital': 10000,  # Начальный капитал в USD
-    'max_open_positions': 5,  # Максимум открытых позиций
+    'initial_capital': 1000,  # Testnet капитал $1000
+    'max_open_positions': 10,  # УВЕЛИЧЕНО до 10 позиций одновременно
     # Demo/testnet режим
     'demo_supported_exchanges': ['okx', 'bitget', 'phemex'],
     'demo_initial_usdt': 100,
@@ -229,11 +235,11 @@ DYNAMIC_PAIRS_CONFIG = {
     'enabled': True,
     'update_interval': 1800,  # Обновление каждые 30 минут
     'min_volume_24h': 1000000,  # Минимальный объем за 24ч в USD
-    'min_exchanges': 2,  # Минимум бирж для пары (например, OKX и Bitget)
-    'max_pairs': 300,  # Лимит активных пар увеличен до 300
-    'per_exchange_discovery_limit': 300,  # Сколько пар брать с каждой биржи при discovery
+    'min_exchanges': 2,  # СНИЖЕНО до 2 бирж (Bitget + Phemex работают)
+    'max_pairs': 500,  # УВЕЛИЧЕНО до 500 активных пар
+    'per_exchange_discovery_limit': 500,  # УВЕЛИЧЕНО до 500 пар с каждой биржи
     'priority_pairs': [
-        # ВЫСОКОПРИОРИТЕТНЫЕ популярные пары (OKX-Bitget общие)
+        # ВЫСОКОПРИОРИТЕТНЫЕ популярные пары (OKX-Bitget-Phemex общие)
         'BTC/USDT', 'ETH/USDT', 'BNB/USDT', 'SOL/USDT', 'XRP/USDT',
         'DOGE/USDT', 'ADA/USDT', 'AVAX/USDT', 'LINK/USDT', 'DOT/USDT',
         'UNI/USDT', 'LTC/USDT', 'BCH/USDT', 'NEAR/USDT', 'ATOM/USDT',
@@ -249,7 +255,17 @@ DYNAMIC_PAIRS_CONFIG = {
         
         # DeFi токены с активной торговлей
         'PENDLE/USDT', 'GMX/USDT', 'LDO/USDT', 'BLUR/USDT', 'DYDX/USDT',
-        'ENS/USDT', '1INCH/USDT', 'COMP/USDT', 'YFI/USDT', 'ONDO/USDT'
+        'ENS/USDT', '1INCH/USDT', 'COMP/USDT', 'YFI/USDT', 'ONDO/USDT',
+        
+        # Дополнительные высоковолатильные альткоины (повышенные спреды)
+        'FET/USDT', 'AGIX/USDT', 'OCEAN/USDT', 'TAO/USDT', 'GLM/USDT',    # AI токены
+        'GALA/USDT', 'ENJ/USDT', 'CHZ/USDT', 'FLOW/USDT', 'ICP/USDT',     # Gaming & Web3
+        'MANA/USDT', 'SAND/USDT', 'AXS/USDT', 'GMT/USDT', 'STEPN/USDT',   # Metaverse & GameFi
+        'JASMY/USDT', 'ROSE/USDT', 'KDA/USDT', 'CKB/USDT', 'RVN/USDT',    # Средние альткоины
+        'ORDI/USDT', 'SATS/USDT', '1000SATS/USDT', 'RATS/USDT',           # BRC-20 токены
+        'WLD/USDT', 'ARKM/USDT', 'ID/USDT', 'SEI/USDT', 'MEME/USDT',      # Новые проекты 2023-24
+        'LEVER/USDT', 'HIGH/USDT', 'ACE/USDT', 'NFP/USDT', 'AI/USDT',     # Низкокапные альткоины
+        'MATIC/USDT', 'FTM/USDT', 'ONE/USDT', 'ZIL/USDT', 'VET/USDT'      # Дополнительные Layer 1
     ]
 }
 
@@ -295,9 +311,9 @@ SYMBOL_DISCOVERY_CONFIG = {
         ]
 }
 
-# Торговые пары для OKX-Bitget межарбитража (248 общих пар)
+# Торговые пары для триангулярного арбитража OKX-Bitget-Phemex
 TRADING_PAIRS = [
-    # Топ-20 высоколиквидных пар для межарбитража OKX-Bitget  
+    # Топ-20 высоколиквидных пар для триангулярного арбитража OKX-Bitget-Phemex  
     'BTC/USDT', 'ETH/USDT', 'BNB/USDT', 'SOL/USDT', 'XRP/USDT',
     'DOGE/USDT', 'ADA/USDT', 'AVAX/USDT', 'LINK/USDT', 'DOT/USDT',
     'UNI/USDT', 'LTC/USDT', 'BCH/USDT', 'NEAR/USDT', 'ATOM/USDT',
@@ -313,7 +329,13 @@ TRADING_PAIRS = [
     
     # DeFi токены с активной торговлей
     'PENDLE/USDT', 'GMX/USDT', 'LDO/USDT', 'BLUR/USDT', 'DYDX/USDT',
-    'ENS/USDT', '1INCH/USDT', 'COMP/USDT', 'YFI/USDT', 'ONDO/USDT'
+    'ENS/USDT', '1INCH/USDT', 'COMP/USDT', 'YFI/USDT', 'ONDO/USDT',
+    
+    # Высоковолатильные альткоины (расширенный список для арбитража)
+    'FET/USDT', 'AGIX/USDT', 'OCEAN/USDT', 'TAO/USDT', 'GALA/USDT',
+    'ENJ/USDT', 'CHZ/USDT', 'MANA/USDT', 'SAND/USDT', 'AXS/USDT',
+    'JASMY/USDT', 'ROSE/USDT', 'ORDI/USDT', 'WLD/USDT', 'ARKM/USDT',
+    'MATIC/USDT', 'FTM/USDT', 'ONE/USDT', 'VET/USDT', 'FLOW/USDT'
 ]
 
 # ============================================
@@ -410,6 +432,8 @@ WEBSOCKET_CONFIG = {
     'compression': 'deflate'  # Сжатие
 }
 
+# ДУБЛИРОВАННАЯ КОНФИГУРАЦИЯ УДАЛЕНА - ИСПОЛЬЗУЕТСЯ ОСНОВНАЯ ВЫШЕ
+
 # Оптимизация производительности
 PERFORMANCE_CONFIG = {
     'use_uvloop': True,  # Использовать uvloop для ускорения
@@ -420,7 +444,6 @@ PERFORMANCE_CONFIG = {
     'gc_interval': 300,  # Интервал сборки мусора
     'profile_enabled': False  # Профилирование производительности
 }
-
 # База данных (будущая функция)
 DATABASE_CONFIG = {
     'enabled': False,

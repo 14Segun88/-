@@ -181,9 +181,9 @@ class ProductionArbitrageBot:
         
         while self.running:
             try:
-                # Получаем данные orderbook для активных пар с Bitget через REST
+                # Получаем данные orderbook для активных пар через REST
                 for symbol in list(self.active_pairs):
-                    for exchange_id in ['bitget']:  # Добавим другие при необходимости
+                    for exchange_id in ['bitget', 'phemex']:  # ✅ Включаем и Phemex
                         if exchange_id not in self.enabled_exchanges:
                             continue
                         
@@ -203,9 +203,10 @@ class ProductionArbitrageBot:
                                 
                                 # Сохраняем в локальный кеш
                                 self.orderbooks[symbol][exchange_id] = orderbook
+                                logger.debug(f"✅ {exchange_id} {symbol}: bid={orderbook.bids[0][0]:.6f}, ask={orderbook.asks[0][0]:.6f}")
                                 
                         except Exception as e:
-                            logger.debug(f"REST polling ошибка {exchange_id} {symbol}: {e}")
+                            logger.warning(f"REST polling ошибка {exchange_id} {symbol}: {e}")
                             continue
                 
                 # Интервал polling - каждые 2 секунды
@@ -299,13 +300,15 @@ class ProductionArbitrageBot:
                     all_pairs[pair].add(exchange_id)
                     
                 logger.info(f"✅ {config['name']}: {len(pairs)} пар")
+                if len(pairs) == 0:
+                    logger.warning(f"⚠️ ДИАГНОСТИКА {exchange_id}: получено 0 пар из API")
                 
             except Exception as e:
                 logger.error(f"❌ Ошибка загрузки пар {config['name']}: {e}")
         
-        # Фильтрация пар: в DEMO режиме приоритизируем пары, которые есть минимум на 2 из 3 бирж (OKX, Bitget, Phemex)
+        # Фильтрация пар: в DEMO/TESTNET режиме приоритизируем пары, которые есть минимум на 2 из 3 бирж (OKX, Bitget, Phemex)
         enabled_set = set(self.enabled_exchanges)
-        demo_mode = TRADING_CONFIG.get('mode', 'demo') == 'demo'
+        demo_mode = TRADING_CONFIG.get('mode', 'demo') in ['demo', 'testnet']  # ✅ Включаем testnet
         real_mode = TRADING_CONFIG.get('mode') == 'real'
         self.active_pairs = set()
         priority_pairs = DYNAMIC_PAIRS_CONFIG['priority_pairs']
@@ -372,7 +375,7 @@ class ProductionArbitrageBot:
                         logger.warning("⚠️ Не найдено пар с пересечением 3-из-3 для (OKX, Bitget, Phemex)")
                 else:
                     logger.warning(f"⚠️ Для режима real желательно включить okx и bitget; текущие включены: {sorted(list(enabled_set))}")
-        if demo_mode and not only_pairs_mode:
+        if demo_mode and not only_pairs_mode:  # ✅ Теперь работает для testnet
             trio = {'okx', 'bitget', 'phemex'} & enabled_set
             if len(trio) >= 2:
                 # Пары, присутствующие минимум на 2 из активных бирж из набора (OKX, Bitget, Phemex)
@@ -517,6 +520,9 @@ class ProductionArbitrageBot:
             logger.warning(f"⚠️ Ошибка доп. фильтрации по CCXT markets: {e}")
 
         logger.info(f"📊 Найдено {len(self.active_pairs)} активных пар для арбитража")
+        if len(self.active_pairs) == 0:
+            logger.warning(f"⚠️ ДИАГНОСТИКА: enabled_set={enabled_set}, trio intersection={enabled_set & {'okx', 'bitget', 'phemex'}}, all_pairs count={len(all_pairs)}")
+            logger.warning(f"⚠️ ДИАГНОСТИКА: demo_mode={demo_mode}, used_intersection={used_intersection}, only_pairs_mode={only_pairs_mode}")
         if only_pairs_mode:
             try:
                 logger.info(f"🔒 Only-pairs список: {sorted(list(self.active_pairs))}")
@@ -1169,12 +1175,12 @@ class ProductionArbitrageBot:
             
             # Расчет комиссий  
             if best_ask_exchange in EXCHANGES_CONFIG:
-                buy_fee = EXCHANGES_CONFIG[best_ask_exchange]['fee'] * 100
+                buy_fee = EXCHANGES_CONFIG[best_ask_exchange].get('fee', 0.001) * 100
             else:
                 buy_fee = 0.1
                 
             if best_bid_exchange in EXCHANGES_CONFIG:
-                sell_fee = EXCHANGES_CONFIG[best_bid_exchange]['fee'] * 100
+                sell_fee = EXCHANGES_CONFIG[best_bid_exchange].get('fee', 0.001) * 100
             else:
                 sell_fee = 0.1
                 

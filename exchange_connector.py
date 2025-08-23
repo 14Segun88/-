@@ -12,7 +12,7 @@ from dataclasses import dataclass
 import os
 from dotenv import load_dotenv
 import time
-from production_config import API_KEYS
+from production_config import API_KEYS, TRADING_CONFIG
 
 load_dotenv('config.env')
 logger = logging.getLogger('ExchangeConnector')
@@ -38,6 +38,8 @@ class ExchangeConnector:
         'huobi': {'maker': 0.002, 'taker': 0.002},     # 0.2% стандарт
         'binance': {'maker': 0.001, 'taker': 0.001},   # 0.1% без BNB
         'okx': {'maker': 0.001, 'taker': 0.0015},      # 0.1-0.15% стандарт
+        'bitget': {'maker': 0.001, 'taker': 0.001},    # 0.1% стандарт
+        'phemex': {'maker': 0.001, 'taker': 0.001},    # 0.1% стандарт
         'kucoin': {'maker': 0.001, 'taker': 0.001},    # 0.1% без KCS
         'kraken': {'maker': 0.0016, 'taker': 0.0026}   # 0.16-0.26% стандарт
     }
@@ -77,6 +79,30 @@ class ExchangeConnector:
                 'sandboxMode': True
             }
         },
+        'bitget': {
+            'apiKey': os.getenv('BITGET_DEMO_API_KEY', ''),
+            'secret': os.getenv('BITGET_DEMO_API_SECRET', ''),
+            'passphrase': os.getenv('BITGET_DEMO_PASSPHRASE', ''),
+            'test': True,
+            'urls': {
+                'api': 'https://api.bitget.com',  # Bitget использует флаг PAPTRADING=1
+            },
+            'options': {
+                'defaultType': 'spot',
+                'sandboxMode': True
+            }
+        },
+        'phemex': {
+            'apiKey': os.getenv('PHEMEX_DEMO_API_KEY', ''),
+            'secret': os.getenv('PHEMEX_DEMO_API_SECRET', ''),
+            'test': True,
+            'urls': {
+                'api': 'https://api.phemex.com',  # Phemex поддерживает demo через специальный аккаунт
+            },
+            'options': {
+                'defaultType': 'spot'
+            }
+        },
         'kucoin': {
             'apiKey': os.getenv('KUCOIN_SANDBOX_API_KEY', ''),
             'secret': os.getenv('KUCOIN_SANDBOX_API_SECRET', ''),
@@ -113,7 +139,7 @@ class ExchangeConnector:
     async def initialize(self, exchange_list: List[str] = None):
         """Инициализация подключений к биржам"""
         if exchange_list is None:
-            exchange_list = ['mexc', 'bybit', 'huobi', 'binance', 'okx', 'bitget', 'kucoin', 'kraken']
+            exchange_list = ['mexc', 'bybit', 'huobi', 'binance', 'okx', 'bitget', 'phemex', 'kucoin', 'kraken']
         
         logger.info(f"🚀 Инициализация {len(exchange_list)} бирж в режиме {self.mode}")
         
@@ -191,27 +217,53 @@ class ExchangeConnector:
             exchange_class = getattr(ccxt, exchange_id)
             exchange = exchange_class(config)
             
-            # Включаем DEMO заголовки/режимы где это требуется
-            if self.mode == 'demo':
-                try:
-                    if exchange_id == 'okx':
-                        # OKX: paper trading через заголовок + sandbox
-                        if not hasattr(exchange, 'headers') or exchange.headers is None:
-                            exchange.headers = {}
-                        exchange.headers['x-simulated-trading'] = '1'
-                        try:
-                            exchange.set_sandbox_mode(True)
-                            logger.info("OKX: sandbox_mode включён, x-simulated-trading=1")
-                        except Exception as se:
-                            logger.warning(f"OKX: не удалось включить sandbox_mode: {se}")
-                    elif exchange_id == 'bitget':
-                        # Bitget: демо через заголовок PAPTRADING=1 (без sandbox)
-                        if not hasattr(exchange, 'headers') or exchange.headers is None:
-                            exchange.headers = {}
-                        exchange.headers['paptrading'] = '1'
-                        logger.info("Bitget: установлен заголовок paptrading=1 для DEMO")
-                except Exception as e:
-                    logger.warning(f"Не удалось применить DEMO-настройки для {exchange_id}: {e}")
+            # Применяем настройки режима торговли
+            mode = TRADING_CONFIG.get('mode', 'demo')
+            try:
+                if exchange_id == 'okx':
+                    if not hasattr(exchange, 'headers') or exchange.headers is None:
+                        exchange.headers = {}
+                    
+                    if mode == 'real':
+                        # OKX: реальная торговля без demo заголовков
+                        exchange.headers.pop('x-simulated-trading', None)
+                        exchange.set_sandbox_mode(False)
+                        logger.info("OKX: настроен для реальной торговли (sandbox отключен)")
+                    elif mode in ['demo', 'testnet']:
+                        # OKX: testnet/demo режим
+                        exchange.set_sandbox_mode(True)
+                        logger.info("OKX: настроен для testnet/demo режима (sandbox включен)")
+                        
+                elif exchange_id == 'bitget':
+                    if not hasattr(exchange, 'headers') or exchange.headers is None:
+                        exchange.headers = {}
+                    
+                    if mode == 'real':
+                        # Bitget: реальная торговля без demo заголовков
+                        exchange.headers.pop('paptrading', None)
+                        exchange.headers.pop('PAPTRADING', None)
+                        exchange.set_sandbox_mode(False)
+                        logger.info("Bitget: настроен для реальной торговли (sandbox отключен)")
+                    elif mode in ['demo', 'testnet']:
+                        # Bitget: testnet/demo режим
+                        exchange.set_sandbox_mode(True)
+                        logger.info("Bitget: настроен для testnet/demo режима (sandbox включен)")
+                        
+                elif exchange_id == 'phemex':
+                    if not hasattr(exchange, 'headers') or exchange.headers is None:
+                        exchange.headers = {}
+                    
+                    if mode == 'real':
+                        # Phemex: реальная торговля без sandbox
+                        exchange.set_sandbox_mode(False)
+                        logger.info("Phemex: настроен для реальной торговли (sandbox отключен)")
+                    elif mode in ['demo', 'testnet']:
+                        # Phemex: testnet/demo режим
+                        exchange.set_sandbox_mode(True)
+                        logger.info("Phemex: настроен для testnet/demo режима (sandbox включен)")
+                        
+            except Exception as e:
+                logger.warning(f"Не удалось применить настройки {mode} режима для {exchange_id}: {e}")
             
             # Загружаем рынки
             try:
@@ -331,9 +383,35 @@ class ExchangeConnector:
             logger.error(f"Ошибка получения баланса {exchange_id}: {e}")
             return None
     
+    async def calculate_maker_price(self, exchange_id: str, symbol: str, side: str, 
+                                   spread_adjustment: float = 0.0005):
+        """Рассчитать умную цену для maker ордера (экономия 0.04% комиссии)"""
+        try:
+            orderbook = await self.fetch_orderbook(exchange_id, symbol)
+            if not orderbook or not orderbook.get('bids') or not orderbook.get('asks'):
+                return None
+                
+            best_bid = orderbook['bids'][0][0]
+            best_ask = orderbook['asks'][0][0]
+            spread = (best_ask - best_bid) / best_ask
+            
+            if side == 'buy':
+                # Ставим чуть выше лучшего бида для быстрого исполнения как maker
+                maker_price = best_bid + (best_ask - best_bid) * spread_adjustment
+                return max(maker_price, best_bid * 1.0001)  # Минимум 0.01% выше бида
+            else:  # sell
+                # Ставим чуть ниже лучшего аска для быстрого исполнения как maker
+                maker_price = best_ask - (best_ask - best_bid) * spread_adjustment
+                return min(maker_price, best_ask * 0.9999)  # Максимум 0.01% ниже аска
+                
+        except Exception as e:
+            logger.error(f"Ошибка расчёта maker цены для {exchange_id} {symbol}: {e}")
+            return None
+    
     async def create_order(self, exchange_id: str, symbol: str, side: str, 
-                          amount: float, price: float = None, order_type: str = 'limit'):
-        """Создать ордер (в DEMO на OKX/Bitget — реальный DEMO-ордер)"""
+                          amount: float, price: float = None, order_type: str = 'limit', 
+                          use_maker: bool = True):
+        """Создать ордер с поддержкой maker ордеров для экономии комиссий"""
         try:
             if exchange_id not in self.exchanges:
                 logger.error(f"Биржа {exchange_id} не подключена")
@@ -341,13 +419,21 @@ class ExchangeConnector:
             
             exchange = self.exchanges[exchange_id]
             
-            # В DEMO режиме на OKX/Bitget с ключами — создаём ордера на бирже
-            if self.mode == 'demo' and exchange_id in ['okx', 'bitget'] and API_KEYS.get(exchange_id, {}).get('apiKey'):
+            # Умная цена для maker ордеров (экономия комиссий)
+            if use_maker and order_type == 'limit' and price is None:
+                price = await self.calculate_maker_price(exchange_id, symbol, side)
+                if price:
+                    logger.info(f"💡 Рассчитана maker цена для {exchange_id} {symbol}: {price:.6f}")
+            
+            # В REAL режиме на OKX/Bitget/Phemex — создаём ордера на бирже
+            if self.mode == 'real' and exchange_id in ['okx', 'bitget', 'phemex'] and API_KEYS.get(exchange_id, {}).get('apiKey'):
                 if order_type == 'limit' and price is not None:
                     order = await exchange.create_order(symbol, 'limit', side, amount, price)
+                    fee_type = 'maker' if use_maker else 'taker'
+                    logger.info(f"📝 REAL {fee_type}-ордер создан на {exchange_id}: {order.get('id')}")
                 else:
                     order = await exchange.create_order(symbol, 'market', side, amount)
-                logger.info(f"📝 DEMO-ордер создан на {exchange_id}: {order.get('id')}")
+                    logger.info(f"📝 REAL market-ордер создан на {exchange_id}: {order.get('id')}")
                 return order
             
             # Иначе — внутренний симулятор DEMO
@@ -360,6 +446,10 @@ class ExchangeConnector:
                         if usdt_balance and usdt_balance.get('free', 0) >= cost:
                             usdt_balance['free'] -= cost
                             usdt_balance['used'] += cost
+                # Используем maker комиссию для limit ордеров с рассчитанной ценой
+                fee_type = 'maker' if (order_type == 'limit' and use_maker) else 'taker'
+                fee_rate = self.REAL_FEES.get(exchange_id, {}).get(fee_type, 0.001)
+                
                 return {
                     'id': order_id,
                     'symbol': symbol,
@@ -373,18 +463,23 @@ class ExchangeConnector:
                     'timestamp': int(time.time() * 1000),
                     'datetime': exchange.iso8601(int(time.time() * 1000)),
                     'fee': {
-                        'cost': (amount * (price or 0)) * self.REAL_FEES.get(exchange_id, {}).get('taker', 0.001),
-                        'currency': 'USDT'
-                    }
+                        'cost': (amount * (price or 0)) * fee_rate,
+                        'currency': 'USDT',
+                        'rate': fee_rate,
+                        'type': fee_type
+                    },
+                    'maker_savings': (self.REAL_FEES.get(exchange_id, {}).get('taker', 0.001) - fee_rate) * 100 if fee_type == 'maker' else 0
                 }
             
             # Реальный ордер (реальный режим)
             if order_type == 'limit' and price is not None:
                 order = await exchange.create_order(symbol, 'limit', side, amount, price)
+                fee_type = 'maker' if use_maker else 'taker'
+                logger.info(f"📝 {fee_type.upper()}-ордер создан на {exchange_id}: {order['id']}")
             else:
                 order = await exchange.create_order(symbol, 'market', side, amount)
+                logger.info(f"📝 MARKET-ордер создан на {exchange_id}: {order['id']}")
             
-            logger.info(f"📝 Ордер создан на {exchange_id}: {order['id']}")
             return order
         except Exception as e:
             logger.error(f"❌ Ошибка создания ордера {exchange_id}: {e}")
@@ -541,6 +636,7 @@ class ExchangeConnector:
                 'sell_fee_pct': sell_fee * 100,
                 'total_fees_pct': total_fees_pct,
                 'net_profit_pct': net_profit_pct,
+                'fee': {'buy': buy_fee, 'sell': sell_fee, 'total': buy_fee + sell_fee},  # Добавляем ключ fee для совместимости
                 'timestamp': time.time()
             }
             
