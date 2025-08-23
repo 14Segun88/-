@@ -26,9 +26,9 @@ class OrderBookAnalyzer:
     """Анализатор глубины ордербуков"""
     
     def __init__(self):
-        self.min_liquidity_usd = 1000  # Минимальная ликвидность для торговли
-        self.max_price_impact = 0.5  # Максимальное влияние на цену 0.5%
-        self.min_depth_levels = 3  # Минимум уровней в стакане
+        self.min_liquidity_usd = 5  # 🔥 УЛЬТРА-АГРЕССИВНО: снижено до $5 (в 2 раза меньше размера позиции $10)
+        self.max_price_impact = 25.0  # 🔥 ЭКСТРЕМАЛЬНО увеличено до 25% - принимаем любой slippage
+        self.min_depth_levels = 1  # 🔥 Минимум 1 уровень
         
     def analyze_liquidity(
         self, 
@@ -86,7 +86,7 @@ class OrderBookAnalyzer:
                 total_cost += level_volume * price
                 levels_used += 1
             
-            if total_volume < volume_needed * 0.95:  # Если не хватает 95% объема
+            if total_volume < volume_needed * 0.50:  # 🔥 СНИЖЕНО: достаточно 50% объема от требуемого
                 return LiquidityAnalysis(
                     symbol=symbol,
                     exchange=exchange,
@@ -173,7 +173,7 @@ class OrderBookAnalyzer:
             is_acceptable = (
                 buy_analysis.can_execute and 
                 sell_analysis.can_execute and
-                total_slippage < 1.0
+                total_slippage < 5.0  # 🔥 УВЕЛИЧЕН допустимый slippage до 5%
             )
             
             return total_slippage, is_acceptable

@@ -153,7 +153,7 @@ class ExchangeConnector:
                     # Инициализируем демо баланс ТОЛЬКО для бирж без реальных demo-аккаунтов
                     if self.mode == 'demo':
                         has_demo_keys = bool(API_KEYS.get(exchange_id, {}).get('apiKey'))
-                        is_broker_demo = exchange_id in ['okx', 'bitget'] and has_demo_keys
+                        is_broker_demo = exchange_id in ['okx', 'bitget', 'phemex'] and has_demo_keys
                         if not is_broker_demo:
                             self.balances[exchange_id] = {
                                 'USDT': {'free': 100.0, 'used': 0.0, 'total': 100.0}
@@ -188,7 +188,13 @@ class ExchangeConnector:
             # DEMO режим: использовать реальные демо-аккаунты OKX/Bitget при наличии ключей
             if self.mode == 'demo':
                 keys = API_KEYS.get(exchange_id, {})
-                if exchange_id in ['okx', 'bitget'] and keys.get('apiKey') and keys.get('secret'):
+                # Исключаем отключенные биржи
+                if keys.get('trading_disabled', False):
+                    logger.info(f"🚫 {exchange_id.upper()} исключен из торговли (trading_disabled: True)")
+                    return None
+                    
+                if exchange_id in ['okx', 'bitget', 'phemex'] and keys.get('apiKey') and keys.get('secret'):
+                    
                     config['apiKey'] = keys.get('apiKey')
                     config['secret'] = keys.get('secret')
                     # CCXT использует 'password' для OKX/KuCoin, passphrase тоже подхватится как password
@@ -238,14 +244,24 @@ class ExchangeConnector:
                     if not hasattr(exchange, 'headers') or exchange.headers is None:
                         exchange.headers = {}
                     
-                    if mode == 'real':
+                    # Проверяем флаг demo_trading из конфигурации
+                    keys = API_KEYS.get('bitget', {})
+                    demo_trading = keys.get('demo_trading', False)
+                    sandbox_disabled = keys.get('sandbox', True) == False
+                    
+                    if mode == 'real' and not demo_trading:
                         # Bitget: реальная торговля без demo заголовков
                         exchange.headers.pop('paptrading', None)
                         exchange.headers.pop('PAPTRADING', None)
                         exchange.set_sandbox_mode(False)
                         logger.info("Bitget: настроен для реальной торговли (sandbox отключен)")
+                    elif demo_trading or sandbox_disabled:
+                        # Bitget: DEMO торговля с PAPTRADING заголовком (БЕЗ sandbox)
+                        exchange.headers['PAPTRADING'] = '1'
+                        exchange.set_sandbox_mode(False)  # 🔄 НЕ используем sandbox для demo
+                        logger.info("🎯 Bitget: настроен для DEMO торговли (PAPTRADING: 1, sandbox отключен)")
                     elif mode in ['demo', 'testnet']:
-                        # Bitget: testnet/demo режим
+                        # Bitget: обычный testnet/demo режим с sandbox
                         exchange.set_sandbox_mode(True)
                         logger.info("Bitget: настроен для testnet/demo режима (sandbox включен)")
                         

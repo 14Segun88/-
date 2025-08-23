@@ -164,6 +164,12 @@ class TradingEngine:
                 # Добавляем passphrase для бирж, которые его требуют
                 if exchange_id in ['bitget', 'okx', 'kucoin'] and 'passphrase' in API_KEYS[exchange_id]:
                     client_data['passphrase'] = API_KEYS[exchange_id]['passphrase']
+                
+                # 🎯 Передаем флаги из конфигурации API_KEYS
+                if 'demo_trading' in API_KEYS[exchange_id]:
+                    client_data['demo_trading'] = API_KEYS[exchange_id]['demo_trading']
+                if 'env' in API_KEYS[exchange_id]:
+                    client_data['env'] = API_KEYS[exchange_id]['env']
 
                 # Инициализация ccxt клиента для real/demo режимов
                 ccxt_client = None
@@ -289,20 +295,22 @@ class TradingEngine:
             sell_exchange = opportunity.exchanges[1]
             symbol = opportunity.symbols[0]
             
-            # Предварительно убеждаемся, что символ доступен на обеих биржах (по данным ccxt)
-            try:
-                p_buy, m_buy, s_buy = self._ccxt_presence(buy_exchange, symbol)
-                p_sell, m_sell, s_sell = self._ccxt_presence(sell_exchange, symbol)
-                if not (p_buy and p_sell):
-                    logger.info(
-                        f"⏭️ Пропуск: {symbol} отсутствует по CCXT "
-                        f"[{buy_exchange}: present={p_buy}, markets={m_buy}, symbols={s_buy}; "
-                        f"{sell_exchange}: present={p_sell}, markets={m_sell}, symbols={s_sell}]"
-                    )
-                    return False
-            except Exception:
-                # Не блокируем поток, если проверка по какой-то причине не удалась
-                pass
+            # В paper режиме опираемся на REST данные, а не на CCXT markets
+            if TRADING_CONFIG.get('mode') == 'real':
+                # Только в реальном режиме проверяем CCXT markets
+                try:
+                    p_buy, m_buy, s_buy = self._ccxt_presence(buy_exchange, symbol)
+                    p_sell, m_sell, s_sell = self._ccxt_presence(sell_exchange, symbol)
+                    if not (p_buy and p_sell):
+                        logger.info(
+                            f"⏭️ Пропуск: {symbol} отсутствует по CCXT "
+                            f"[{buy_exchange}: present={p_buy}, markets={m_buy}, symbols={s_buy}; "
+                            f"{sell_exchange}: present={p_sell}, markets={m_sell}, symbols={s_sell}]"
+                        )
+                        return False
+                except Exception:
+                    # Не блокируем поток, если проверка не удалась
+                    pass
             
             # Расчет объема
             buy_price = opportunity.prices[f'{buy_exchange}_ask']
@@ -481,7 +489,9 @@ class TradingEngine:
             client_info = self.exchange_clients.get(exchange, {})
             ccxt_client = client_info.get('ccxt') if isinstance(client_info, dict) else None
 
-            if ccxt_client:
+            # 🔄 ПРИНУДИТЕЛЬНО используем REST для Bitget demo режима (CCXT не передает PAPTRADING)
+            demo_trading = client_info.get('demo_trading', False)
+            if ccxt_client and not (exchange == 'bitget' and demo_trading):
                 # Базовые параметры ордера
                 params = {}
                 # Биржеспецифичные параметры для стабильности DEMO/REAL
@@ -550,6 +560,14 @@ class TradingEngine:
                 # Fallback: нативные реализации
                 if exchange == 'mexc':
                     await self._place_mexc_order(order)
+                elif exchange == 'bitget':
+                    # Используем прямой REST API для Bitget
+                    created = await self._bitget_place_order_rest(client_info, symbol, 'limit' if price else 'market', side, amount, price)
+                    order.exchange_order_id = str(created.get('orderId') or created.get('id') or '')
+                    order.status = OrderStatus.PLACED
+                    logger.info(f"✅ {exchange.upper()} ордер размещен (REST): {order.exchange_order_id}")
+                elif exchange == 'phemex':
+                    await self._place_phemex_order(order)
                 elif exchange == 'bybit':
                     await self._place_bybit_order(order)
                 elif exchange == 'huobi':
@@ -677,10 +695,10 @@ class TradingEngine:
         if not api_key or not secret:
             raise Exception('Нет API ключей для Bitget')
 
-        # Нормализация символа для Bitget SPOT v2: <BASE><QUOTE>_SPBL (без разделителей)
-        # Пример: "CORE/USDT" -> "COREUSDT_SPBL"
+        # Нормализация символа для Bitget SPOT v2: простой формат без суффикса
+        # Пример: "CORE/USDT" -> "COREUSDT"
         base_quote = symbol.replace('/', '').replace(':', '').replace('_', '')
-        symbol_id = f"{base_quote.upper()}_SPBL"
+        symbol_id = base_quote.upper()
 
         base = 'https://api.bitget.com'
         path = '/api/v2/spot/trade/place-order'
@@ -726,9 +744,13 @@ class TradingEngine:
             'ACCESS-SIGN': sign,
             'ACCESS-TIMESTAMP': ts,
             'ACCESS-PASSPHRASE': passphrase,
-            # 'PAPTRADING': '1',  # Убрано для реальной торговли
             'Content-Type': 'application/json',
         }
+        
+        # Добавляем заголовок для демо торговли если настроен demo режим
+        if client_info.get('demo_trading', False) or client_info.get('env') == 'demo':
+            headers['PAPTRADING'] = '1'
+            logger.info("🎯 Bitget DEMO режим активирован (PAPTRADING: 1)")
         timeout = aiohttp.ClientTimeout(total=10)
         async with aiohttp.ClientSession(timeout=timeout) as session:
             async with session.post(url, data=body, headers=headers) as resp:
@@ -873,10 +895,128 @@ class TradingEngine:
             raise
     
     async def _place_bybit_order(self, order: Order):
-        """Разместить ордер на Bybit"""
-        # TODO: Реализовать размещение ордера на Bybit
-        logger.warning("⚠️ Bybit ордера пока не реализованы")
-        order.status = OrderStatus.FAILED
+        """Разместить ордер на Bybit через REST API"""
+        try:
+            client_info = self.exchange_clients.get('bybit', {})
+            api_key = client_info.get('api_key', '')
+            secret = client_info.get('secret', '')
+            
+            if not api_key or not secret:
+                raise Exception("API ключи Bybit не настроены")
+            
+            # Подготовка параметров
+            timestamp = str(int(time.time() * 1000))
+            symbol = order.symbol.replace('/', '')
+            
+            params = {
+                'category': 'spot',
+                'symbol': symbol,
+                'side': order.side.capitalize(),
+                'orderType': 'Limit' if order.type == OrderType.LIMIT else 'Market',
+                'qty': str(order.amount)
+            }
+            
+            if order.type == OrderType.LIMIT:
+                params['price'] = str(order.price)
+            
+            # Подпись запроса
+            query_string = '&'.join([f"{k}={v}" for k, v in sorted(params.items())])
+            param_str = timestamp + api_key + '5000' + query_string
+            signature = hmac.new(secret.encode('utf-8'), param_str.encode('utf-8'), hashlib.sha256).hexdigest()
+            
+            # Заголовки
+            headers = {
+                'X-BAPI-API-KEY': api_key,
+                'X-BAPI-SIGN': signature,
+                'X-BAPI-TIMESTAMP': timestamp,
+                'X-BAPI-RECV-WINDOW': '5000',
+                'Content-Type': 'application/json'
+            }
+            
+            # Отправка запроса
+            url = f"{EXCHANGES_CONFIG['bybit']['rest_url']}/v5/order/create"
+            
+            async with aiohttp.ClientSession() as session:
+                async with session.post(url, json=params, headers=headers) as resp:
+                    if resp.status == 200:
+                        data = await resp.json()
+                        if data.get('retCode') == 0:
+                            result = data.get('result', {})
+                            order.exchange_order_id = str(result.get('orderId', ''))
+                            order.status = OrderStatus.PLACED
+                            logger.info(f"✅ Bybit ордер размещен: {order.exchange_order_id}")
+                        else:
+                            raise Exception(f"Bybit API error: {data}")
+                    else:
+                        error = await resp.text()
+                        raise Exception(f"Bybit HTTP error {resp.status}: {error}")
+                        
+        except Exception as e:
+            logger.error(f"❌ Ошибка Bybit ордера: {e}")
+            order.status = OrderStatus.FAILED
+            raise
+    
+    async def _place_phemex_order(self, order: Order):
+        """Разместить ордер на Phemex через REST API"""
+        try:
+            client_info = self.exchange_clients.get('phemex', {})
+            api_key = client_info.get('api_key', '')
+            secret = client_info.get('secret', '')
+            
+            if not api_key or not secret:
+                raise Exception("API ключи Phemex не настроены")
+            
+            # Phemex использует цены в масштабированном формате
+            symbol = order.symbol.replace('/', '')
+            price_scale = 10000 if 'BTC' in symbol else 100000000  # BTC: 4 знака, остальные: 8
+            qty_scale = 1000000  # Количество в микроединицах
+            
+            params = {
+                'symbol': symbol,
+                'clOrdID': str(uuid.uuid4()),
+                'side': order.side.capitalize(),
+                'priceEp': int(order.price * price_scale) if order.type == OrderType.LIMIT else 0,
+                'orderQtyEv': int(order.amount * qty_scale),
+                'ordType': 'Limit' if order.type == OrderType.LIMIT else 'Market',
+                'timeInForce': 'GoodTillCancel'
+            }
+            
+            # Подпись запроса
+            timestamp = str(int(time.time()))
+            body = json.dumps(params, separators=(',', ':'))
+            message = f"POST/orders{timestamp}{body}"
+            signature = hmac.new(secret.encode('utf-8'), message.encode('utf-8'), hashlib.sha256).hexdigest()
+            
+            # Заголовки
+            headers = {
+                'x-phemex-access-token': api_key,
+                'x-phemex-request-signature': signature,
+                'x-phemex-request-timestamp': timestamp,
+                'Content-Type': 'application/json'
+            }
+            
+            # Отправка запроса
+            url = f"{EXCHANGES_CONFIG['phemex']['rest_url']}/orders"
+            
+            async with aiohttp.ClientSession() as session:
+                async with session.post(url, data=body, headers=headers) as resp:
+                    if resp.status == 200:
+                        data = await resp.json()
+                        if data.get('code') == 0:
+                            result = data.get('data', {})
+                            order.exchange_order_id = str(result.get('orderID', ''))
+                            order.status = OrderStatus.PLACED
+                            logger.info(f"✅ Phemex ордер размещен: {order.exchange_order_id}")
+                        else:
+                            raise Exception(f"Phemex API error: {data}")
+                    else:
+                        error = await resp.text()
+                        raise Exception(f"Phemex HTTP error {resp.status}: {error}")
+                        
+        except Exception as e:
+            logger.error(f"❌ Ошибка Phemex ордера: {e}")
+            order.status = OrderStatus.FAILED
+            raise
     
     async def _place_huobi_order(self, order: Order):
         """Разместить ордер на Huobi"""
