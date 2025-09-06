@@ -1,0 +1,39 @@
+{
+  "args": {
+    "data_root": "data",
+    "symbol": "EURUSD",
+    "timeframe": "M15",
+    "start": "2024-01-01",
+    "end": "2024-02-01",
+    "strategy": "A",
+    "spread_pips": 0.8,
+    "slippage_pips": 0.2,
+    "cash": 10000.0,
+    "risk_pct": 0.01,
+    "fixed_size": null,
+    "rsi_len": 14,
+    "rsi_os": 30.0,
+    "rsi_ob": 70.0,
+    "bb_len": 20,
+    "bb_std": 2.0,
+    "rr_tp": 3.0,
+    "atr_mult_sl": 1.0,
+    "rolling_24m": false,
+    "cache_resampled": true,
+    "a_atr_min": 0.0,
+    "a_edge_mult": 0.0,
+    "a_session_start": null,
+    "a_session_end": null
+  },
+  "metrics": {
+    "A": {
+      "trades": 124.0,
+      "pf": 0.9542564508032415,
+      "wr": 26.61290322580645,
+      "ret": -0.30077049688430635,
+      "ann_ret": -2.6745953548598878,
+      "dd": -1.2786303602225768,
+      "sharpe": -0.7335240404334425
+    }
+  }
+}

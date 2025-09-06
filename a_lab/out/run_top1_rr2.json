@@ -1,0 +1,51 @@
+{
+  "args": {
+    "data_root": "data",
+    "symbol": "EURUSD",
+    "timeframe": "M15",
+    "start": null,
+    "end": null,
+    "strategy": "A",
+    "spread_pips": 0.8,
+    "slippage_pips": 0.2,
+    "cash": 10000.0,
+    "risk_pct": 0.01,
+    "fixed_size": null,
+    "rsi_len": 18,
+    "rsi_os": 30.0,
+    "rsi_ob": 70.0,
+    "bb_len": 20,
+    "bb_std": 2.0,
+    "rr_tp": 2.0,
+    "atr_mult_sl": 1.2,
+    "rolling_24m": false,
+    "cache_resampled": true,
+    "a_atr_min": 0.0,
+    "a_edge_mult": 0.0,
+    "a_session_start": null,
+    "a_session_end": null,
+    "commission_bps": 5.0,
+    "session_spread": null,
+    "mc_slip_std_pips": 0.0,
+    "mc_runs": 0,
+    "matrix_costs": false
+  },
+  "metrics": {
+    "A": {
+      "trades": 5538.0,
+      "pf": 0.20793342709364834,
+      "wr": 25.947995666305523,
+      "ret": -99.64454725167882,
+      "ann_ret": -59.60053083008172,
+      "dd": -99.64553933039669,
+      "sharpe": -23.132868643238805
+    }
+  },
+  "env": {
+    "python": "3.10.12",
+    "pandas": "2.3.2",
+    "numpy": "2.2.6",
+    "backtesting": "0.6.5",
+    "timestamp_utc": "2025-09-04T13:29:35Z"
+  }
+}

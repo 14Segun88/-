@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+
+# Data & outputs
+out/
+data/
+!data/external/
+# keep structure but ignore actual payloads
+/data/external/TigerTrade/**
+
+# OS/IDE
+.DS_Store
+*.swp
+*.swo
+.idea/
+.vscode/

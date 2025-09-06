@@ -1,0 +1,35 @@
+[
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2024-05",
+    "timestamp": "2024-05-03T12:30:00Z",
+    "side": "sell",
+    "price": 1.07956,
+    "sl": 1.0807791519126726,
+    "tp": 1.0773655265571895,
+    "size": 9170,
+    "tag": "A_short"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2024-05",
+    "timestamp": "2024-05-14T13:00:00Z",
+    "side": "sell",
+    "price": 1.08198,
+    "sl": 1.083057173231039,
+    "tp": 1.0800410881841296,
+    "size": 9167,
+    "tag": "A_short"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2024-05",
+    "timestamp": "2024-05-15T13:00:00Z",
+    "side": "sell",
+    "price": 1.08649,
+    "sl": 1.087531087585292,
+    "tp": 1.0846160423464744,
+    "size": 9119,
+    "tag": "A_short"
+  }
+]

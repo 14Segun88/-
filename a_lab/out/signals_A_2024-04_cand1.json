@@ -1,0 +1,90 @@
+[
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2024-04",
+    "timestamp": "2024-04-05T12:45:00Z",
+    "side": "buy",
+    "price": 1.08093,
+    "sl": 1.0798368301881716,
+    "tp": 1.082897705661291,
+    "size": 9158,
+    "tag": "A_long"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2024-04",
+    "timestamp": "2024-04-05T13:00:00Z",
+    "side": "buy",
+    "price": 1.07914,
+    "sl": 1.0778939194964154,
+    "tp": 1.0813829449064523,
+    "size": 9163,
+    "tag": "A_long"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2024-04",
+    "timestamp": "2024-04-10T12:30:00Z",
+    "side": "buy",
+    "price": 1.07807,
+    "sl": 1.0765367081073847,
+    "tp": 1.0808299254067077,
+    "size": 9190,
+    "tag": "A_long"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2024-04",
+    "timestamp": "2024-04-10T13:00:00Z",
+    "side": "buy",
+    "price": 1.07649,
+    "sl": 1.0748691718673244,
+    "tp": 1.0794074906388158,
+    "size": 9190,
+    "tag": "A_long"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2024-04",
+    "timestamp": "2024-04-11T14:30:00Z",
+    "side": "buy",
+    "price": 1.07034,
+    "sl": 1.0691068223612485,
+    "tp": 1.0725597197497527,
+    "size": 9228,
+    "tag": "A_long"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2024-04",
+    "timestamp": "2024-04-23T13:45:00Z",
+    "side": "sell",
+    "price": 1.07012,
+    "sl": 1.0713485845051134,
+    "tp": 1.0679085478907957,
+    "size": 9248,
+    "tag": "A_short"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2024-04",
+    "timestamp": "2024-04-25T12:30:00Z",
+    "side": "buy",
+    "price": 1.0691,
+    "sl": 1.067995233812101,
+    "tp": 1.0710885791382179,
+    "size": 9246,
+    "tag": "A_long"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2024-04",
+    "timestamp": "2024-04-25T13:00:00Z",
+    "side": "buy",
+    "price": 1.068,
+    "sl": 1.0667716200633117,
+    "tp": 1.070211083886039,
+    "size": 9245,
+    "tag": "A_long"
+  }
+]

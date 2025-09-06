@@ -1,0 +1,5 @@
+rank,file,tag,months,share_pf_gt1,pf_median,pf_min,wr_median,dd_median
+1,./out/rolling_A_24m_portA_micro3_rsi18_bb2.0_atr1.2_risk0.5_rr1.5_london9-18.csv,portA_micro3_rsi18_bb2.0_atr1.2_risk0.5_rr1.5_london9-18,24,0.0,0.17235621978464885,0.0297421943231724,30.795019157088127,-3.2235615343407185
+2,./out/rolling_A_24m_portA_micro3_rsi18_bb2.0_atr1.2_risk0.5_rr1.5_london8-17.csv,portA_micro3_rsi18_bb2.0_atr1.2_risk0.5_rr1.5_london8-17,24,0.0,0.1443083086602654,0.0255436094758523,29.637592137592137,-3.8471937820406863
+3,./out/rolling_A_24m_portA_micro3_rsi18_bb2.0_atr1.2_risk0.5_rr1.5_london7-19.csv,portA_micro3_rsi18_bb2.0_atr1.2_risk0.5_rr1.5_london7-19,24,0.0,0.1385816663257931,0.022859298609099,28.102564102564102,-4.725482325279367
+4,./out/rolling_A_24m_portA_micro3_rsi18_bb2.0_atr1.2_risk0.5_rr1.5_london7-18.csv,portA_micro3_rsi18_bb2.0_atr1.2_risk0.5_rr1.5_london7-18,24,0.0,0.13606550944763965,0.0229933816670794,27.74122807017544,-4.732552820095165

@@ -1,0 +1,68 @@
+[
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2023-11",
+    "timestamp": "2023-11-03T12:30:00Z",
+    "side": "sell",
+    "price": 1.07083,
+    "sl": 1.0721319996579695,
+    "tp": 1.068486400615655,
+    "size": 9245,
+    "tag": "A_short"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2023-11",
+    "timestamp": "2023-11-14T13:30:00Z",
+    "side": "sell",
+    "price": 1.07958,
+    "sl": 1.0813959458276985,
+    "tp": 1.0763112975101428,
+    "size": 9158,
+    "tag": "A_short"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2023-11",
+    "timestamp": "2023-11-14T14:00:00Z",
+    "side": "sell",
+    "price": 1.08211,
+    "sl": 1.0840915770883601,
+    "tp": 1.0785431612409515,
+    "size": 9120,
+    "tag": "A_short"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2023-11",
+    "timestamp": "2023-11-22T14:00:00Z",
+    "side": "buy",
+    "price": 1.08726,
+    "sl": 1.0860775657711441,
+    "tp": 1.0893883816119403,
+    "size": 9060,
+    "tag": "A_long"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2023-11",
+    "timestamp": "2023-11-22T15:00:00Z",
+    "side": "buy",
+    "price": 1.08538,
+    "sl": 1.0840477214022646,
+    "tp": 1.0877781014759238,
+    "size": 9065,
+    "tag": "A_long"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2023-11",
+    "timestamp": "2023-11-30T08:30:00Z",
+    "side": "buy",
+    "price": 1.09246,
+    "sl": 1.0914416747892939,
+    "tp": 1.0942929853792709,
+    "size": 9025,
+    "tag": "A_long"
+  }
+]

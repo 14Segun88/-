@@ -1,0 +1,35 @@
+[
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2024-10",
+    "timestamp": "2024-10-03T14:30:00Z",
+    "side": "buy",
+    "price": 1.10133,
+    "sl": 1.1002233732861195,
+    "tp": 1.1033219280849846,
+    "size": 8989,
+    "tag": "A_long"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2024-10",
+    "timestamp": "2024-10-04T12:30:00Z",
+    "side": "buy",
+    "price": 1.09681,
+    "sl": 1.0954935001148232,
+    "tp": 1.0991796997933185,
+    "size": 9041,
+    "tag": "A_long"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2024-10",
+    "timestamp": "2024-10-17T13:00:00Z",
+    "side": "buy",
+    "price": 1.08198,
+    "sl": 1.0808091804262574,
+    "tp": 1.0840874752327365,
+    "size": 9153,
+    "tag": "A_long"
+  }
+]

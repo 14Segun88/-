@@ -1,0 +1,57 @@
+{
+  "args": {
+    "data_root": "data",
+    "symbol": "EURUSD",
+    "timeframe": "M15",
+    "start": null,
+    "end": null,
+    "strategy": "ALL",
+    "spread_pips": 0.8,
+    "slippage_pips": 0.2,
+    "cash": 10000.0,
+    "risk_pct": 0.01,
+    "fixed_size": null,
+    "rsi_len": 14,
+    "rsi_os": 30.0,
+    "rsi_ob": 70.0,
+    "bb_len": 20,
+    "bb_std": 2.0,
+    "rr_tp": 3.0,
+    "atr_mult_sl": 1.0,
+    "rolling_24m": false,
+    "cache_resampled": true,
+    "a_atr_min": 0.0,
+    "a_edge_mult": 0.0,
+    "a_session_start": null,
+    "a_session_end": null
+  },
+  "metrics": {
+    "A": {
+      "trades": 6942.0,
+      "pf": 0.9203578041072078,
+      "wr": 26.62057044079516,
+      "ret": -28.854581902716923,
+      "ann_ret": -5.324436121837984,
+      "dd": -32.07567160432069,
+      "sharpe": -1.1223537345964782
+    },
+    "C": {
+      "trades": 3384.0,
+      "pf": 0.7752286134616234,
+      "wr": 22.96099290780142,
+      "ret": -35.9085513022881,
+      "ann_ret": -6.899928569047442,
+      "dd": -36.54610252473758,
+      "sharpe": -2.35469277838769
+    },
+    "B": {
+      "trades": 1334.0,
+      "pf": 0.8358886763057914,
+      "wr": 24.36281859070465,
+      "ret": -11.900141920600381,
+      "ann_ret": -2.0156468408754624,
+      "dd": -12.875055052238082,
+      "sharpe": -1.1467161787128675
+    }
+  }
+}

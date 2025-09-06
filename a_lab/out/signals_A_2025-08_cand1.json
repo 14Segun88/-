@@ -1,0 +1,123 @@
+[
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2025-08",
+    "timestamp": "2025-08-01T12:30:00Z",
+    "side": "sell",
+    "price": 1.15291,
+    "sl": 1.1555475166513136,
+    "tp": 1.1481624700276358,
+    "size": 8586,
+    "tag": "A_short"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2025-08",
+    "timestamp": "2025-08-01T12:45:00Z",
+    "side": "sell",
+    "price": 1.15451,
+    "sl": 1.1572358477644715,
+    "tp": 1.1496034740239511,
+    "size": 8555,
+    "tag": "A_short"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2025-08",
+    "timestamp": "2025-08-05T15:00:00Z",
+    "side": "sell",
+    "price": 1.15779,
+    "sl": 1.1591458442250835,
+    "tp": 1.15534948039485,
+    "size": 8510,
+    "tag": "A_short"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2025-08",
+    "timestamp": "2025-08-07T11:30:00Z",
+    "side": "buy",
+    "price": 1.16403,
+    "sl": 1.1629792592859909,
+    "tp": 1.165921333285216,
+    "size": 8454,
+    "tag": "A_long"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2025-08",
+    "timestamp": "2025-08-12T12:30:00Z",
+    "side": "sell",
+    "price": 1.16478,
+    "sl": 1.1660121130260603,
+    "tp": 1.1625621965530912,
+    "size": 8461,
+    "tag": "A_short"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2025-08",
+    "timestamp": "2025-08-15T14:00:00Z",
+    "side": "sell",
+    "price": 1.1712,
+    "sl": 1.1722807767895331,
+    "tp": 1.1692546017788403,
+    "size": 8430,
+    "tag": "A_short"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2025-08",
+    "timestamp": "2025-08-21T14:30:00Z",
+    "side": "buy",
+    "price": 1.16107,
+    "sl": 1.1600342274694109,
+    "tp": 1.1629343905550606,
+    "size": 8516,
+    "tag": "A_long"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2025-08",
+    "timestamp": "2025-08-22T14:00:00Z",
+    "side": "sell",
+    "price": 1.16823,
+    "sl": 1.1699698390014832,
+    "tp": 1.1650982897973305,
+    "size": 8456,
+    "tag": "A_short"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2025-08",
+    "timestamp": "2025-08-22T14:15:00Z",
+    "side": "sell",
+    "price": 1.16888,
+    "sl": 1.1707225271346187,
+    "tp": 1.1655634511576862,
+    "size": 8438,
+    "tag": "A_short"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2025-08",
+    "timestamp": "2025-08-22T14:30:00Z",
+    "side": "sell",
+    "price": 1.17037,
+    "sl": 1.1722148568500028,
+    "tp": 1.1670492576699947,
+    "size": 8413,
+    "tag": "A_short"
+  },
+  {
+    "symbol": "EURUSD",
+    "strategy": "A_2025-08",
+    "timestamp": "2025-08-29T14:30:00Z",
+    "side": "sell",
+    "price": 1.16953,
+    "sl": 1.1705411133252321,
+    "tp": 1.167709996014582,
+    "size": 8405,
+    "tag": "A_short"
+  }
+]

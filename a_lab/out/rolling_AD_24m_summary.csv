@@ -1,0 +1,2 @@
+a_csv,d_csv,share_pf_gt1,pf_median,pf_min,wr_median,dd_median
+rolling_A_24m_portA_rsi24_bb2.4_atr1.0_risk0.5_rr1.5_london8-17_atrmin0.0005_edge0.5.csv,rolling_D_24m_EMA_dc60_buf1_atr1.0_risk0.5_trail2_london7-18_adx18_ema200_trend.csv,0.0,0.16197780623211797,0.026127772333579706,31.43939393939394,-1.3445812520167437
