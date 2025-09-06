@@ -12,10 +12,15 @@ from typing import Optional
 from dotenv import load_dotenv
 
 
-load_dotenv()  # загружаем .env, если он лежит рядом с проектом
-
-ROOT = Path(__file__).resolve().parents[2]  # .../splitwise
+ROOT = Path(__file__).resolve().parents[2]  # .../splitwise (корень репозитория)
 TT_ROOT = ROOT / "tiger_trade"
+
+# Явно пытаемся загрузить .env из корня репозитория и из каталога tiger_trade/.
+# Это удобно: можно положить ключи в любой из этих файлов; значения из окружения
+# всегда имеют приоритет над .env.
+load_dotenv(ROOT / ".env")
+load_dotenv(TT_ROOT / ".env")
+
 DATA_ROOT = TT_ROOT / "data" / "external" / "TigerTrade"
 OUT_ROOT = TT_ROOT / "out"
 
